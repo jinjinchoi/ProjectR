@@ -3,7 +3,9 @@ using UnityEngine;
 
 public class NormalAttackAbility : AbilityLogicBase
 {
-    private Coroutine abilityCo;
+    private Coroutine comboTimerCo;
+    private int comboCount = 1;
+    bool isActivated = false;
 
     public NormalAttackAbility()
     {
@@ -11,61 +13,68 @@ public class NormalAttackAbility : AbilityLogicBase
 
     public override void ActivateAbility(AbilitySpec spec)
     {
-        if (abilityCo != null)
+        isActivated = true;
+        StopComboResetTimer();
+
+        if (spec.abilityData is not Player_NormalAttackDataSO attackAbilityData)
         {
-            asc.StopCoroutine(abilityCo);
-            abilityCo = null;
+            Debug.LogError("spec.abilityData is Not Player_NormalAttackDataSO Type at NormalAttackAbility");
+            asc.EndAbilityBySpec(spec);
+            return;
         }
 
-        abilityCo = asc.StartCoroutine(PlayAndWaitAnimation(spec));
-    }
-
-    private IEnumerator PlayAndWaitAnimation(AbilitySpec spec)
-    {
         Animator animator = asc.owner.anim;
+        animator.SetInteger(attackAbilityData.comboCountName, comboCount);
 
-        if (spec.abilityData is not DamageAbilityDataSO damageData)
-            yield break;
-
-        // 기존 재생중인 애니메이션이 있으면 끝날 때까지 대기
-        yield return new WaitUntil(() =>
-            !animator.GetCurrentAnimatorStateInfo(0).IsTag(damageData.animTag) &&
-            !animator.IsInTransition(0)
-        );
-
-        animator.SetBool(damageData.animName, true);
-
-        // 애니메이션 재생 끝날때 까지 대기
-        yield return new WaitUntil(() =>
+        PlayAnimationAndWait(spec, () =>
         {
-            return animator.GetCurrentAnimatorStateInfo(0).IsTag(damageData.animTag) &&
-                 animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f;
+            asc.EndAbilityBySpec(spec);
         });
-
-        animator.SetBool(damageData.animName, false);
-
-        asc.EndAbilityBySpec(spec);
-
     }
 
-    public override void ReceiveAnimationEvent(AbilitySpec spec, AnimationEventType eventType)
+
+    public override void EndAbility(AbilitySpec spec)
     {
+        if (spec.abilityData is not Player_NormalAttackDataSO attackData)
+            return;
 
+        comboCount++;
+
+        if (attackData.maxComboCount < comboCount)
+            comboCount = 1;
+        else
+            comboTimerCo = asc.StartCoroutine(ComboReset());
+        
+        isActivated = false;
     }
+
+    private IEnumerator ComboReset()
+    {
+        yield return new WaitForSeconds(0.75f);
+        comboCount = 1;
+    }
+
+    private void StopComboResetTimer()
+    {
+        if (comboTimerCo != null)
+        {
+            asc.StopCoroutine(comboTimerCo);
+            comboTimerCo = null;
+        }
+    }
+
 
     public override bool CanActivate(AbilitySpec spec)
     {
-        return true;
+        return !isActivated;
     }
 
     public override void CancelAbility(AbilitySpec spec)
     {
-        EndAbility(spec);
+        asc.EndAbilityBySpec(spec);
     }
 
-    public override void EndAbility(AbilitySpec spec)
+    public override void ReceiveAnimationEvent(AbilitySpec spec, AnimationEventType eventType)
     {
-
     }
-
 }

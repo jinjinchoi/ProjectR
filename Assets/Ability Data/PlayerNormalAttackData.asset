@@ -19,3 +19,5 @@ MonoBehaviour:
   damageMultiplier: 100
   animName: comboAttack
   animTag: Attack
+  maxComboCount: 3
+  comboCountName: comboCount

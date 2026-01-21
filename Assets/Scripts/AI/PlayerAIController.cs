@@ -36,13 +36,6 @@ public class PlayerAIController : AIController
     protected override void Update()
     {
         base.Update();
-        //DecideAIBehavior();
-    }
-
-    // TODO: 값 리턴해서 state에서 쓰게 변경해야함. 아니면 switch off 사용.
-    private void DecideAIBehavior()
-    {
-        
     }
 
     public bool CanAttackTarget(Transform target)

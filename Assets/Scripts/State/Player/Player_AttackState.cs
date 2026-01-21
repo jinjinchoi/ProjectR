@@ -33,7 +33,7 @@ public class Player_AttackState : PlayerBaseState
         {
             int dir = aiController.GetDirectionToTarget(target);
             owner.HandleFlip(dir);
-            stateMachine.ChangeState(aiController.attackState);
+            owner.abilitySystemComponent.TryActivateAbilityById(abilityId);
         }
         else
         {
