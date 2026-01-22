@@ -11,29 +11,29 @@ public class NormalAttackAbility : AbilityLogicBase
     {
     }
 
-    public override void ActivateAbility(AbilitySpec spec)
+    public override void ActivateAbility(AbilitySpec spec, IAbilitySystemContext context)
     {
         isActivated = true;
-        StopComboResetTimer();
+        StopComboResetTimer(context);
 
         if (spec.abilityData is not Player_NormalAttackDataSO attackAbilityData)
         {
             Debug.LogError("spec.abilityData is Not Player_NormalAttackDataSO Type at NormalAttackAbility");
-            asc.EndAbilityBySpec(spec);
+            context.EndAbility(spec);
             return;
         }
 
-        Animator animator = asc.owner.anim;
+        Animator animator = context.Owner.Anim;
         animator.SetInteger(attackAbilityData.comboCountName, comboCount);
 
-        PlayAnimationAndWait(spec, () =>
+        PlayAnimationAndWait(spec, context, () =>
         {
-            asc.EndAbilityBySpec(spec);
+            context.EndAbility(spec);
         });
     }
 
 
-    public override void EndAbility(AbilitySpec spec)
+    public override void EndAbility(AbilitySpec spec, IAbilitySystemContext context)
     {
         if (spec.abilityData is not Player_NormalAttackDataSO attackData)
             return;
@@ -43,7 +43,7 @@ public class NormalAttackAbility : AbilityLogicBase
         if (attackData.maxComboCount < comboCount)
             comboCount = 1;
         else
-            comboTimerCo = asc.StartCoroutine(ComboReset());
+            comboTimerCo = context.StartCoroutine(ComboReset());
         
         isActivated = false;
     }
@@ -54,27 +54,27 @@ public class NormalAttackAbility : AbilityLogicBase
         comboCount = 1;
     }
 
-    private void StopComboResetTimer()
+    private void StopComboResetTimer(IAbilitySystemContext context)
     {
         if (comboTimerCo != null)
         {
-            asc.StopCoroutine(comboTimerCo);
+            context.StopCoroutine(comboTimerCo);
             comboTimerCo = null;
         }
     }
 
 
-    public override bool CanActivate(AbilitySpec spec)
+    public override bool CanActivate(AbilitySpec spec, IAbilitySystemContext context)
     {
         return !isActivated;
     }
 
-    public override void CancelAbility(AbilitySpec spec)
+    public override void CancelAbility(AbilitySpec spec, IAbilitySystemContext context)
     {
-        asc.EndAbilityBySpec(spec);
+        context.EndAbility(spec);
     }
 
-    public override void ReceiveAnimationEvent(AbilitySpec spec, AnimationEventType eventType)
+    public override void ReceiveAnimationEvent(AbilitySpec spec, IAbilitySystemContext context, AnimationEventType eventType)
     {
     }
 }

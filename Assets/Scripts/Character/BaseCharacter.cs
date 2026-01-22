@@ -1,6 +1,7 @@
+using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class BaseCharacter : MonoBehaviour
+public abstract class BaseCharacter : MonoBehaviour, IAbilityOwner
 {
     public Rigidbody2D Rb { get; private set; }
     public AbilitySystemComponent abilitySystemComponent { get; private set; }
@@ -8,23 +9,34 @@ public abstract class BaseCharacter : MonoBehaviour
     public AnimationTrigger animationTrigger { get; private set; }
     public bool isGrounded { get; private set; } = false;
 
+    [Header("Debug")]
+    [SerializeField] protected bool showDebug = false;
+
     [Header("Hostile Target Detect")]
     [SerializeField] private LayerMask hostileLayerMask;
     [SerializeField] protected Vector2 hostileDetectSize = new Vector2(50, 10);
 
     [Header("Movement")]
-    [SerializeField] private float MoveSpeed = 3f;
+    [SerializeField] private float moveSpeed = 3f;
     [SerializeField] private Transform groundCheck;
     [SerializeField] private float groundCheckRadius = 0.5f;
     [SerializeField] private LayerMask groundLayerMask;
     private bool facingRight = true;
     private int facingDirection = 1;
 
-    [Header("Debug")]
-    [SerializeField] protected bool showDebug = false;
+    [Header("Ability System")]
+    // 캐릭터에게 부여할 어빌리티 목록
+    [SerializeField] private List<BaseAbilityDataSO> defaultAbilities;
 
+    #region IAbilityActor
+    public Animator Anim => anim;
+    public Transform ActorTransform => transform;
+    public AnimationTrigger AnimationTrigger => animationTrigger;
 
-    public float GetMoveSpeed () => MoveSpeed;
+    #endregion
+
+    public float MoveSpeed => moveSpeed;
+
 
     protected virtual void Awake()
     {
@@ -37,7 +49,13 @@ public abstract class BaseCharacter : MonoBehaviour
 
     protected virtual void Start()
     {
+        if (abilitySystemComponent == null) return;
 
+        abilitySystemComponent.Initialize(this);
+        foreach (BaseAbilityDataSO ability in defaultAbilities)
+        {
+            abilitySystemComponent.GiveAbility(ability);
+        }
     }
 
     protected virtual void Update()
@@ -48,7 +66,7 @@ public abstract class BaseCharacter : MonoBehaviour
     public void SetVelocity(float xVelocity, float yVelocity)
     {
         Rb.linearVelocity = new Vector2(xVelocity, yVelocity);
-        anim.SetFloat("xVelocity",Mathf.Abs(xVelocity));
+        anim.SetFloat("xVelocity", Mathf.Abs(xVelocity));
         HandleFlip(xVelocity);
     }
 

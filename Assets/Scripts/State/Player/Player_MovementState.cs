@@ -24,9 +24,7 @@ public class Player_MovementState : PlayerBaseState
             stateMachine.ChangeState(aiController.fallState);
         }
 
-
         if (target == null) return;
-
 
         if (aiController.CanAttackTarget(target))
         {
@@ -34,7 +32,7 @@ public class Player_MovementState : PlayerBaseState
         }
         else
         {
-            owner.SetVelocity(owner.GetMoveSpeed() * aiController.GetDirectionToTarget(target), owner.Rb.linearVelocity.y);
+            owner.SetVelocity(owner.MoveSpeed * aiController.GetDirectionToTarget(target), owner.Rb.linearVelocity.y);
         }
     }
 
