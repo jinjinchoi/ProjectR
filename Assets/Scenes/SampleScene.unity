@@ -233,17 +233,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a708c22f39961746a4983f083a58e7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerCharacter
+  showDebug: 0
   hostileLayerMask:
     serializedVersion: 2
     m_Bits: 128
   hostileDetectSize: {x: 50, y: 10}
-  MoveSpeed: 5
+  moveSpeed: 4.5
   groundCheck: {fileID: 1789725735}
   groundCheckRadius: 0.5
   groundLayerMask:
     serializedVersion: 2
     m_Bits: 256
-  showDebug: 0
+  defaultAbilities:
+  - {fileID: 11400000, guid: 3900edc2eabc1aa4d89a601b0ca20ff7, type: 2}
 --- !u!114 &28289580
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -259,7 +261,7 @@ MonoBehaviour:
   movementStateName: isMoving
   fallStateName: isFalling
   attackStateName: idle
-  attackRange: 1
+  attackRange: 1.5
 --- !u!114 &28289581
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -272,8 +274,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63e13dfc94e35394a9fce33ea820707f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AbilitySystemComponent
-  defaultAbilities:
-  - {fileID: 11400000, guid: 3900edc2eabc1aa4d89a601b0ca20ff7, type: 2}
 --- !u!1 &224339113
 GameObject:
   m_ObjectHideFlags: 0
@@ -286,7 +286,7 @@ GameObject:
   - component: {fileID: 224339114}
   - component: {fileID: 224339116}
   m_Layer: 7
-  m_Name: Circle
+  m_Name: EnemyCircle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -4,7 +4,7 @@ using UnityEngine;
 public abstract class BaseAbilityDataSO : ScriptableObject
 {
     [Header("Ability Info")]
-    public AbilityId abilityId;
+    public EAbilityId abilityId;
     public string abilityName;
     public float cooldown;
     [Space]

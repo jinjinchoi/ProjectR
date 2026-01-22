@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Player_AttackState : PlayerBaseState
 {
-    public AbilityId abilityId = AbilityId.Player_NormalAttack;
+    public EAbilityId abilityId = EAbilityId.Player_NormalAttack;
 
     public Player_AttackState(BaseCharacter owner, PlayerAIController aiController, StateMachine stateMachine, string animStateName) : base(owner, aiController, stateMachine, animStateName)
     {

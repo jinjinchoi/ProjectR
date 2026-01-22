@@ -8,6 +8,8 @@ public abstract class AbilityLogicBase
 {
     private bool isAnimPlaying = false;
 
+    // TODO: Context 멤버변수로 저장하는 방안도 고려.
+
     protected AbilityLogicBase()
     {
     }
@@ -21,17 +23,21 @@ public abstract class AbilityLogicBase
     public abstract void ActivateAbility(AbilitySpec spec, IAbilitySystemContext context);
     public abstract void EndAbility(AbilitySpec spec, IAbilitySystemContext context);
     public abstract void CancelAbility(AbilitySpec spec, IAbilitySystemContext context);
-    public abstract void ReceiveAnimationEvent(AbilitySpec spec, IAbilitySystemContext context, AnimationEventType eventType);
 
-    protected void PlayAnimationAndWait(AbilitySpec spec, IAbilitySystemContext context, Action callBack)
+    protected void WaitAnimationEvent(AbilitySpec spec, IAbilitySystemContext context, EAnimationEventType animationEvent, Action callback)
+    {
+        context.RegisterWaitingAbility(animationEvent, spec, callback);
+    }
+
+    protected void PlayAnimationAndWait(AbilitySpec spec, IAbilitySystemContext context, Action callback)
     {
         if (isAnimPlaying) return;
 
         isAnimPlaying = true;
-        context.StartCoroutine(PlayAndWaitAnimation(spec, context, callBack));
+        context.StartCoroutine(PlayAndWaitAnimation(spec, context, callback));
     }
 
-    private IEnumerator PlayAndWaitAnimation(AbilitySpec spec, IAbilitySystemContext context, Action callBack)
+    private IEnumerator PlayAndWaitAnimation(AbilitySpec spec, IAbilitySystemContext context, Action callback)
     {
         Animator animator = context.Owner.Anim;
 
@@ -53,6 +59,8 @@ public abstract class AbilityLogicBase
         animator.SetBool(spec.abilityData.animName, false);
 
         isAnimPlaying = false;
-        callBack?.Invoke();
+        callback?.Invoke();
     }
+
+
 }

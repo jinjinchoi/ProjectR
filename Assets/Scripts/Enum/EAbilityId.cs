@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public enum AbilityId
+public enum EAbilityId
 {
     None = 0,
     

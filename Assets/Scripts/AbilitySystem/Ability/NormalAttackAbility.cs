@@ -30,6 +30,11 @@ public class NormalAttackAbility : AbilityLogicBase
         {
             context.EndAbility(spec);
         });
+
+        WaitAnimationEvent(spec, context, EAnimationEventType.Attack, () =>
+        {
+            Debug.Log($"Attack : {comboCount}");
+        });
     }
 
 
@@ -72,9 +77,5 @@ public class NormalAttackAbility : AbilityLogicBase
     public override void CancelAbility(AbilitySpec spec, IAbilitySystemContext context)
     {
         context.EndAbility(spec);
-    }
-
-    public override void ReceiveAnimationEvent(AbilitySpec spec, IAbilitySystemContext context, AnimationEventType eventType)
-    {
     }
 }

@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public enum AnimationEventType
+public enum EAnimationEventType
 {
     None,
     AnimationEnd,
@@ -10,15 +10,15 @@ public enum AnimationEventType
 
 public class AnimationTrigger : MonoBehaviour
 {
-    public event Action<AnimationEventType> OnAnimTriggered;
+    public event Action<EAnimationEventType> OnAnimTriggered;
 
     public void AnimationEnd()
     {
-        OnAnimTriggered?.Invoke(AnimationEventType.AnimationEnd);
+        OnAnimTriggered?.Invoke(EAnimationEventType.AnimationEnd);
     }
 
     public void Attack()
     {
-        OnAnimTriggered?.Invoke(AnimationEventType.Attack);
+        OnAnimTriggered?.Invoke(EAnimationEventType.Attack);
     }
 }

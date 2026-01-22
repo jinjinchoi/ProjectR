@@ -18,6 +18,20 @@ public interface IAbilitySystemContext
     void EndAbility(AbilitySpec spec);
     Coroutine StartCoroutine(IEnumerator routine);
     void StopCoroutine(Coroutine routine);
+    void RegisterWaitingAbility(EAnimationEventType eventType, AbilitySpec spec, Action callback);
+    void UnregisterWaitingAbility(AbilitySpec spec);
+}
+
+public class WaitingAbilityEntry
+{
+    public AbilitySpec spec;
+    public Action callback;
+
+    public WaitingAbilityEntry(AbilitySpec spec, Action callback)
+    {
+        this.spec = spec;
+        this.callback = callback;
+    }
 }
 
 public class AbilitySystemComponent : MonoBehaviour, IAbilitySystemContext
@@ -26,12 +40,13 @@ public class AbilitySystemComponent : MonoBehaviour, IAbilitySystemContext
     public IAbilityOwner Owner { get; private set; }
 
     /*
-     * abilities :현재 보유하고 있는 ability 목록,
-     * currentAbilitySpec :실행중인 ability
+     * abilities :현재 보유하고 있는 ability list,
+     * activeAbilitySpecs :실행중인 ability map
+     * waitingAbilitiesByAnimEvent: anim event를 기다리고 있는 ability map
      */
     private List<AbilitySpec> abilities = new();
-    private AbilitySpec currentSpec;
-    //private Dictionary<AnimationEventType, List<AbilitySpec>> 
+    private Dictionary<EAbilityId, AbilitySpec> activeAbilitySpecs = new();
+    private Dictionary<EAnimationEventType, List<WaitingAbilityEntry>> waitingAbilitiesByAnimEvent = new();
 
     public void Initialize(IAbilityOwner owner)
     {
@@ -45,23 +60,21 @@ public class AbilitySystemComponent : MonoBehaviour, IAbilitySystemContext
         abilities.Add(new AbilitySpec(data, this));
     }
 
-
     public void EndAbility(AbilitySpec spec)
     {
         EndAbilityBySpec(spec);
     }
 
-    public void TryActivateAbilityById(AbilityId abilityId)
+    public void TryActivateAbilityById(EAbilityId abilityId)
     {
         if (Owner == null)
         {
             Debug.LogError($"Owner is not set on {gameObject.name}", this);
+            OnAbilityEnded?.Invoke();
             return;
         }
 
-        // 현재 어빌리티가 하나만 실행이 가능
-        // TODO: 여러 어빌리티 실행 가능하면 List나 Dictionary에서 실행중인 어빌리티와 동일한 어빌리티를 실행하려는지를 확인해야함.
-        if (currentSpec != null && !currentSpec.ability.CanActivate(currentSpec, this))
+        if (activeAbilitySpecs.ContainsKey(abilityId))
         {
             return;
         }
@@ -70,36 +83,70 @@ public class AbilitySystemComponent : MonoBehaviour, IAbilitySystemContext
         if (spec != null && spec.ability.CanActivate(spec, this))
         {
             spec.ability.ActivateAbility(spec, this);
-            currentSpec = spec;
+            activeAbilitySpecs.Add(spec.abilityData.abilityId, spec);
         }
     }
 
-    // NOTE:
-    // 현재 하나의 ability만 실행이 가능하여 currentSpec에 실행중인 어빌리티 저장.
-    // 종료시 아이디를 통하여 실행중인 어빌리티를 종료
-    //
-    // TODO (Refactor):
-    // - string id가 아닌 int형 아이디를 통해 Dictionary<int id, AbilitySpec> 형태로 저장
-    // - 여러 어빌리티를 실행하고 이에 아이디에 맞는 어빌리티 종료.
-    // - int형을 사용안하더라도 list를 통해 여러 어빌리티 실행하게 구현도 가능.
-    private void EndAbilityBySpec(AbilitySpec specToEnd)
+    private void EndAbilityBySpec(AbilitySpec spec)
     {
-        foreach (var abilitySpec in abilities)
+        if (!activeAbilitySpecs.ContainsKey(spec.abilityData.abilityId))
+            return;
+
+        UnregisterWaitingAbility(spec);
+        spec.ability.EndAbility(spec, this);
+        activeAbilitySpecs.Remove(spec.abilityData.abilityId);
+
+        OnAbilityEnded?.Invoke();
+
+    }
+
+    public void RegisterWaitingAbility(EAnimationEventType eventType, AbilitySpec spec, Action callback)
+    {
+        // list가 존재하지 않으면 생성해서 map에 추가
+        if (!waitingAbilitiesByAnimEvent.TryGetValue(eventType, out List<WaitingAbilityEntry> list))
         {
-            if (abilitySpec.abilityData.abilityId == specToEnd.abilityData.abilityId)
-            {
-                abilitySpec.ability.EndAbility(abilitySpec, this);
-                currentSpec = null;
-
-                OnAbilityEnded?.Invoke();
-            }
-
+            list = new List<WaitingAbilityEntry>();
+            waitingAbilitiesByAnimEvent.Add(eventType, list);
         }
+
+        // list에 spec이 이미 있는지 확인. (중복 방지)
+        if (list.Exists(e => e.spec == spec))
+            return;
+
+        list.Add(new WaitingAbilityEntry(spec, callback));
     }
 
-    private void OnAnimationTriggered(AnimationEventType eventType)
+    public void UnregisterWaitingAbility(AbilitySpec spec)
     {
+        // value가 없는 EAnimationEventType를 모으는 배열.
+        List<EAnimationEventType> emptyKeys = new();
 
+        foreach (var pair in waitingAbilitiesByAnimEvent)
+        {
+            pair.Value.RemoveAll(e => e.spec == spec);
+
+            if (pair.Value.Count == 0)
+                emptyKeys.Add(pair.Key); // 더이상 value가 없는 EventType을 저장.
+        }
+
+        // Map에서 value가 없는 EventType 제거.
+        foreach (EAnimationEventType key in emptyKeys)
+            waitingAbilitiesByAnimEvent.Remove(key);
+    }
+
+    private void OnAnimationTriggered(EAnimationEventType eventType)
+    {
+        if (!waitingAbilitiesByAnimEvent.TryGetValue(eventType, out List<WaitingAbilityEntry> list)) return;
+
+        WaitingAbilityEntry[] snapshot = list.ToArray(); // 중간에 remove되는 상황을 방지하기 위해 스냅샷.
+        foreach (WaitingAbilityEntry entry in snapshot)
+        {
+            entry.callback?.Invoke();
+            list.Remove(entry);
+        }
+
+        if (list.Count == 0)
+            waitingAbilitiesByAnimEvent.Remove(eventType);
     }
 
     private void OnEnable()
@@ -110,5 +157,6 @@ public class AbilitySystemComponent : MonoBehaviour, IAbilitySystemContext
     {
         Owner.AnimationTrigger.OnAnimTriggered -= OnAnimationTriggered;
     }
+
 
 }
