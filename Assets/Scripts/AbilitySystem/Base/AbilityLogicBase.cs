@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Threading;
 using UnityEngine;
 
 /* 실제 어빌리티 구현을 위한 베이스 클래스 */
@@ -21,7 +20,7 @@ public abstract class AbilityLogicBase
 
     public abstract bool CanActivate(AbilitySpec spec, IAbilitySystemContext context);
     public abstract void ActivateAbility(AbilitySpec spec, IAbilitySystemContext context);
-    public abstract void EndAbility(AbilitySpec spec, IAbilitySystemContext context);
+    public abstract void OnEndAbility(AbilitySpec spec, IAbilitySystemContext context);
     public abstract void CancelAbility(AbilitySpec spec, IAbilitySystemContext context);
 
     protected void WaitAnimationEvent(AbilitySpec spec, IAbilitySystemContext context, EAnimationEventType animationEvent, Action callback)

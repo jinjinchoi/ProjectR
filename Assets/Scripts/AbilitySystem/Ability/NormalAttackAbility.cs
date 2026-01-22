@@ -38,7 +38,7 @@ public class NormalAttackAbility : AbilityLogicBase
     }
 
 
-    public override void EndAbility(AbilitySpec spec, IAbilitySystemContext context)
+    public override void OnEndAbility(AbilitySpec spec, IAbilitySystemContext context)
     {
         if (spec.abilityData is not Player_NormalAttackDataSO attackData)
             return;

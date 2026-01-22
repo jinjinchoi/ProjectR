@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
+// onwer의 정보를 가져오는 인터페이스
 public interface IAbilityOwner
 {
     Animator Anim { get; }
@@ -11,6 +12,7 @@ public interface IAbilityOwner
     AnimationTrigger AnimationTrigger { get; }
 }
 
+// 어빌리티가 직접 ASC에 접근하지 않고도 ASC의 기능을 사용하게 해주는 인터페이스
 public interface IAbilitySystemContext
 {
     IAbilityOwner Owner { get; }
@@ -22,6 +24,7 @@ public interface IAbilitySystemContext
     void UnregisterWaitingAbility(AbilitySpec spec);
 }
 
+// 어빌리티가 애니메이션을 기다릴 때 콜백을 저장하는 클래스
 public class WaitingAbilityEntry
 {
     public AbilitySpec spec;
@@ -36,6 +39,8 @@ public class WaitingAbilityEntry
 
 public class AbilitySystemComponent : MonoBehaviour, IAbilitySystemContext
 {
+    [SerializeField] private AttributeSO attributeInfoSO;
+
     public event Action OnAbilityEnded;
     public IAbilityOwner Owner { get; private set; }
 
@@ -48,11 +53,31 @@ public class AbilitySystemComponent : MonoBehaviour, IAbilitySystemContext
     private Dictionary<EAbilityId, AbilitySpec> activeAbilitySpecs = new();
     private Dictionary<EAnimationEventType, List<WaitingAbilityEntry>> waitingAbilitiesByAnimEvent = new();
 
+    private AttributeSet attributeSet;
+
+    private void Awake()
+    {
+        attributeSet = new AttributeSet();
+
+        foreach (AttributeInitInfo info in attributeInfoSO.attributes)
+        {
+            attributeSet.InitAttribute(info.attributeType, info.baseValue);
+        }
+
+        Debug.Log(attributeSet.GetAttributeValue(EAttributeType.physicalAttackPower));
+    }
+
     public void Initialize(IAbilityOwner owner)
     {
         this.Owner = owner;
         Owner.AnimationTrigger.OnAnimTriggered -= OnAnimationTriggered;
         Owner.AnimationTrigger.OnAnimTriggered += OnAnimationTriggered;
+
+        if (attributeInfoSO == null)
+        {
+            Debug.LogError($"attributeInfo is not Set to {gameObject.name}");
+            return;
+        }
     }
 
     public void GiveAbility(BaseAbilityDataSO data)
@@ -93,7 +118,7 @@ public class AbilitySystemComponent : MonoBehaviour, IAbilitySystemContext
             return;
 
         UnregisterWaitingAbility(spec);
-        spec.ability.EndAbility(spec, this);
+        spec.ability.OnEndAbility(spec, this);
         activeAbilitySpecs.Remove(spec.abilityData.abilityId);
 
         OnAbilityEnded?.Invoke();
