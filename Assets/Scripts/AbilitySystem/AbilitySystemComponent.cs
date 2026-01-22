@@ -10,6 +10,7 @@ public interface IAbilityOwner
     Animator Anim { get; }
     Transform ActorTransform { get; }
     AnimationTrigger AnimationTrigger { get; }
+    Transform AttackPoint { get; }
 }
 
 // 어빌리티가 직접 ASC에 접근하지 않고도 ASC의 기능을 사용하게 해주는 인터페이스
@@ -59,9 +60,9 @@ public class AbilitySystemComponent : MonoBehaviour, IAbilitySystemContext
     {
         attributeSet = new AttributeSet();
 
-        foreach (AttributeInitInfo info in attributeInfoSO.attributes)
+        foreach (AttributeInitInfo info in attributeInfoSO.Attributes)
         {
-            attributeSet.InitAttribute(info.attributeType, info.baseValue);
+            attributeSet.InitAttribute(info.AttributeType, info.BaseValue);
         }
 
         Debug.Log(attributeSet.GetAttributeValue(EAttributeType.physicalAttackPower));
@@ -104,22 +105,22 @@ public class AbilitySystemComponent : MonoBehaviour, IAbilitySystemContext
             return;
         }
 
-        AbilitySpec spec = abilities.Find(a => a.abilityData.abilityId == abilityId);
+        AbilitySpec spec = abilities.Find(a => a.abilityData.AbilityId == abilityId);
         if (spec != null && spec.ability.CanActivate(spec, this))
         {
             spec.ability.ActivateAbility(spec, this);
-            activeAbilitySpecs.Add(spec.abilityData.abilityId, spec);
+            activeAbilitySpecs.Add(spec.abilityData.AbilityId, spec);
         }
     }
 
     private void EndAbilityBySpec(AbilitySpec spec)
     {
-        if (!activeAbilitySpecs.ContainsKey(spec.abilityData.abilityId))
+        if (!activeAbilitySpecs.ContainsKey(spec.abilityData.AbilityId))
             return;
 
         UnregisterWaitingAbility(spec);
         spec.ability.OnEndAbility(spec, this);
-        activeAbilitySpecs.Remove(spec.abilityData.abilityId);
+        activeAbilitySpecs.Remove(spec.abilityData.AbilityId);
 
         OnAbilityEnded?.Invoke();
 

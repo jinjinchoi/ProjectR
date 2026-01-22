@@ -4,13 +4,14 @@ using UnityEngine;
 public abstract class BaseAbilityDataSO : ScriptableObject
 {
     [Header("Ability Info")]
-    public EAbilityId abilityId;
-    public string abilityName;
-    public float cooldown;
+    public EAbilityId AbilityId;
+    public string AbilityName;
+    public float Cooldown;
     [Space]
+
     [Header("Anim Info")]
-    public string animName;
-    public string animTag;
+    public string AnimBoolName;
+    public string AnimTag;
 
     public abstract AbilityLogicBase CreateInstance();
 }

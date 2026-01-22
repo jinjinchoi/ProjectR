@@ -3,48 +3,53 @@ using UnityEngine;
 
 public abstract class BaseCharacter : MonoBehaviour, IAbilityOwner
 {
-    public Rigidbody2D Rb { get; private set; }
-    public AbilitySystemComponent abilitySystemComponent { get; private set; }
-    public Animator anim { get; private set; }
-    public AnimationTrigger animationTrigger { get; private set; }
-    public bool isGrounded { get; private set; } = false;
-
-    [Header("Debug")]
-    [SerializeField] protected bool showDebug = false;
-
-    [Header("Hostile Target Detect")]
-    [SerializeField] private LayerMask hostileLayerMask;
-    [SerializeField] protected Vector2 hostileDetectSize = new Vector2(50, 10);
-
-    [Header("Movement")]
-    [SerializeField] private float moveSpeed = 3f;
-    [SerializeField] private Transform groundCheck;
-    [SerializeField] private float groundCheckRadius = 0.5f;
-    [SerializeField] private LayerMask groundLayerMask;
-    private bool facingRight = true;
-    private int facingDirection = 1;
-
-    [Header("Ability System")]
-    // 캐릭터에게 부여할 어빌리티 목록
-    [SerializeField] private List<BaseAbilityDataSO> defaultAbilities;
 
     #region IAbilityActor
     public Animator Anim => anim;
     public Transform ActorTransform => transform;
     public AnimationTrigger AnimationTrigger => animationTrigger;
-
+    public Transform AttackPoint => attackPoint;
     #endregion
-
+    public Rigidbody2D Rb => rb;
+    public AbilitySystemComponent ASC => abilitySystemComponent;
     public float MoveSpeed => moveSpeed;
+    public bool IsGrounded => isGrounded;
+
+    [Header("Debug")]
+    [SerializeField] protected bool showDebug = false;
+
+    [Header("Hostile Target Detect")]
+    [SerializeField] protected Vector2 hostileDetectSize = new Vector2(50, 10);
+    [SerializeField] private LayerMask hostileLayerMask;
+
+    [Header("Movement")]
+    [SerializeField] private float moveSpeed = 3f;
+    [SerializeField] private float groundCheckRadius = 0.5f;
+    [SerializeField] private Transform groundCheck;
+    [SerializeField] private LayerMask groundLayerMask;
+
+    [Header("Ability System")]
+    // 캐릭터에게 부여할 어빌리티 목록
+    [SerializeField] private List<BaseAbilityDataSO> defaultAbilities;
+    [SerializeField] private Transform attackPoint;
+
+    private Rigidbody2D rb;
+    private AbilitySystemComponent abilitySystemComponent;
+    private Animator anim;
+    private AnimationTrigger animationTrigger;
+    private bool isGrounded = false;
+    private bool facingRight = true;
+    private int facingDirection = 1;
 
 
     protected virtual void Awake()
     {
-        Rb = GetComponent<Rigidbody2D>();
+        rb = GetComponent<Rigidbody2D>();
         abilitySystemComponent = GetComponent<AbilitySystemComponent>();
 
         animationTrigger = GetComponentInChildren<AnimationTrigger>();
         anim = GetComponentInChildren<Animator>();
+        
     }
 
     protected virtual void Start()
@@ -65,7 +70,7 @@ public abstract class BaseCharacter : MonoBehaviour, IAbilityOwner
 
     public void SetVelocity(float xVelocity, float yVelocity)
     {
-        Rb.linearVelocity = new Vector2(xVelocity, yVelocity);
+        rb.linearVelocity = new Vector2(xVelocity, yVelocity);
         anim.SetFloat("xVelocity", Mathf.Abs(xVelocity));
         HandleFlip(xVelocity);
     }

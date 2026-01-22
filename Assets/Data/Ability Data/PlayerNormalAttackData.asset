@@ -12,12 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 476fccd58adc3bb4a873eff127d6e9d7, type: 3}
   m_Name: PlayerNormalAttackData
   m_EditorClassIdentifier: Assembly-CSharp::Player_NormalAttackDataSO
-  abilityId: 1
-  abilityName: NormalAttack
-  cooldown: 0
+  AbilityId: 1
+  AbilityName: ComboAttack
+  Cooldown: 0
+  AnimBoolName: comboAttack
+  AnimTag: Attack
   attackRadius: 1
   damageMultiplier: 100
-  animName: comboAttack
-  animTag: Attack
-  maxComboCount: 3
-  comboCountName: comboCount
+  MaxComboCount: 1
+  ComboCountName: comboCount
+  AttackRadius: 1.5

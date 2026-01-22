@@ -13,16 +13,16 @@ public class Player_AttackState : PlayerBaseState
         base.Enter();
 
         owner.SetVelocity(0, owner.Rb.linearVelocity.y);
-        owner.anim.SetBool(animBoolName, false);
+        owner.Anim.SetBool(animBoolName, false);
 
-        owner.abilitySystemComponent.OnAbilityEnded += OnAbilityEnd;
-        owner.abilitySystemComponent.TryActivateAbilityById(abilityId);
+        owner.ASC.OnAbilityEnded += OnAbilityEnd;
+        owner.ASC.TryActivateAbilityById(abilityId);
     }
 
     public override void Exit()
     {
         base.Exit();
-        owner.abilitySystemComponent.OnAbilityEnded -= OnAbilityEnd;
+        owner.ASC.OnAbilityEnded -= OnAbilityEnd;
 
     }
 
@@ -33,7 +33,7 @@ public class Player_AttackState : PlayerBaseState
         {
             int dir = aiController.GetDirectionToTarget(target);
             owner.HandleFlip(dir);
-            owner.abilitySystemComponent.TryActivateAbilityById(abilityId);
+            owner.ASC.TryActivateAbilityById(abilityId);
         }
         else
         {

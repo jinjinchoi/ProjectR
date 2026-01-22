@@ -19,7 +19,7 @@ public class Player_MovementState : PlayerBaseState
     {
         base.Update();
 
-        if (!owner.isGrounded)
+        if (!owner.IsGrounded)
         {
             stateMachine.ChangeState(aiController.fallState);
         }

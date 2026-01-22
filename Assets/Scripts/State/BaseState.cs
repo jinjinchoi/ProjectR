@@ -26,7 +26,7 @@ public abstract class BaseState <T> : IState where T : AIController
 
     public virtual void Enter()
     {
-        owner.anim.SetBool(animBoolName, true);
+        owner.Anim.SetBool(animBoolName, true);
     }
 
     public virtual void Update()
@@ -39,6 +39,6 @@ public abstract class BaseState <T> : IState where T : AIController
 
     public virtual void Exit()
     {
-        owner.anim.SetBool(animBoolName, false);
+        owner.Anim.SetBool(animBoolName, false);
     }
 }

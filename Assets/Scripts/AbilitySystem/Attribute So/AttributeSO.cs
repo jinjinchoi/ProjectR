@@ -5,14 +5,14 @@ using UnityEngine;
 [Serializable]
 public struct AttributeInitInfo
 {
-    public EAttributeType attributeType;
-    public float baseValue;
+    public EAttributeType AttributeType;
+    public float BaseValue;
 }
 
 [CreateAssetMenu(fileName = "Attribute_" ,menuName = "ASC/Attribute")]
 public class AttributeSO : ScriptableObject
 {
-    public List<AttributeInitInfo> attributes;
+    public List<AttributeInitInfo> Attributes;
     
 }
 

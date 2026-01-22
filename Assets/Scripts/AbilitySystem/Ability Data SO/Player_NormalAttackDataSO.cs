@@ -3,8 +3,10 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "ASC/Ability/Player/NormalAttack")]
 public class Player_NormalAttackDataSO : DamageAbilityDataSO
 {
-    public int maxComboCount = 1;
-    public string comboCountName = "comboCount";
+    [Header("ComboAttackInfo")]
+    public int MaxComboCount = 1;
+    public string ComboCountName = "comboCount";
+    public float AttackRadius = 1.5f;
 
     public override AbilityLogicBase CreateInstance()
     {

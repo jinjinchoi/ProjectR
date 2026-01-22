@@ -24,7 +24,7 @@ public class NormalAttackAbility : AbilityLogicBase
         }
 
         Animator animator = context.Owner.Anim;
-        animator.SetInteger(attackAbilityData.comboCountName, comboCount);
+        animator.SetInteger(attackAbilityData.ComboCountName, comboCount);
 
         PlayAnimationAndWait(spec, context, () =>
         {
@@ -45,7 +45,7 @@ public class NormalAttackAbility : AbilityLogicBase
 
         comboCount++;
 
-        if (attackData.maxComboCount < comboCount)
+        if (attackData.MaxComboCount < comboCount)
             comboCount = 1;
         else
             comboTimerCo = context.StartCoroutine(ComboReset());

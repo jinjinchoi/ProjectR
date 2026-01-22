@@ -1,4 +1,7 @@
+using System;
 using System.Collections.Generic;
+using Unity.Mathematics;
+using UnityEngine;
 
 public enum EModifierOp
 {
@@ -6,7 +9,6 @@ public enum EModifierOp
     Multiply,
     Override
 }
-
 
 public struct FAttributeModifier
 {
@@ -36,11 +38,11 @@ public enum EAttributeType
 
     physicalAttackPower,
     magicAttackPower,
-    PhysicalDefensePower,
-    MagicDefensePower,
-    CriticalChance,
-    CriticalMagnitude,
-    MaxHealth,
+    physicalDefensePower,
+    magicDefensePower,
+    criticalChance,
+    maxHealth,
+    maxMana,
 
     currentHealth,
     currentMana
@@ -56,16 +58,46 @@ public class AttributeSet
     // 2차 속성 계산을 위한 전략 저장
     private Dictionary<EAttributeType, IAttributeCalculator> calculators = new();
 
+    public AttributeSet()
+    {
+        foreach (EAttributeType type in Enum.GetValues(typeof(EAttributeType)))
+        {
+            attributes[type] = new AttributeValue(0f);
+            modifiers[type] = new List<FAttributeModifier>();
+            Debug.Log(type);
+
+        }
+    }
+
     public void InitAttribute(EAttributeType type, float baseValue)
     {
-        attributes[type] = new AttributeValue(baseValue);
-        modifiers[type] = new List<FAttributeModifier>();
+        if (attributes.ContainsKey(type))
+        {
+            attributes[type].baseValue = baseValue;
+            attributes[type].currentValue = baseValue;
+        }
 
         // 계산기에 전략 저장
         calculators = new Dictionary<EAttributeType, IAttributeCalculator>()
         {
             { EAttributeType.physicalAttackPower, new PhysicalAttackPowerCalculator() },
+            { EAttributeType.physicalDefensePower, new PhysicalDefensePowerCalculator() },
+            { EAttributeType.magicAttackPower, new MagicAttackPowerCalculator() },
+            { EAttributeType.magicDefensePower, new MagicDefensePowerCalculator() },
+            { EAttributeType.criticalChance, new CriticalChanceCalculator() },
+            { EAttributeType.maxHealth, new MaxHealthChanceCalculator() },
+            { EAttributeType.maxMana, new MaxManaChanceCalculator() },
         };
+    }
+
+    public void SetBaseValue(EAttributeType type, float value)
+    {
+        attributes[type].baseValue = value;
+    }
+
+    public float GetBaseValue(EAttributeType type)
+    {
+        return attributes[type].baseValue;
     }
 
     public void AddModifier(FAttributeModifier modifier)
@@ -75,6 +107,7 @@ public class AttributeSet
 
         modifiers[modifier.attribute].Add(modifier);
         Recalculate(modifier.attribute);
+        PostAttributeChange(modifier.attribute);
     }
 
     public void RemoveModifier(FAttributeModifier modifier)
@@ -84,6 +117,8 @@ public class AttributeSet
 
         modifiers[modifier.attribute].Remove(modifier);
         Recalculate(modifier.attribute);
+        PostAttributeChange(modifier.attribute);
+
     }
 
     public void ClearModifiers(EAttributeType type)
@@ -93,6 +128,7 @@ public class AttributeSet
 
         modifiers[type].Clear();
         Recalculate(type);
+        PostAttributeChange(type);
     }
 
     public float GetAttributeValue(EAttributeType type)
@@ -103,12 +139,6 @@ public class AttributeSet
         }
 
         return attributes[type].currentValue;
-
-    }
-
-    public float GetBaseValue(EAttributeType type)
-    {
-        return attributes[type].baseValue;
     }
 
     public List<FAttributeModifier> GetModifiers(EAttributeType type)
@@ -150,5 +180,21 @@ public class AttributeSet
         float finalValue = hasOverride ? overrideValue : (baseValue + add) * mul;
 
         attributes[type].currentValue = finalValue;
+    }
+
+    private void PostAttributeChange(EAttributeType changedAttribute)
+    {
+        if (changedAttribute == EAttributeType.currentHealth)
+        {
+            attributes[changedAttribute].currentValue 
+                = math.clamp(attributes[changedAttribute].currentValue, 0f, GetAttributeValue(EAttributeType.maxHealth));
+        }
+
+        if (changedAttribute == EAttributeType.currentMana)
+        {
+            attributes[changedAttribute].currentValue
+                = math.clamp(attributes[changedAttribute].currentValue, 0f, GetAttributeValue(EAttributeType.maxMana));
+        }
+
     }
 }
