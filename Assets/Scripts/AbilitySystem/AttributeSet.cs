@@ -68,6 +68,7 @@ public interface IAttributeSet
 {
     float GetAttributeValue(EAttributeType type);
     event Action OnDaed;
+    event Action<EAttributeType, float> OnAttributeChanged;
 }
 
 public class AttributeSet : IAttributeSet
@@ -80,6 +81,7 @@ public class AttributeSet : IAttributeSet
     private Dictionary<EAttributeType, IAttributeCalculator> calculators = new();
 
     public event Action OnDaed;
+    public event Action<EAttributeType, float> OnAttributeChanged;
 
     public AttributeSet()
     {
@@ -127,10 +129,8 @@ public class AttributeSet : IAttributeSet
             attributes[modifier.attributeType].currentValue
                 = Mathf.Clamp(attributes[modifier.attributeType].currentValue, 0f, GetAttributeValue(EAttributeType.maxHealth));
 
-            if (attributes[modifier.attributeType].currentValue <= 0)
-            {
+            if (GetAttributeValue(modifier.attributeType) <= 0)
                 OnDaed?.Invoke();
-            }
         }
 
         if (modifier.attributeType == EAttributeType.currentMana)
@@ -143,6 +143,9 @@ public class AttributeSet : IAttributeSet
         {
             HandleIncomingDamage(modifier);
         }
+
+        OnAttributeChanged?.Invoke(modifier.attributeType, GetAttributeValue(modifier.attributeType));
+
 
     }
 

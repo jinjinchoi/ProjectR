@@ -1,0 +1,8 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/USS/health-bar.uss?fileID=7433441132597879392&amp;guid=2cc2dc83ebf9ba94182416d0ad8e8ae9&amp;type=3#health-bar"/>
+    <ui:VisualElement name="Pannel" class="pannel" style="width: 180px; height: 20px; top: 0; position: relative;">
+        <ui:VisualElement name="Background" class="progressbar-bg" style="width: 100%;">
+            <ui:VisualElement name="ProgressBar" class="progressbar-main"/>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
