@@ -1,6 +1,5 @@
 using System.Collections;
 using UnityEngine;
-using static UnityEngine.RuleTile.TilingRuleOutput;
 
 public class NormalAttackAbility : AbilityLogicBase
 {
@@ -41,8 +40,13 @@ public class NormalAttackAbility : AbilityLogicBase
                 {
                     if (hit.TryGetComponent<IDamageable>(out var damageable))
                     {
-                        FDamageInfo damageInfo = 
-                            DamageCalculator.CalculateOutgoingDamage(context.AttributeSet, context.Owner, attackData.damageType, attackData.damageMultiplier);
+                        FDamageInfo damageInfo = DamageCalculator.CalculateOutgoingDamage(
+                                context.AttributeSet,
+                                context.Owner,
+                                attackData.damageType,
+                                attackData.damageMultiplier,
+                                attackData.knockbackPower);
+
                         damageable.TakeDamage(damageInfo);
                     }
                 }
@@ -62,7 +66,7 @@ public class NormalAttackAbility : AbilityLogicBase
             comboCount = 1;
         else
             comboTimerCo = context.StartCoroutine(ComboReset());
-        
+
         isActivated = false;
     }
 

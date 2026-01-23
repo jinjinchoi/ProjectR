@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 
 public abstract class BaseCharacter : MonoBehaviour, IAbilityOwner, IDamageable
@@ -11,9 +11,10 @@ public abstract class BaseCharacter : MonoBehaviour, IAbilityOwner, IDamageable
     public Transform AttackPoint => attackPoint;
     #endregion
     public Rigidbody2D Rb => rb;
-    public AbilitySystemComponent ASC => abilitySystemComponent;
+    public AbilitySystemComponent ASC => abilitySystemComponent ? abilitySystemComponent : GetComponent<AbilitySystemComponent>();
     public float MoveSpeed => moveSpeed;
     public bool IsGrounded => isGrounded;
+    public bool IsDead => isDead;
 
     [Header("Debug")]
     [SerializeField] protected bool showDebug = false;
@@ -28,39 +29,37 @@ public abstract class BaseCharacter : MonoBehaviour, IAbilityOwner, IDamageable
     [SerializeField] private Transform groundCheck;
     [SerializeField] private LayerMask groundLayerMask;
 
-    [Header("Ability System")]
-    // 캐릭터에게 부여할 어빌리티 목록
-    [SerializeField] private List<BaseAbilityDataSO> defaultAbilities;
+    [Header("Combat")]
     [SerializeField] private Transform attackPoint;
+    [SerializeField] private string deadLayerName = "Dead";
 
     private Rigidbody2D rb;
     private AbilitySystemComponent abilitySystemComponent;
     private Animator anim;
     private AnimationTrigger animationTrigger;
+    private VFXComponent vfxComponent;
+    private LayerMask originalLayerMask;
     private bool isGrounded = false;
-    private bool facingRight = true;
-    private int facingDirection = 1;
-
+    private bool isFacingRight = true;
+    private bool isKnockback = false;
+    private Coroutine knockbackCo;
+    private bool isDead = false;
 
     protected virtual void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         abilitySystemComponent = GetComponent<AbilitySystemComponent>();
+        vfxComponent = GetComponent<VFXComponent>();
 
         animationTrigger = GetComponentInChildren<AnimationTrigger>();
         anim = GetComponentInChildren<Animator>();
-        
+
+        originalLayerMask = gameObject.layer;
     }
 
     protected virtual void Start()
     {
-        if (abilitySystemComponent == null) return;
-
-        abilitySystemComponent.Initialize(this);
-        foreach (BaseAbilityDataSO ability in defaultAbilities)
-        {
-            abilitySystemComponent.GiveAbility(ability);
-        }
+        abilitySystemComponent.AttributeSet.OnDaed += OnDead;
     }
 
     protected virtual void Update()
@@ -70,11 +69,58 @@ public abstract class BaseCharacter : MonoBehaviour, IAbilityOwner, IDamageable
 
     public void TakeDamage(FDamageInfo damageInfo)
     {
-        Debug.Log(damageInfo.Damage);
+        if (!abilitySystemComponent || isDead) return;
+
+        FAttributeModifier damageModifier = new FAttributeModifier();
+        damageModifier.attributeType = EAttributeType.incommingDamage;
+        damageModifier.value = DamageCalculator.CalculateIncomingDamage(abilitySystemComponent.AttributeSet, damageInfo);
+        damageModifier.isPermanent = true;
+        damageModifier.operation = EModifierOp.Add;
+
+        if (vfxComponent) vfxComponent.PlayOnDamageVfx();
+        abilitySystemComponent.ApplyModifier(damageModifier);
+
+        if (damageInfo.KnockbackPower != Vector2.zero)
+        {
+            if (knockbackCo != null)
+                StopCoroutine(knockbackCo);
+
+            int dir = transform.position.x > damageInfo.Instigator.OwnerTransform.position.x ? 1 : -1;
+            Vector2 kncokback = damageInfo.KnockbackPower;
+            kncokback.x *= dir;
+            knockbackCo = StartCoroutine(ExcuteKnockback(kncokback, 0.15f));
+        }
+    }
+
+    private IEnumerator ExcuteKnockback(Vector2 knockback, float duration)
+    {
+        isKnockback = true;
+        rb.linearVelocity = knockback;
+        
+        yield return new WaitForSeconds(duration);
+
+        rb.linearVelocity = Vector2.zero;
+        isKnockback = false;
+
+    }
+
+    private void OnDead()
+    {
+        isDead = true;
+        int deadLayer = LayerMask.NameToLayer(deadLayerName);
+        gameObject.layer = deadLayer;
+    }
+
+    private void Revive()
+    {
+        isDead = false;
+        gameObject.layer = originalLayerMask;
     }
 
     public void SetVelocity(float xVelocity, float yVelocity)
     {
+        if (isKnockback || isDead) return;
+
         rb.linearVelocity = new Vector2(xVelocity, yVelocity);
         anim.SetFloat("xVelocity", Mathf.Abs(xVelocity));
         HandleFlip(xVelocity);
@@ -83,11 +129,11 @@ public abstract class BaseCharacter : MonoBehaviour, IAbilityOwner, IDamageable
 
     public void HandleFlip(float xVelocity)
     {
-        if (xVelocity > 0 && !facingRight)
+        if (xVelocity > 0 && !isFacingRight)
         {
             Flip();
         }
-        else if (xVelocity < 0 && facingRight)
+        else if (xVelocity < 0 && isFacingRight)
         {
             Flip();
         }
@@ -95,9 +141,10 @@ public abstract class BaseCharacter : MonoBehaviour, IAbilityOwner, IDamageable
 
     private void Flip()
     {
+        if (isDead) return;
+
         transform.Rotate(0f, 180f, 0f);
-        facingRight = !facingRight;
-        facingDirection *= -1;
+        isFacingRight = !isFacingRight;
     }
 
     private void CheckGrounded()
@@ -132,7 +179,6 @@ public abstract class BaseCharacter : MonoBehaviour, IAbilityOwner, IDamageable
 
         foreach (Collider2D enemy in detectedEnemy)
         {
-            // TODO: 에너미 death 여부 확인해야함.
 
             Vector2 enemyPos = enemy.transform.position;
             float sqrDist = (enemyPos - myPos).sqrMagnitude;
@@ -156,5 +202,12 @@ public abstract class BaseCharacter : MonoBehaviour, IAbilityOwner, IDamageable
         Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
     }
 
+    private void OnEnable()
+    {
+    }
 
+    private void OnDisable()
+    {
+        abilitySystemComponent.AttributeSet.OnDaed -= OnDead;
+    }
 }

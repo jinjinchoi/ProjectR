@@ -19,7 +19,6 @@ public class Player_MovementState : PlayerBaseState
 
         if (!owner.IsGrounded)
             stateMachine.ChangeState(aiController.fallState);
-        
 
         if (aiController.CanEnterAttackState())
         {

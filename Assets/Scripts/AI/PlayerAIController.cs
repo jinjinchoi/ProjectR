@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem.XR;
+using static UnityEngine.GraphicsBuffer;
 
 public class PlayerAIController : AIController
 {
@@ -32,10 +33,17 @@ public class PlayerAIController : AIController
     protected override void Update()
     {
         base.Update();
+
+        if (target == null)
+            target = owner.FindClosestTargetWithinBox();
     }
 
     protected override void OnAbilityEnd(EAbilityId abilityId)
     {
+        base.OnAbilityEnd(abilityId);
+
+        target = owner.FindClosestTargetWithinBox();
+
         if (CanEnterAttackState())
         {
             TryActivateAbilityBy(abilityId);

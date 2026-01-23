@@ -49,7 +49,7 @@ public class PhysicalAttackPowerCalculator : AttributeCalculatorBase
         float str = attributeSet.GetAttributeValue(EAttributeType.strength);
         float dex = attributeSet.GetAttributeValue(EAttributeType.dexterity);
 
-        return 10f + (3f * str) + dex;
+        return 1f + str + (0.2f * dex);
     }
 }
 
@@ -71,7 +71,7 @@ public class MagicAttackPowerCalculator : AttributeCalculatorBase
         float intell = attributeSet.GetAttributeValue(EAttributeType.intelligence);
         float dex = attributeSet.GetAttributeValue(EAttributeType.dexterity);
 
-        return 10f + (3.2f * intell) + (0.5f * dex);
+        return 2f + intell + (0.1f * dex);
     }
 }
 

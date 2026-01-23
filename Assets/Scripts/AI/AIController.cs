@@ -4,7 +4,7 @@ public abstract class AIController : MonoBehaviour
 {
     protected BaseCharacter owner;
     protected StateMachine stateMachine;
-    Transform target;
+    protected Transform target;
 
     [Header("Combat")]
     [SerializeField] private float attackRange = 1.5f;
@@ -17,16 +17,12 @@ public abstract class AIController : MonoBehaviour
 
     protected virtual void Start()
     {
-
+       
     }
 
     protected virtual void Update()
     {
         stateMachine.UpdateActiveState();
-
-        if (target == null)
-            target = owner.FindClosestTargetWithinBox();
-        
     }
 
     protected virtual void FixedUpdate()

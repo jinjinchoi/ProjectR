@@ -6,13 +6,15 @@ public struct FDamageInfo
     public float Damage;
     public EDamageType DamageType;
     public bool IsCritical;
+    public Vector2 KnockbackPower;
 
-    public FDamageInfo(IAbilityOwner instigator, float damage, EDamageType damageType, bool isCritical)
+    public FDamageInfo(IAbilityOwner instigator, float damage, EDamageType damageType, bool isCritical, Vector2 knockbackPower)
     {
         Instigator = instigator;
         Damage = damage;
         DamageType = damageType;
         IsCritical = isCritical;
+        KnockbackPower = knockbackPower;
     }
 }
 

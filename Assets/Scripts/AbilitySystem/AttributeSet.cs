@@ -4,6 +4,7 @@ using UnityEngine;
 
 public enum EModifierOp
 {
+    None,
     Add,
     Multiply,
     Override
@@ -11,9 +12,10 @@ public enum EModifierOp
 
 public struct FAttributeModifier
 {
-    public EAttributeType attribute;
+    public EAttributeType attributeType;
     public float value;
     public EModifierOp operation; // Add, Mul, Override
+    public bool isPermanent; // change base value
 }
 
 public class AttributeValue
@@ -30,11 +32,17 @@ public class AttributeValue
 
 public enum EAttributeType
 {
+    /// <summary>
+    /// Primary Attribute
+    /// </summary>
     strength,
     dexterity,
     intelligence,
     vitality,
 
+    /// <summary>
+    /// Secondary Attribute
+    /// </summary>
     physicalAttackPower,
     magicAttackPower,
     physicalDefensePower,
@@ -43,14 +51,23 @@ public enum EAttributeType
     maxHealth,
     maxMana,
 
+    /// <summary>
+    /// Vital Attribute
+    /// </summary>
     currentHealth,
-    currentMana
+    currentMana,
+
+    /// <summary>
+    /// Meta Attribute
+    /// </summary>
+    incommingDamage
 
 }
 
 public interface IAttributeSet
 {
-    public float GetAttributeValue(EAttributeType type);
+    float GetAttributeValue(EAttributeType type);
+    event Action OnDaed;
 }
 
 public class AttributeSet : IAttributeSet
@@ -62,6 +79,8 @@ public class AttributeSet : IAttributeSet
     // 2차 속성 계산을 위한 전략 저장
     private Dictionary<EAttributeType, IAttributeCalculator> calculators = new();
 
+    public event Action OnDaed;
+
     public AttributeSet()
     {
         foreach (EAttributeType type in Enum.GetValues(typeof(EAttributeType)))
@@ -69,6 +88,15 @@ public class AttributeSet : IAttributeSet
             attributes[type] = new AttributeValue(0f);
             modifiers[type] = new List<FAttributeModifier>();
         }
+    }
+    public void SetBaseValue(EAttributeType type, float value)
+    {
+        attributes[type].baseValue = value;
+    }
+
+    public float GetBaseValue(EAttributeType type)
+    {
+        return attributes[type].baseValue;
     }
 
     public void InitAttribute(EAttributeType type, float baseValue)
@@ -92,34 +120,95 @@ public class AttributeSet : IAttributeSet
         };
     }
 
-    public void SetBaseValue(EAttributeType type, float value)
+    private void PostAttributeChange(FAttributeModifier modifier)
     {
-        attributes[type].baseValue = value;
+        if (modifier.attributeType== EAttributeType.currentHealth)
+        {
+            attributes[modifier.attributeType].currentValue
+                = Mathf.Clamp(attributes[modifier.attributeType].currentValue, 0f, GetAttributeValue(EAttributeType.maxHealth));
+
+            if (attributes[modifier.attributeType].currentValue <= 0)
+            {
+                OnDaed?.Invoke();
+            }
+        }
+
+        if (modifier.attributeType == EAttributeType.currentMana)
+        {
+            attributes[modifier.attributeType].currentValue
+                = Mathf.Clamp(attributes[modifier.attributeType].currentValue, 0f, GetAttributeValue(EAttributeType.maxMana));
+        }
+
+        if (modifier.attributeType == EAttributeType.incommingDamage)
+        {
+            HandleIncomingDamage(modifier);
+        }
+
     }
 
-    public float GetBaseValue(EAttributeType type)
+    private void HandleIncomingDamage(FAttributeModifier modifier)
     {
-        return attributes[type].baseValue;
+        float localIncomingDamage = modifier.value;
+        SetBaseValue(EAttributeType.incommingDamage, 0);
+
+        FAttributeModifier healthMod;
+        healthMod.attributeType = EAttributeType.currentHealth;
+        healthMod.value = -localIncomingDamage;
+        healthMod.operation = EModifierOp.Add;
+        healthMod.isPermanent = true;
+
+        ApplyModifier(healthMod);
     }
 
-    public void AddModifier(FAttributeModifier modifier)
+    public void ApplyModifier(FAttributeModifier modifier)
     {
-        if (!modifiers.ContainsKey(modifier.attribute))
-            modifiers[modifier.attribute] = new List<FAttributeModifier>();
+        if (modifier.isPermanent)
+        {
+            ApplyModifierToBaseValue(modifier);
+        }
+        else
+        {
+            AddToModifierList(modifier);
+        }
 
-        modifiers[modifier.attribute].Add(modifier);
-        Recalculate(modifier.attribute);
-        PostAttributeChange(modifier.attribute);
+        Recalculate(modifier.attributeType);
+        PostAttributeChange(modifier);
+    }
+
+    private void ApplyModifierToBaseValue(FAttributeModifier modifier)
+    {
+        switch (modifier.operation)
+        {
+            case EModifierOp.Add:
+                attributes[modifier.attributeType].baseValue += modifier.value;
+                break;
+
+            case EModifierOp.Multiply:
+                attributes[modifier.attributeType].baseValue *= modifier.value;
+                break;
+
+            case EModifierOp.Override:
+                attributes[modifier.attributeType].baseValue = modifier.value;
+                break;
+        }
+    }
+
+    private void AddToModifierList(FAttributeModifier modifier)
+    {
+        if (!modifiers.ContainsKey(modifier.attributeType))
+            modifiers[modifier.attributeType] = new List<FAttributeModifier>();
+
+        modifiers[modifier.attributeType].Add(modifier);
     }
 
     public void RemoveModifier(FAttributeModifier modifier)
     {
-        if (!modifiers.ContainsKey(modifier.attribute))
+        if (!modifiers.ContainsKey(modifier.attributeType))
             return;
 
-        modifiers[modifier.attribute].Remove(modifier);
-        Recalculate(modifier.attribute);
-        PostAttributeChange(modifier.attribute);
+        modifiers[modifier.attributeType].Remove(modifier);
+        Recalculate(modifier.attributeType);
+        PostAttributeChange(modifier);
 
     }
 
@@ -130,7 +219,13 @@ public class AttributeSet : IAttributeSet
 
         modifiers[type].Clear();
         Recalculate(type);
-        PostAttributeChange(type);
+
+        FAttributeModifier mod;
+        mod.attributeType = type;
+        mod.isPermanent = true;
+        mod.value = 0;
+        mod.operation = EModifierOp.None;
+        PostAttributeChange(mod);
     }
 
     public float GetAttributeValue(EAttributeType type)
@@ -182,21 +277,5 @@ public class AttributeSet : IAttributeSet
         float finalValue = hasOverride ? overrideValue : (baseValue + add) * mul;
 
         attributes[type].currentValue = finalValue;
-    }
-
-    private void PostAttributeChange(EAttributeType changedAttribute)
-    {
-        if (changedAttribute == EAttributeType.currentHealth)
-        {
-            attributes[changedAttribute].currentValue 
-                = Mathf.Clamp(attributes[changedAttribute].currentValue, 0f, GetAttributeValue(EAttributeType.maxHealth));
-        }
-
-        if (changedAttribute == EAttributeType.currentMana)
-        {
-            attributes[changedAttribute].currentValue
-                = Mathf.Clamp(attributes[changedAttribute].currentValue, 0f, GetAttributeValue(EAttributeType.maxMana));
-        }
-
     }
 }

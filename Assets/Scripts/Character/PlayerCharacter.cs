@@ -9,7 +9,6 @@ public class PlayerCharacter : BaseCharacter
 
     }
 
-
     protected override void OnDrawGizmos()
     {
         base.OnDrawGizmos();

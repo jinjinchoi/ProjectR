@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class DamageCalculator
 {
-    static public FDamageInfo CalculateOutgoingDamage(IAttributeSet attackerAS, IAbilityOwner instigator, EDamageType damageType, float damageMultiplier)
+    static public FDamageInfo CalculateOutgoingDamage(IAttributeSet attackerAS, IAbilityOwner instigator, EDamageType damageType, float damageMultiplier, Vector2 KnockbackPower = default)
     {
         float damage = 0;
 
@@ -24,7 +24,7 @@ public class DamageCalculator
             damage *= 1.4f;
         }
 
-       return new FDamageInfo(instigator, Mathf.Round(damage), damageType, isCritical);
+       return new FDamageInfo(instigator, Mathf.Round(damage), damageType, isCritical, KnockbackPower);
     }
 
     static public float CalculateIncomingDamage(IAttributeSet victimAS, FDamageInfo damageInfo)
@@ -43,7 +43,6 @@ public class DamageCalculator
         if (defanse > 0)
             defanse /= 100;
 
-        return damageInfo.Damage * (1 - defanse);
-
+        return Mathf.Round(damageInfo.Damage * (1 - defanse));
     }
 }

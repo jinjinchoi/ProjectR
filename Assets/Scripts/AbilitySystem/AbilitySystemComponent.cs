@@ -41,10 +41,13 @@ public class WaitingAbilityEntry
 
 public class AbilitySystemComponent : MonoBehaviour, IAbilitySystemContext
 {
+    [Header("ASC")]
     [SerializeField] private AttributeSO attributeInfoSO;
+    [Space]
+    [SerializeField] private List<BaseAbilityDataSO> defaultAbilities; // 캐릭터에게 부여할 ability
 
     public event Action<EAbilityId> OnAbilityEnded;
-    public IAbilityOwner Owner { get; private set; }
+    public IAbilityOwner Owner => owner;
     public IAttributeSet AttributeSet => attributeSet;
 
     /*
@@ -57,27 +60,31 @@ public class AbilitySystemComponent : MonoBehaviour, IAbilitySystemContext
     private Dictionary<EAnimationEventType, List<WaitingAbilityEntry>> waitingAbilitiesByAnimEvent = new();
 
     private AttributeSet attributeSet;
+    private IAbilityOwner owner;
 
     private void Awake()
     {
         attributeSet = new AttributeSet();
+        owner = GetComponent<IAbilityOwner>();
+
+        if (attributeInfoSO == null || defaultAbilities == null)
+        {
+            Debug.LogWarning($"Attribute info or Abilities info is not Set to {gameObject.name}");
+        }
 
         foreach (AttributeInitInfo info in attributeInfoSO.Attributes)
         {
             attributeSet.InitAttribute(info.attributeType, info.baseValue);
         }
-    }
 
-    public void Initialize(IAbilityOwner owner)
-    {
-        this.Owner = owner;
-        this.Owner.AnimationTrigger.OnAnimTriggered -= OnAnimationTriggered;
-        this.Owner.AnimationTrigger.OnAnimTriggered += OnAnimationTriggered;
+        float maxHealth = attributeSet.GetAttributeValue(EAttributeType.maxHealth);
+        float maxMana = attributeSet.GetAttributeValue(EAttributeType.maxMana);
+        attributeSet.SetBaseValue(EAttributeType.currentHealth, maxHealth);
+        attributeSet.SetBaseValue(EAttributeType.currentMana, maxMana);
 
-        if (attributeInfoSO == null)
+        foreach (BaseAbilityDataSO ability in defaultAbilities)
         {
-            Debug.LogError($"attributeInfo is not Set to {gameObject.name}");
-            return;
+            GiveAbility(ability);
         }
     }
 
@@ -86,10 +93,6 @@ public class AbilitySystemComponent : MonoBehaviour, IAbilitySystemContext
         abilities.Add(new AbilitySpec(data, this));
     }
 
-    public void EndAbility(AbilitySpec spec)
-    {
-        EndAbilityBySpec(spec);
-    }
 
     public void TryActivateAbilityById(EAbilityId abilityId)
     {
@@ -111,6 +114,10 @@ public class AbilitySystemComponent : MonoBehaviour, IAbilitySystemContext
             spec.ability.ActivateAbility(spec, this);
             activeAbilitySpecs.Add(spec.abilityData.abilityId, spec);
         }
+    }
+    public void EndAbility(AbilitySpec spec)
+    {
+        EndAbilityBySpec(spec);
     }
 
     private void EndAbilityBySpec(AbilitySpec spec)
@@ -160,6 +167,11 @@ public class AbilitySystemComponent : MonoBehaviour, IAbilitySystemContext
             waitingAbilitiesByAnimEvent.Remove(key);
     }
 
+    public void ApplyModifier(FAttributeModifier modifier)
+    {
+        attributeSet.ApplyModifier(modifier);
+    }
+
     private void OnAnimationTriggered(EAnimationEventType eventType)
     {
         if (!waitingAbilitiesByAnimEvent.TryGetValue(eventType, out List<WaitingAbilityEntry> list)) return;
@@ -177,6 +189,7 @@ public class AbilitySystemComponent : MonoBehaviour, IAbilitySystemContext
 
     private void OnEnable()
     {
+        Owner.AnimationTrigger.OnAnimTriggered += OnAnimationTriggered;
     }
 
     private void OnDisable()
