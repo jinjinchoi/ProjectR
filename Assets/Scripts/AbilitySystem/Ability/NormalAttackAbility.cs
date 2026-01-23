@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using static UnityEngine.RuleTile.TilingRuleOutput;
 
 public class NormalAttackAbility : AbilityLogicBase
 {
@@ -24,7 +25,7 @@ public class NormalAttackAbility : AbilityLogicBase
         }
 
         Animator animator = context.Owner.Anim;
-        animator.SetInteger(attackAbilityData.ComboCountName, comboCount);
+        animator.SetInteger(attackAbilityData.comboCountName, comboCount);
 
         PlayAnimationAndWait(spec, context, () =>
         {
@@ -33,7 +34,19 @@ public class NormalAttackAbility : AbilityLogicBase
 
         WaitAnimationEvent(spec, context, EAnimationEventType.Attack, () =>
         {
-            Debug.Log($"Attack : {comboCount}");
+            if (spec.abilityData is Player_NormalAttackDataSO attackData)
+            {
+                Collider2D[] hits = Physics2D.OverlapCircleAll(context.Owner.AttackPoint.position, attackData.attackRadius, attackData.hostileTargetLayer);
+                foreach (var hit in hits)
+                {
+                    if (hit.TryGetComponent<IDamageable>(out var damageable))
+                    {
+                        FDamageInfo damageInfo = 
+                            DamageCalculator.CalculateOutgoingDamage(context.AttributeSet, context.Owner, attackData.damageType, attackData.damageMultiplier);
+                        damageable.TakeDamage(damageInfo);
+                    }
+                }
+            }
         });
     }
 
@@ -45,7 +58,7 @@ public class NormalAttackAbility : AbilityLogicBase
 
         comboCount++;
 
-        if (attackData.MaxComboCount < comboCount)
+        if (attackData.maxComboCount < comboCount)
             comboCount = 1;
         else
             comboTimerCo = context.StartCoroutine(ComboReset());
@@ -67,7 +80,6 @@ public class NormalAttackAbility : AbilityLogicBase
             comboTimerCo = null;
         }
     }
-
 
     public override bool CanActivate(AbilitySpec spec, IAbilitySystemContext context)
     {

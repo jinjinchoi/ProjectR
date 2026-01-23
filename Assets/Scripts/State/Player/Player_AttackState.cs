@@ -15,30 +15,12 @@ public class Player_AttackState : PlayerBaseState
         owner.SetVelocity(0, owner.Rb.linearVelocity.y);
         owner.Anim.SetBool(animBoolName, false);
 
-        owner.ASC.OnAbilityEnded += OnAbilityEnd;
-        owner.ASC.TryActivateAbilityById(abilityId);
+        aiController.TryActivateAbilityBy(abilityId);
     }
 
     public override void Exit()
     {
         base.Exit();
-        owner.ASC.OnAbilityEnded -= OnAbilityEnd;
-
-    }
-
-    private void OnAbilityEnd()
-    {
-        Transform target = owner.FindClosestTargetWithinBox();
-        if (aiController.CanAttackTarget(target))
-        {
-            int dir = aiController.GetDirectionToTarget(target);
-            owner.HandleFlip(dir);
-            owner.ASC.TryActivateAbilityById(abilityId);
-        }
-        else
-        {
-            stateMachine.ChangeState(aiController.movementState);
-        }
 
     }
 

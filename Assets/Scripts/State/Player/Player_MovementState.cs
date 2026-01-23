@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class Player_MovementState : PlayerBaseState
 {
-    Transform target;
 
     public Player_MovementState(BaseCharacter owner, PlayerAIController aiController, StateMachine stateMachine, string animStateName) : base(owner, aiController, stateMachine, animStateName)
     {
@@ -12,7 +11,6 @@ public class Player_MovementState : PlayerBaseState
     {
         base.Enter();
 
-        target = owner.FindClosestTargetWithinBox();
     }
 
     public override void Update()
@@ -20,19 +18,16 @@ public class Player_MovementState : PlayerBaseState
         base.Update();
 
         if (!owner.IsGrounded)
-        {
             stateMachine.ChangeState(aiController.fallState);
-        }
+        
 
-        if (target == null) return;
-
-        if (aiController.CanAttackTarget(target))
+        if (aiController.CanEnterAttackState())
         {
             stateMachine.ChangeState(aiController.attackState);
         }
         else
         {
-            owner.SetVelocity(owner.MoveSpeed * aiController.GetDirectionToTarget(target), owner.Rb.linearVelocity.y);
+           aiController.MovoToTarget();
         }
     }
 
@@ -40,6 +35,5 @@ public class Player_MovementState : PlayerBaseState
     {
         base.Exit();
 
-        target = null;
     }
 }

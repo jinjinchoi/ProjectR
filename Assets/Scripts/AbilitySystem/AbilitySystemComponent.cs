@@ -8,7 +8,7 @@ using UnityEngine;
 public interface IAbilityOwner
 {
     Animator Anim { get; }
-    Transform ActorTransform { get; }
+    Transform OwnerTransform { get; }
     AnimationTrigger AnimationTrigger { get; }
     Transform AttackPoint { get; }
 }
@@ -17,6 +17,7 @@ public interface IAbilityOwner
 public interface IAbilitySystemContext
 {
     IAbilityOwner Owner { get; }
+    IAttributeSet AttributeSet { get; }
 
     void EndAbility(AbilitySpec spec);
     Coroutine StartCoroutine(IEnumerator routine);
@@ -42,8 +43,9 @@ public class AbilitySystemComponent : MonoBehaviour, IAbilitySystemContext
 {
     [SerializeField] private AttributeSO attributeInfoSO;
 
-    public event Action OnAbilityEnded;
+    public event Action<EAbilityId> OnAbilityEnded;
     public IAbilityOwner Owner { get; private set; }
+    public IAttributeSet AttributeSet => attributeSet;
 
     /*
      * abilities :현재 보유하고 있는 ability list,
@@ -62,17 +64,15 @@ public class AbilitySystemComponent : MonoBehaviour, IAbilitySystemContext
 
         foreach (AttributeInitInfo info in attributeInfoSO.Attributes)
         {
-            attributeSet.InitAttribute(info.AttributeType, info.BaseValue);
+            attributeSet.InitAttribute(info.attributeType, info.baseValue);
         }
-
-        Debug.Log(attributeSet.GetAttributeValue(EAttributeType.physicalAttackPower));
     }
 
     public void Initialize(IAbilityOwner owner)
     {
         this.Owner = owner;
-        Owner.AnimationTrigger.OnAnimTriggered -= OnAnimationTriggered;
-        Owner.AnimationTrigger.OnAnimTriggered += OnAnimationTriggered;
+        this.Owner.AnimationTrigger.OnAnimTriggered -= OnAnimationTriggered;
+        this.Owner.AnimationTrigger.OnAnimTriggered += OnAnimationTriggered;
 
         if (attributeInfoSO == null)
         {
@@ -96,7 +96,7 @@ public class AbilitySystemComponent : MonoBehaviour, IAbilitySystemContext
         if (Owner == null)
         {
             Debug.LogError($"Owner is not set on {gameObject.name}", this);
-            OnAbilityEnded?.Invoke();
+            OnAbilityEnded?.Invoke(abilityId);
             return;
         }
 
@@ -105,24 +105,24 @@ public class AbilitySystemComponent : MonoBehaviour, IAbilitySystemContext
             return;
         }
 
-        AbilitySpec spec = abilities.Find(a => a.abilityData.AbilityId == abilityId);
+        AbilitySpec spec = abilities.Find(a => a.abilityData.abilityId == abilityId);
         if (spec != null && spec.ability.CanActivate(spec, this))
         {
             spec.ability.ActivateAbility(spec, this);
-            activeAbilitySpecs.Add(spec.abilityData.AbilityId, spec);
+            activeAbilitySpecs.Add(spec.abilityData.abilityId, spec);
         }
     }
 
     private void EndAbilityBySpec(AbilitySpec spec)
     {
-        if (!activeAbilitySpecs.ContainsKey(spec.abilityData.AbilityId))
+        if (!activeAbilitySpecs.ContainsKey(spec.abilityData.abilityId))
             return;
 
         UnregisterWaitingAbility(spec);
         spec.ability.OnEndAbility(spec, this);
-        activeAbilitySpecs.Remove(spec.abilityData.AbilityId);
+        activeAbilitySpecs.Remove(spec.abilityData.abilityId);
 
-        OnAbilityEnded?.Invoke();
+        OnAbilityEnded?.Invoke(spec.abilityData.abilityId);
 
     }
 

@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad8a2e2e1915505448b718958cd3d5b2, type: 3}
   m_Name: Attribute_Player
   m_EditorClassIdentifier: Assembly-CSharp::AttributeSO
-  attributes:
+  Attributes:
   - attributeType: 0
     baseValue: 12
   - attributeType: 1
     baseValue: 8
   - attributeType: 2
-    baseValue: 10
+    baseValue: 9
   - attributeType: 3
     baseValue: 15

@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Unity.Mathematics;
 using UnityEngine;
 
 public enum EModifierOp
@@ -49,7 +48,12 @@ public enum EAttributeType
 
 }
 
-public class AttributeSet
+public interface IAttributeSet
+{
+    public float GetAttributeValue(EAttributeType type);
+}
+
+public class AttributeSet : IAttributeSet
 {
     // 어트리뷰트에 따른 값을 저장
     private Dictionary<EAttributeType, AttributeValue> attributes = new();
@@ -64,8 +68,6 @@ public class AttributeSet
         {
             attributes[type] = new AttributeValue(0f);
             modifiers[type] = new List<FAttributeModifier>();
-            Debug.Log(type);
-
         }
     }
 
@@ -187,13 +189,13 @@ public class AttributeSet
         if (changedAttribute == EAttributeType.currentHealth)
         {
             attributes[changedAttribute].currentValue 
-                = math.clamp(attributes[changedAttribute].currentValue, 0f, GetAttributeValue(EAttributeType.maxHealth));
+                = Mathf.Clamp(attributes[changedAttribute].currentValue, 0f, GetAttributeValue(EAttributeType.maxHealth));
         }
 
         if (changedAttribute == EAttributeType.currentMana)
         {
             attributes[changedAttribute].currentValue
-                = math.clamp(attributes[changedAttribute].currentValue, 0f, GetAttributeValue(EAttributeType.maxMana));
+                = Mathf.Clamp(attributes[changedAttribute].currentValue, 0f, GetAttributeValue(EAttributeType.maxMana));
         }
 
     }

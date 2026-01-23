@@ -5,8 +5,8 @@ using UnityEngine;
 [Serializable]
 public struct AttributeInitInfo
 {
-    public EAttributeType AttributeType;
-    public float BaseValue;
+    public EAttributeType attributeType;
+    public float baseValue;
 }
 
 [CreateAssetMenu(fileName = "Attribute_" ,menuName = "ASC/Attribute")]

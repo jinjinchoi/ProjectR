@@ -1,5 +1,5 @@
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
+using UnityEngine.InputSystem.XR;
 
 public class PlayerAIController : AIController
 {
@@ -11,10 +11,6 @@ public class PlayerAIController : AIController
     [SerializeField] private string movementStateName = "isMoving";
     [SerializeField] private string fallStateName = "isFalling";
     [SerializeField] private string attackStateName = "idle";
-
-    [Header("Combat")]
-    [SerializeField] private float attackRange = 1f;
-    public float AttackRange => attackRange;
 
     protected override void Awake()
     {
@@ -38,21 +34,15 @@ public class PlayerAIController : AIController
         base.Update();
     }
 
-    public bool CanAttackTarget(Transform target)
+    protected override void OnAbilityEnd(EAbilityId abilityId)
     {
-        return Vector2.Distance(owner.transform.position, target.position) <= attackRange;
+        if (CanEnterAttackState())
+        {
+            TryActivateAbilityBy(abilityId);
+        }
+        else
+        {
+            stateMachine.ChangeState(movementState);
+        }
     }
-
-    public int GetDirectionToTarget(Transform target)
-    {
-        if (target == null) return 0;
-
-        float deltaX = target.position.x - owner.transform.position.x;
-
-        if (Mathf.Abs(deltaX) < 0.1f)
-            return 0;
-
-        return deltaX > 0 ? 1 : -1;
-    }
-
 }

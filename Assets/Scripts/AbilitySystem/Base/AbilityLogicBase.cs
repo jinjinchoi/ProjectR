@@ -42,20 +42,20 @@ public abstract class AbilityLogicBase
 
         // 기존 재생중인 애니메이션이 있으면 끝날 때까지 대기
         yield return new WaitUntil(() =>
-            !animator.GetCurrentAnimatorStateInfo(0).IsTag(spec.abilityData.AnimTag) &&
+            !animator.GetCurrentAnimatorStateInfo(0).IsTag(spec.abilityData.animTag) &&
             !animator.IsInTransition(0)
         );
 
-        animator.SetBool(spec.abilityData.AnimBoolName, true);
+        animator.SetBool(spec.abilityData.animBoolName, true);
 
         // 애니메이션 재생 끝날때 까지 대기
         yield return new WaitUntil(() =>
         {
-            return animator.GetCurrentAnimatorStateInfo(0).IsTag(spec.abilityData.AnimTag) &&
+            return animator.GetCurrentAnimatorStateInfo(0).IsTag(spec.abilityData.animTag) &&
                  animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f;
         });
 
-        animator.SetBool(spec.abilityData.AnimBoolName, false);
+        animator.SetBool(spec.abilityData.animBoolName, false);
 
         isAnimPlaying = false;
         callback?.Invoke();

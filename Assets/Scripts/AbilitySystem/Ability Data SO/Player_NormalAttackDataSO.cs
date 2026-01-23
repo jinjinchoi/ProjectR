@@ -4,9 +4,8 @@ using UnityEngine;
 public class Player_NormalAttackDataSO : DamageAbilityDataSO
 {
     [Header("ComboAttackInfo")]
-    public int MaxComboCount = 1;
-    public string ComboCountName = "comboCount";
-    public float AttackRadius = 1.5f;
+    public int maxComboCount = 1;
+    public string comboCountName = "comboCount";
 
     public override AbilityLogicBase CreateInstance()
     {

@@ -1,4 +1,4 @@
-using Unity.Mathematics;
+using UnityEngine;
 
 public interface IAttributeCalculator
 {
@@ -38,7 +38,7 @@ public abstract class AttributeCalculatorBase : IAttributeCalculator
             }
         }
 
-        return math.round(hasOverride ? overrideValue : (defalutValue + add) * mul);
+        return Mathf.Round(hasOverride ? overrideValue : (defalutValue + add) * mul);
     }
 }
 
@@ -95,7 +95,7 @@ public class CriticalChanceCalculator : AttributeCalculatorBase
 
         float cirticalChance = 5f + (0.25f * dex) + (0.05f * str);
 
-        return math.clamp(cirticalChance, 0f, 100f);
+        return Mathf.Clamp(cirticalChance, 0f, 100f);
     }
 }
 

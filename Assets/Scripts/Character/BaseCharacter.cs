@@ -1,12 +1,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class BaseCharacter : MonoBehaviour, IAbilityOwner
+public abstract class BaseCharacter : MonoBehaviour, IAbilityOwner, IDamageable
 {
 
     #region IAbilityActor
     public Animator Anim => anim;
-    public Transform ActorTransform => transform;
+    public Transform OwnerTransform => transform;
     public AnimationTrigger AnimationTrigger => animationTrigger;
     public Transform AttackPoint => attackPoint;
     #endregion
@@ -68,6 +68,11 @@ public abstract class BaseCharacter : MonoBehaviour, IAbilityOwner
         CheckGrounded();
     }
 
+    public void TakeDamage(FDamageInfo damageInfo)
+    {
+        Debug.Log(damageInfo.Damage);
+    }
+
     public void SetVelocity(float xVelocity, float yVelocity)
     {
         rb.linearVelocity = new Vector2(xVelocity, yVelocity);
@@ -127,6 +132,8 @@ public abstract class BaseCharacter : MonoBehaviour, IAbilityOwner
 
         foreach (Collider2D enemy in detectedEnemy)
         {
+            // TODO: 에너미 death 여부 확인해야함.
+
             Vector2 enemyPos = enemy.transform.position;
             float sqrDist = (enemyPos - myPos).sqrMagnitude;
 
@@ -148,4 +155,6 @@ public abstract class BaseCharacter : MonoBehaviour, IAbilityOwner
         Gizmos.color = Color.white;
         Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
     }
+
+
 }
