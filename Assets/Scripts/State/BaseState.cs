@@ -10,14 +10,12 @@ public interface IState
 
 public abstract class BaseState <T> : IState where T : AIController
 {
-    protected BaseCharacter owner;
     protected T aiController;
     protected StateMachine stateMachine;
     protected string animBoolName;
 
-    protected BaseState(BaseCharacter owner, T aiController, StateMachine stateMachine, string animStateName)
+    protected BaseState(T aiController, StateMachine stateMachine, string animStateName)
     {
-        this.owner = owner;
         this.aiController = aiController;
         this.stateMachine = stateMachine;
         this.animBoolName = animStateName;
@@ -26,7 +24,7 @@ public abstract class BaseState <T> : IState where T : AIController
 
     public virtual void Enter()
     {
-        owner.Anim.SetBool(animBoolName, true);
+        aiController.Owner.Anim.SetBool(animBoolName, true);
     }
 
     public virtual void Update()
@@ -39,6 +37,6 @@ public abstract class BaseState <T> : IState where T : AIController
 
     public virtual void Exit()
     {
-        owner.Anim.SetBool(animBoolName, false);
+        aiController.Owner.Anim.SetBool(animBoolName, false);
     }
 }

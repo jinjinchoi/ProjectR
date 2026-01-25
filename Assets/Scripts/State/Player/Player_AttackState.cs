@@ -4,7 +4,7 @@ public class Player_AttackState : PlayerBaseState
 {
     public EAbilityId abilityId = EAbilityId.Player_NormalAttack;
 
-    public Player_AttackState(BaseCharacter owner, PlayerAIController aiController, StateMachine stateMachine, string animStateName) : base(owner, aiController, stateMachine, animStateName)
+    public Player_AttackState(PlayerAIController aiController, StateMachine stateMachine, string animStateName) : base(aiController, stateMachine, animStateName)
     {
     }
 
@@ -12,8 +12,8 @@ public class Player_AttackState : PlayerBaseState
     {
         base.Enter();
 
-        owner.SetVelocity(0, owner.Rb.linearVelocity.y);
-        owner.Anim.SetBool(animBoolName, false);
+        aiController.StopOwner();
+        aiController.Owner.Anim.SetBool(animBoolName, false);
 
         aiController.TryActivateAbilityBy(abilityId);
     }

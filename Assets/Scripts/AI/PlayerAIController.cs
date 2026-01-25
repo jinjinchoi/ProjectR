@@ -1,6 +1,5 @@
 using UnityEngine;
-using UnityEngine.InputSystem.XR;
-using static UnityEngine.GraphicsBuffer;
+
 
 public class PlayerAIController : AIController
 {
@@ -17,10 +16,10 @@ public class PlayerAIController : AIController
     {
         base.Awake();
 
-        movementState = new Player_MovementState(owner, this, stateMachine, movementStateName);
-        fallState = new Player_FallState(owner, this, stateMachine, fallStateName);
+        movementState = new Player_MovementState(this, stateMachine, movementStateName);
+        fallState = new Player_FallState(this, stateMachine, fallStateName);
 
-        attackState = new Player_AttackState(owner, this, stateMachine, attackStateName);
+        attackState = new Player_AttackState(this, stateMachine, attackStateName);
     }
 
     protected override void Start()
@@ -30,19 +29,51 @@ public class PlayerAIController : AIController
         stateMachine.Initialize(movementState);
     }
 
+
     protected override void Update()
     {
         base.Update();
 
         if (target == null)
-            target = owner.FindClosestTargetWithinBox();
+            target = FindClosestTargetWithinBox();
+    }
+
+    public Transform FindClosestTargetWithinBox()
+    {
+        Collider2D[] detectedEnemy = Physics2D.OverlapBoxAll(transform.position, hostileDetectSize, 0f, hostileLayerMask);
+
+        if (detectedEnemy.Length == 0)
+        {
+            Debug.Log("detected Enemy is 0, FindClosestTarget");
+            return null;
+        }
+
+        Transform closestTarget = null;
+        float minSqrDistance = float.MaxValue;
+
+        Vector2 myPos = transform.position;
+
+        foreach (Collider2D enemy in detectedEnemy)
+        {
+
+            Vector2 enemyPos = enemy.transform.position;
+            float sqrDist = (enemyPos - myPos).sqrMagnitude;
+
+            if (sqrDist < minSqrDistance)
+            {
+                minSqrDistance = sqrDist;
+                closestTarget = enemy.transform;
+            }
+        }
+
+        return closestTarget;
     }
 
     protected override void OnAbilityEnd(EAbilityId abilityId)
     {
         base.OnAbilityEnd(abilityId);
 
-        target = owner.FindClosestTargetWithinBox();
+        target = FindClosestTargetWithinBox();
 
         if (CanEnterAttackState())
         {

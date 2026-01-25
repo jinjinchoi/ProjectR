@@ -139,7 +139,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &28289576
 Transform:
   m_ObjectHideFlags: 0
@@ -235,10 +235,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerCharacter
   showDebug: 0
-  hostileDetectSize: {x: 50, y: 10}
-  hostileLayerMask:
-    serializedVersion: 2
-    m_Bits: 128
   moveSpeed: 4.5
   groundCheckRadius: 0.5
   groundCheck: {fileID: 1789725735}
@@ -260,6 +256,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerAIController
   attackRange: 1.65
+  hostileDetectSize: {x: 50, y: 10}
+  hostileLayerMask:
+    serializedVersion: 2
+    m_Bits: 128
   movementStateName: isMoving
   fallStateName: isFalling
   attackStateName: idle
@@ -591,10 +591,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyCharacter
   showDebug: 0
-  hostileDetectSize: {x: 50, y: 10}
-  hostileLayerMask:
-    serializedVersion: 2
-    m_Bits: 64
   moveSpeed: 3
   groundCheckRadius: 0.5
   groundCheck: {fileID: 0}
@@ -644,6 +640,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyAIController
   attackRange: 1.5
+  hostileDetectSize: {x: 1, y: 1}
+  hostileLayerMask:
+    serializedVersion: 2
+    m_Bits: 64
+  detectDistance: 5
+  idleAnimName: idle
+  deadAnimName: isDead
+  patrolStateName: isMoving
 --- !u!114 &318241386
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1010,7 +1014,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.27, y: -3.4, z: 0}
-  m_LocalScale: {x: 15.298259, y: 1, z: 1}
+  m_LocalScale: {x: 61.08, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}

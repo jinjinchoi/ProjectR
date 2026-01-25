@@ -8,14 +8,4 @@ public class PlayerCharacter : BaseCharacter
         base.Awake();
 
     }
-
-    protected override void OnDrawGizmos()
-    {
-        base.OnDrawGizmos();
-
-        if (!showDebug) return;
-
-        Gizmos.color = Color.cyan;
-        Gizmos.DrawWireCube(transform.position, hostileDetectSize);
-    }
 }

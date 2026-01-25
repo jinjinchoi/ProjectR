@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Player_FallState : PlayerBaseState
 {
-    public Player_FallState(BaseCharacter owner, PlayerAIController aiController, StateMachine stateMachine, string animStateName) : base(owner, aiController, stateMachine, animStateName)
+    public Player_FallState(PlayerAIController aiController, StateMachine stateMachine, string animStateName) : base(aiController, stateMachine, animStateName)
     {
     }
 
@@ -10,7 +10,7 @@ public class Player_FallState : PlayerBaseState
     {
         base.Update();
 
-        if (owner.IsGrounded)
+        if (aiController.Owner.IsGrounded)
         {
             stateMachine.ChangeState(aiController.movementState);
         }

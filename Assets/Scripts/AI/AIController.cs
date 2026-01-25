@@ -7,8 +7,10 @@ public abstract class AIController : MonoBehaviour
     protected Transform target;
 
     [Header("Combat")]
-    [SerializeField] private float attackRange = 1.5f;
-
+    [SerializeField] protected float attackRange = 1.5f;
+    [SerializeField] protected Vector2 hostileDetectSize = new Vector2(50, 10);
+    [SerializeField] protected LayerMask hostileLayerMask;
+    public BaseCharacter Owner => owner;
     protected virtual void Awake()
     {
         owner = GetComponent<BaseCharacter>();
@@ -45,6 +47,11 @@ public abstract class AIController : MonoBehaviour
             return 0;
 
         return deltaX > 0 ? 1 : -1;
+    }
+
+    public void StopOwner()
+    {
+        owner.SetVelocity(0f, owner.Rb.linearVelocity.y);
     }
 
     public bool CanEnterAttackState()

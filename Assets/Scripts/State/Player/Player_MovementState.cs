@@ -2,8 +2,7 @@ using UnityEngine;
 
 public class Player_MovementState : PlayerBaseState
 {
-
-    public Player_MovementState(BaseCharacter owner, PlayerAIController aiController, StateMachine stateMachine, string animStateName) : base(owner, aiController, stateMachine, animStateName)
+    public Player_MovementState(PlayerAIController aiController, StateMachine stateMachine, string animStateName) : base(aiController, stateMachine, animStateName)
     {
     }
 
@@ -17,7 +16,7 @@ public class Player_MovementState : PlayerBaseState
     {
         base.Update();
 
-        if (!owner.IsGrounded)
+        if (!aiController.Owner.IsGrounded)
             stateMachine.ChangeState(aiController.fallState);
 
         if (aiController.CanEnterAttackState())

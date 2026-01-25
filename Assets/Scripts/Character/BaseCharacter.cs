@@ -15,13 +15,10 @@ public abstract class BaseCharacter : MonoBehaviour, IAbilityOwner, IDamageable
     public float MoveSpeed => moveSpeed;
     public bool IsGrounded => isGrounded;
     public bool IsDead => isDead;
+    public int FacingDir => facingDir;
 
     [Header("Debug")]
     [SerializeField] protected bool showDebug = false;
-
-    [Header("Hostile Target Detect")]
-    [SerializeField] protected Vector2 hostileDetectSize = new Vector2(50, 10);
-    [SerializeField] private LayerMask hostileLayerMask;
 
     [Header("Movement")]
     [SerializeField] private float moveSpeed = 3f;
@@ -44,6 +41,7 @@ public abstract class BaseCharacter : MonoBehaviour, IAbilityOwner, IDamageable
     private bool isKnockback = false;
     private Coroutine knockbackCo;
     private bool isDead = false;
+    private int facingDir;
 
     protected virtual void Awake()
     {
@@ -145,6 +143,7 @@ public abstract class BaseCharacter : MonoBehaviour, IAbilityOwner, IDamageable
 
         transform.Rotate(0f, 180f, 0f);
         isFacingRight = !isFacingRight;
+        facingDir *= -1;
     }
 
     private void CheckGrounded()
@@ -162,36 +161,7 @@ public abstract class BaseCharacter : MonoBehaviour, IAbilityOwner, IDamageable
         }
     }
 
-    public Transform FindClosestTargetWithinBox()
-    {
-        Collider2D[] detectedEnemy = Physics2D.OverlapBoxAll(transform.position, hostileDetectSize, 0f, hostileLayerMask);
 
-        if (detectedEnemy.Length == 0)
-        {
-            Debug.Log("detected Enemy is 0, FindClosestTarget");
-            return null;
-        }
-
-        Transform closestTarget = null;
-        float minSqrDistance = float.MaxValue;
-
-        Vector2 myPos = transform.position;
-
-        foreach (Collider2D enemy in detectedEnemy)
-        {
-
-            Vector2 enemyPos = enemy.transform.position;
-            float sqrDist = (enemyPos - myPos).sqrMagnitude;
-
-            if (sqrDist < minSqrDistance)
-            {
-                minSqrDistance = sqrDist;
-                closestTarget = enemy.transform;
-            }
-        }
-
-        return closestTarget;
-    }
 
     protected virtual void OnDrawGizmos()
     {

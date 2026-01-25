@@ -3,8 +3,6 @@ using UnityEngine;
 
 public class UIControllerBase : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-
     public event Action<EAttributeType, float> OnAttributeValueChanged;
     // vital attribute 변화시 비율을 전송하는 event
     public event Action<bool /* true == health, false == mana */, float> OnVitalRatioChanged;
@@ -32,10 +30,6 @@ public class UIControllerBase : MonoBehaviour
         {
             float health = character.ASC.AttributeSet.GetAttributeValue(EAttributeType.currentHealth);
             float maxHealth = character.ASC.AttributeSet.GetAttributeValue(EAttributeType.maxHealth);
-
-            Debug.Log($"Health : {health}");
-            Debug.Log($"max Health : {maxHealth}");
-            
 
             OnVitalRatioChanged?.Invoke(true, health / maxHealth);
         }

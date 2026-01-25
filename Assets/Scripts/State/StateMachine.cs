@@ -5,6 +5,8 @@ public class StateMachine
     private IState currentState;
     public bool canChangeState = true;
 
+    public IState CurrentState => currentState;
+
     public void Initialize(IState startState)
     {
         currentState = startState;
