@@ -20,6 +20,14 @@ public class UI_HealthBar : MonoBehaviour
         uiController.OnVitalRatioChanged += UpdateProgressBar;
     }
 
+    private void LateUpdate()
+    {
+        if (Quaternion.Angle(transform.rotation, Quaternion.identity) > 0.01f)
+        {
+            transform.rotation = Quaternion.identity;
+        }
+    }
+
     private void UpdateProgressBar(bool isHealthChanged, float progress)
     {
         if (isHealthChanged)

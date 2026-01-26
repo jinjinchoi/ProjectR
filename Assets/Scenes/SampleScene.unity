@@ -133,13 +133,15 @@ GameObject:
   - component: {fileID: 28289579}
   - component: {fileID: 28289580}
   - component: {fileID: 28289581}
+  - component: {fileID: 28289582}
+  - component: {fileID: 28289583}
   m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &28289576
 Transform:
   m_ObjectHideFlags: 0
@@ -149,13 +151,14 @@ Transform:
   m_GameObject: {fileID: 28289575}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -5.36, y: 1.32, z: 0}
+  m_LocalPosition: {x: 1.85, y: -0.61, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1653985570}
   - {fileID: 1789725735}
   - {fileID: 1228382379}
+  - {fileID: 820291427}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!50 &28289577
@@ -278,6 +281,32 @@ MonoBehaviour:
   attributeInfoSO: {fileID: 11400000, guid: 7d8d4af17d14093478379ec5ae67169b, type: 2}
   defaultAbilities:
   - {fileID: 11400000, guid: 3900edc2eabc1aa4d89a601b0ca20ff7, type: 2}
+--- !u!114 &28289582
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 28289575}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f5a3c4eb4b76014b873991d46f83027, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::VFXComponent
+  onHitMaterial: {fileID: 2100000, guid: 31cae8c6dadf39543b32a638bb9c9c3d, type: 2}
+  onHitVFXDuration: 0.15
+--- !u!114 &28289583
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 28289575}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1493885a97c4cf347b42713e467f2e69, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIControllerBase
 --- !u!1 &41255789
 GameObject:
   m_ObjectHideFlags: 0
@@ -506,12 +535,13 @@ Transform:
   m_GameObject: {fileID: 318241378}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.88, y: -1.88, z: 0}
+  m_LocalPosition: {x: -3.08, y: -1.76, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 41255790}
   - {fileID: 125550357}
+  - {fileID: 603284431}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!50 &318241380
@@ -597,7 +627,7 @@ MonoBehaviour:
   groundLayerMask:
     serializedVersion: 2
     m_Bits: 256
-  attackPoint: {fileID: 0}
+  attackPoint: {fileID: 603284431}
   deadLayerName: Dead
 --- !u!114 &318241383
 MonoBehaviour:
@@ -612,7 +642,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AbilitySystemComponent
   attributeInfoSO: {fileID: 11400000, guid: b0105fee95f6bf0459f72c133d372261, type: 2}
-  defaultAbilities: []
+  defaultAbilities:
+  - {fileID: 11400000, guid: 5303c493b02f6414684ca0854bc8e756, type: 2}
 --- !u!114 &318241384
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -640,14 +671,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyAIController
   attackRange: 1.5
-  hostileDetectSize: {x: 1, y: 1}
+  hostileDetectSize: {x: 1.5, y: 1}
   hostileLayerMask:
     serializedVersion: 2
     m_Bits: 64
   detectDistance: 5
+  targetDetectTime: 3
   idleAnimName: idle
   deadAnimName: isDead
-  patrolStateName: isMoving
+  patrolAnimName: isMoving
+  attackAnimName: comboAttack
 --- !u!114 &318241386
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -797,6 +830,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &603284430
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 603284431}
+  m_Layer: 7
+  m_Name: attackPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &603284431
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 603284430}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 318241379}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &619394800
 GameObject:
   m_ObjectHideFlags: 0
@@ -881,6 +945,75 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &820291426
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 820291427}
+  - component: {fileID: 820291429}
+  - component: {fileID: 820291428}
+  m_Layer: 6
+  m_Name: UI_HealthBar
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &820291427
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 820291426}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.1, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 28289576}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &820291428
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 820291426}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.dll::UnityEngine.UIElements.UIDocument
+  m_PanelSettings: {fileID: 11400000, guid: d42483a34bf374046a35a3ba0e523c84, type: 2}
+  m_ParentUI: {fileID: 0}
+  sourceAsset: {fileID: 9197481963319205126, guid: 9dff327012e2a3248be43282967c6992, type: 3}
+  m_SortingOrder: 0
+  m_Position: 0
+  m_WorldSpaceSizeMode: 1
+  m_WorldSpaceWidth: 180
+  m_WorldSpaceHeight: 20
+  m_PivotReferenceSize: 0
+  m_Pivot: 0
+  m_WorldSpaceCollider: {fileID: 0}
+--- !u!114 &820291429
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 820291426}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 510a5211177a9ac41970ccffe3143a85, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UI_HealthBar
+  progressbarName: ProgressBar
 --- !u!1 &1006227471
 GameObject:
   m_ObjectHideFlags: 0

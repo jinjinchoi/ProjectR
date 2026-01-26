@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 476fccd58adc3bb4a873eff127d6e9d7, type: 3}
+  m_Name: Pang - NormalAttack
+  m_EditorClassIdentifier: Assembly-CSharp::Common_NormalAttackDataSO
+  abilityId: 1
+  abilityName: comboattack
+  cooldown: 0
+  animBoolName: comboAttack
+  animTag: Attack
+  damageMultiplier: 100
+  attackDistance: 1.5
+  attackRadius: 1.5
+  hostileTargetLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  damageType: 1
+  maxComboCount: 1
+  comboCountName: comboCount
+  knockbackPower: {x: 1, y: 0.5}

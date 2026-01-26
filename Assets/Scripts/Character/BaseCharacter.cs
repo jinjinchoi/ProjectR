@@ -41,7 +41,7 @@ public abstract class BaseCharacter : MonoBehaviour, IAbilityOwner, IDamageable
     private bool isKnockback = false;
     private Coroutine knockbackCo;
     private bool isDead = false;
-    private int facingDir;
+    private int facingDir = 1;
 
     protected virtual void Awake()
     {

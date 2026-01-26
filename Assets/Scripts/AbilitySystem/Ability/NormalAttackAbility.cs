@@ -16,7 +16,7 @@ public class NormalAttackAbility : AbilityLogicBase
         isActivated = true;
         StopComboResetTimer(context);
 
-        if (spec.abilityData is not Player_NormalAttackDataSO attackAbilityData)
+        if (spec.abilityData is not Common_NormalAttackDataSO attackAbilityData)
         {
             Debug.LogError("spec.abilityData is Not Player_NormalAttackDataSO Type at NormalAttackAbility");
             context.EndAbility(spec);
@@ -33,7 +33,7 @@ public class NormalAttackAbility : AbilityLogicBase
 
         WaitAnimationEvent(spec, context, EAnimationEventType.Attack, () =>
         {
-            if (spec.abilityData is Player_NormalAttackDataSO attackData)
+            if (spec.abilityData is Common_NormalAttackDataSO attackData)
             {
                 Collider2D[] hits = Physics2D.OverlapCircleAll(context.Owner.AttackPoint.position, attackData.attackRadius, attackData.hostileTargetLayer);
                 foreach (var hit in hits)
@@ -57,7 +57,7 @@ public class NormalAttackAbility : AbilityLogicBase
 
     public override void OnEndAbility(AbilitySpec spec, IAbilitySystemContext context)
     {
-        if (spec.abilityData is not Player_NormalAttackDataSO attackData)
+        if (spec.abilityData is not Common_NormalAttackDataSO attackData)
             return;
 
         comboCount++;

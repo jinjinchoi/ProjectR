@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AttributeSO
   Attributes:
   - attributeType: 0
-    baseValue: 4
+    baseValue: 6
   - attributeType: 1
-    baseValue: 10
+    baseValue: 14
   - attributeType: 2
     baseValue: 4
   - attributeType: 3
-    baseValue: 5
+    baseValue: 10

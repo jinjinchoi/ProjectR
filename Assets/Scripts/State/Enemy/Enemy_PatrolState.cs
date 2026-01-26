@@ -36,6 +36,11 @@ public class Enemy_PatrolState : EnemyBaseState
         {
             stateMachine.ChangeState(aiController.idleState);
         }
+
+        if (aiController.HasTarget)
+        {
+            stateMachine.ChangeState(aiController.combatState);
+        }
     }
 
 }

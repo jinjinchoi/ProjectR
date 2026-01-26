@@ -29,10 +29,9 @@ public class Enemy_IdleState : EnemyBaseState
     {
         base.Update();
 
-        if (aiController.IsPlayerDetected())
+        if (aiController.HasTarget)
         {
-            // stateMachine.ChangeState(aiController.combatState);
-            Debug.Log("Player detected");
+            stateMachine.ChangeState(aiController.combatState);
         }
 
         accumulatedTime += Time.deltaTime;

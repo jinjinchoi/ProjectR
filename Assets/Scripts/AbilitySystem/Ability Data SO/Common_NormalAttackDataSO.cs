@@ -1,7 +1,7 @@
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "ASC/Ability/Player/NormalAttack")]
-public class Player_NormalAttackDataSO : DamageAbilityDataSO
+[CreateAssetMenu(menuName = "ASC/Ability/Common/NormalAttack")]
+public class Common_NormalAttackDataSO : DamageAbilityDataSO
 {
     [Header("ComboAttackInfo")]
     public int maxComboCount = 1;

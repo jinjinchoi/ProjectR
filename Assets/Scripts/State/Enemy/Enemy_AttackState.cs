@@ -1,16 +1,19 @@
 using UnityEngine;
 
-public class Enemy_AttackState : MonoBehaviour
+public class Enemy_AttackState : EnemyBaseState
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public EAbilityId abilityId = EAbilityId.Common_NormalAttack;
+
+    public Enemy_AttackState(EnemyAIController aiController, StateMachine stateMachine, string animStateName) : base(aiController, stateMachine, animStateName)
     {
-        
     }
 
-    // Update is called once per frame
-    void Update()
+    public override void Enter()
     {
-        
+        base.Enter();
+
+        aiController.StopOwner();
+        aiController.TryActivateAbilityBy(abilityId);
     }
+
 }
