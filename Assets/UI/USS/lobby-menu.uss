@@ -1,0 +1,103 @@
+:root {
+}
+
+.day-box {
+    width: 150px;
+    height: 150px;
+    border-left-color: rgb(106, 4, 255);
+    border-right-color: rgb(106, 4, 255);
+    border-top-color: rgb(106, 4, 255);
+    border-bottom-color: rgb(106, 4, 255);
+    border-top-width: 5px;
+    border-right-width: 5px;
+    border-bottom-width: 5px;
+    border-left-width: 5px;
+    align-items: center;
+    background-color: rgb(255, 255, 255);
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+
+.day-num-text {
+    font-size: 50px;
+    -unity-font-style: bold;
+    -unity-font-definition: url("project://database/Assets/ExternalAssets/Font/NanumGothic.otf?fileID=12800000&guid=f5dc1d4a67daccb45ad0142353b072ab&type=3#NanumGothic");
+    color: rgb(123, 0, 255);
+}
+
+.day-fix-text {
+    color: rgb(123, 0, 255);
+    font-size: 22px;
+    -unity-font-style: bold;
+}
+
+.detail-button {
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
+    border-bottom-right-radius: 30px;
+    border-bottom-left-radius: 30px;
+    width: 200px;
+    height: 80px;
+    align-items: center;
+    justify-content: center;
+    align-self: flex-end;
+    background-color: rgb(255, 255, 255);
+    border-left-color: rgb(0, 121, 164);
+    border-right-color: rgb(0, 121, 164);
+    border-top-color: rgb(0, 121, 164);
+    border-bottom-color: rgb(0, 121, 164);
+    border-top-width: 3px;
+    border-right-width: 3px;
+    border-bottom-width: 3px;
+    border-left-width: 3px;
+    -unity-font-definition: url("project://database/Assets/ExternalAssets/Font/NanumGothic.otf?fileID=12800000&guid=f5dc1d4a67daccb45ad0142353b072ab&type=3#NanumGothic");
+    -unity-font-style: bold;
+    font-size: 20px;
+}
+
+.detail-button:hover {
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
+    border-bottom-right-radius: 30px;
+    border-bottom-left-radius: 30px;
+    width: 200px;
+    height: 80px;
+    align-items: center;
+    justify-content: center;
+    align-self: flex-end;
+    background-color: rgb(207, 207, 207);
+    border-left-color: rgb(0, 121, 164);
+    border-right-color: rgb(0, 121, 164);
+    border-top-color: rgb(0, 121, 164);
+    border-bottom-color: rgb(0, 121, 164);
+    border-top-width: 3px;
+    border-right-width: 3px;
+    border-bottom-width: 3px;
+    border-left-width: 3px;
+    -unity-font-definition: url("project://database/Assets/ExternalAssets/Font/NanumGothic.otf?fileID=12800000&guid=f5dc1d4a67daccb45ad0142353b072ab&type=3#NanumGothic");
+    -unity-font-style: bold;
+    font-size: 20px;
+}
+
+.cost-text {
+    -unity-font-definition: url("project://database/Assets/ExternalAssets/Font/NanumGothic.otf?fileID=12800000&guid=f5dc1d4a67daccb45ad0142353b072ab&type=3#NanumGothic");
+    font-size: 22px;
+    -unity-font-style: bold;
+    border-left-color: rgb(255, 0, 0);
+    border-right-color: rgb(255, 0, 0);
+    border-top-color: rgb(255, 0, 0);
+    border-bottom-color: rgb(255, 0, 0);
+    color: rgb(255, 0, 71);
+    -unity-text-outline-width: 0;
+    -unity-text-outline-color: rgba(0, 0, 0, 0);
+    text-shadow: 1px 1px 2px rgb(0, 0, 0);
+    background-position-x: center;
+    -unity-text-align: upper-center;
+    white-space: normal;
+}
+
+
+
+

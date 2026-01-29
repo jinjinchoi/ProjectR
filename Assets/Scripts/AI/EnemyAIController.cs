@@ -38,7 +38,6 @@ public class EnemyAIController : AIController
         base.Start();
 
         stateMachine.Initialize(idleState);
-
     }
 
     protected override void Update()
@@ -57,8 +56,6 @@ public class EnemyAIController : AIController
         }
       
         UpdateTargetDetection();
-        
-
     }
 
     private void UpdateTargetDetection()
@@ -115,5 +112,31 @@ public class EnemyAIController : AIController
             stateMachine.ChangeState(combatState);
         else
             stateMachine.ChangeState(idleState);
+    }
+
+    private void OnHit(FDamageInfo damageInfo)
+    {
+        if (!target)
+            target = damageInfo.Instigator.OwnerTransform;
+    }
+
+    protected override void OnEnable()
+    {
+        base.OnEnable();
+
+        if (Owner is EnemyCharacter enemy)
+        {
+            enemy.OnHit += OnHit;
+        }
+    }
+
+    protected override void OnDisable()
+    {
+        base.OnDisable();
+
+        if (Owner is EnemyCharacter enemy)
+        {
+            enemy.OnHit -= OnHit;
+        }
     }
 }

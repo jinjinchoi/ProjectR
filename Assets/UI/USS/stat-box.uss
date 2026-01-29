@@ -1,0 +1,50 @@
+:root {
+}
+
+.stat-box-area {
+    width: 1000px;
+    height: 50px;
+    border-left-color: rgb(118, 2, 135);
+    border-right-color: rgb(118, 2, 135);
+    border-top-color: rgb(118, 2, 135);
+    border-bottom-color: rgb(118, 2, 135);
+    border-top-width: 3px;
+    border-right-width: 3px;
+    border-bottom-width: 3px;
+    border-left-width: 3px;
+    background-color: rgb(118, 2, 135);
+    flex-direction: row;
+}
+
+.stat-box {
+    height: 60%;
+    background-size: 100% 100%;
+    background-color: rgb(255, 254, 254);
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+}
+
+.stat-text-info {
+    width: 100%;
+    align-self: flex-start;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+    -unity-text-align: middle-right;
+    -unity-font-definition: url("project://database/Assets/ExternalAssets/Font/NanumGothic.otf?fileID=12800000&guid=f5dc1d4a67daccb45ad0142353b072ab&type=3#NanumGothic");
+    font-size: 22px;
+    -unity-font-style: bold;
+    color: rgb(255, 255, 255);
+}
+
+.stat-text-value {
+    align-self: center;
+    justify-content: flex-start;
+    align-items: center;
+    align-content: flex-start;
+    -unity-text-align: upper-left;
+    font-size: 30px;
+    -unity-font-definition: url("project://database/Assets/ExternalAssets/Font/NanumGothic.otf?fileID=12800000&guid=f5dc1d4a67daccb45ad0142353b072ab&type=3#NanumGothic");
+    -unity-font-style: bold;
+}

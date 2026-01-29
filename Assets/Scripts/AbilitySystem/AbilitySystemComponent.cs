@@ -88,6 +88,13 @@ public class AbilitySystemComponent : MonoBehaviour, IAbilitySystemContext
         }
     }
 
+    private void Start()
+    {
+        if (owner != null && owner.AnimationTrigger != null)
+            Owner.AnimationTrigger.OnAnimTriggered += OnAnimationTriggered;
+
+    }
+
     public void GiveAbility(BaseAbilityDataSO data)
     {
         abilities.Add(new AbilitySpec(data, this));
@@ -187,14 +194,11 @@ public class AbilitySystemComponent : MonoBehaviour, IAbilitySystemContext
             waitingAbilitiesByAnimEvent.Remove(eventType);
     }
 
-    private void OnEnable()
-    {
-        Owner.AnimationTrigger.OnAnimTriggered += OnAnimationTriggered;
-    }
 
     private void OnDisable()
     {
-        Owner.AnimationTrigger.OnAnimTriggered -= OnAnimationTriggered;
+        if (owner != null && owner.AnimationTrigger != null)
+            Owner.AnimationTrigger.OnAnimTriggered -= OnAnimationTriggered;
     }
 
 

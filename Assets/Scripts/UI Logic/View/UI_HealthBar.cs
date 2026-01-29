@@ -5,14 +5,14 @@ public class UI_HealthBar : MonoBehaviour
 {
     [SerializeField] private string progressbarName = "ProgressBar";
     private VisualElement progressbarMain;
-    private UIControllerBase uiController;
+    private UIController_Character uiController;
 
     private void Awake()
     {
         var root = GetComponent<UIDocument>().rootVisualElement;
         progressbarMain = root.Q<VisualElement>(progressbarName);
 
-        uiController = GetComponentInParent<UIControllerBase>();
+        uiController = GetComponentInParent<UIController_Character>();
     }
 
     void Start()

@@ -106,7 +106,7 @@ public class MaxHealthChanceCalculator : AttributeCalculatorBase
         float str = attributeSet.GetAttributeValue(EAttributeType.strength);
         float vit = attributeSet.GetAttributeValue(EAttributeType.vitality);
 
-        return 100f + (30f * vit) + (5f * str);
+        return 100f + (5f * vit) + (0.5f * str);
     }
 }
 
@@ -117,6 +117,6 @@ public class MaxManaChanceCalculator : AttributeCalculatorBase
         float vit = attributeSet.GetAttributeValue(EAttributeType.vitality);
         float intell = attributeSet.GetAttributeValue(EAttributeType.intelligence);
 
-        return 50f + (20f * intell) + (5f * vit);
+        return 50f + (3f * intell) + (1f * vit);
     }
 }

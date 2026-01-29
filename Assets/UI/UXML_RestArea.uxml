@@ -1,0 +1,104 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/USS/lobby-menu.uss?fileID=7433441132597879392&amp;guid=cc76a46f2f696074ca99d9f5f137291c&amp;type=3#lobby-menu"/>
+    <Style src="project://database/Assets/UI/USS/upgrade-button.uss?fileID=7433441132597879392&amp;guid=f4927867c291f90478368c2e984061c4&amp;type=3#upgrade-button"/>
+    <Style src="project://database/Assets/UI/USS/health-bar.uss?fileID=7433441132597879392&amp;guid=2cc2dc83ebf9ba94182416d0ad8e8ae9&amp;type=3#health-bar"/>
+    <Style src="project://database/Assets/UI/USS/stat-box.uss?fileID=7433441132597879392&amp;guid=3b3720ec5ab88c14f95ab3c44e2994f7&amp;type=3#stat-box"/>
+    <ui:VisualElement name="Pannel" style="flex-grow: 1;">
+        <ui:VisualElement name="TopArea" style="flex-grow: 1; width: 100%; height: 30%; justify-content: center; align-items: center; align-self: center; align-content: center; flex-direction: row; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0;">
+            <ui:VisualElement name="Day_Box" class="day-box" style="white-space: nowrap; -unity-text-align: upper-left; flex-direction: column; justify-content: center;">
+                <ui:Label text="1" class="day-num-text"/>
+                <ui:Label text="일차" class="day-fix-text"/>
+            </ui:VisualElement>
+            <ui:VisualElement name="HealthBarArea" style="flex-grow: 0; width: 500px; height: 60px; margin-left: 25px;">
+                <ui:VisualElement name="HealthBar-Bg" class="progressbar-lobby-bg" style="flex-grow: 1;">
+                    <ui:VisualElement name="HealthBar-Main" class="progressbar-lobby-main" style="flex-grow: 1; width: 100%;"/>
+                    <ui:VisualElement style="flex-grow: 1; position: absolute; flex-direction: row; align-items: center; justify-content: center; width: 100%; height: 100%;">
+                        <ui:Label text="100" name="Text_CurrentHealth" class="health-text"/>
+                        <ui:Label text="/" class="health-text"/>
+                        <ui:Label text="100" name="Text_MaxHealth" class="health-text"/>
+                    </ui:VisualElement>
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement name="MiddleArea" style="flex-grow: 1; width: 100%; height: 40%;">
+            <ui:VisualElement style="flex-grow: 0; align-items: auto; justify-content: center; align-self: auto; height: 100%;">
+                <ui:Button text="상세 정보" class="detail-button"/>
+                <ui:Button text="스킬 목록" class="detail-button"/>
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement name="BottomArea" style="flex-grow: 1; width: 100%; height: 50%; align-items: center; justify-content: space-between; align-self: center; white-space: normal; flex-direction: column;">
+            <ui:VisualElement name="StatBoxArea" class="stat-box-area" style="flex-grow: 1; border-top-left-radius: 10px; border-top-right-radius: 10px; border-bottom-right-radius: 10px; border-bottom-left-radius: 10px; margin-bottom: 10px;">
+                <ui:VisualElement name="StatBox" style="flex-grow: 0; height: 100%; width: 20%; justify-content: flex-start; align-items: auto; align-self: flex-start; align-content: center;">
+                    <ui:VisualElement class="stat-text-info" style="flex-grow: 1;">
+                        <ui:Label text="힘"/>
+                    </ui:VisualElement>
+                    <ui:VisualElement class="stat-box">
+                        <ui:Label text="0" name="StrengthText" class="stat-text-value"/>
+                    </ui:VisualElement>
+                </ui:VisualElement>
+                <ui:VisualElement name="StatBox" style="flex-grow: 0; height: 100%; width: 20%; justify-content: flex-start; align-items: auto; align-self: flex-start; align-content: center;">
+                    <ui:VisualElement class="stat-text-info" style="flex-grow: 1;">
+                        <ui:Label text="지능"/>
+                    </ui:VisualElement>
+                    <ui:VisualElement class="stat-box">
+                        <ui:Label text="0" name="IntelligenceText" class="stat-text-value"/>
+                    </ui:VisualElement>
+                </ui:VisualElement>
+                <ui:VisualElement name="StatBox" style="flex-grow: 0; height: 100%; width: 20%; justify-content: flex-start; align-items: auto; align-self: flex-start; align-content: center;">
+                    <ui:VisualElement class="stat-text-info" style="flex-grow: 1;">
+                        <ui:Label text="민첩"/>
+                    </ui:VisualElement>
+                    <ui:VisualElement class="stat-box">
+                        <ui:Label text="0" name="DexText" class="stat-text-value"/>
+                    </ui:VisualElement>
+                </ui:VisualElement>
+                <ui:VisualElement name="StatBox" style="flex-grow: 0; height: 100%; width: 20%; justify-content: flex-start; align-items: auto; align-self: flex-start; align-content: center;">
+                    <ui:VisualElement class="stat-text-info" style="flex-grow: 1;">
+                        <ui:Label text="활력"/>
+                    </ui:VisualElement>
+                    <ui:VisualElement class="stat-box">
+                        <ui:Label text="0" name="VitalText" class="stat-text-value"/>
+                    </ui:VisualElement>
+                </ui:VisualElement>
+                <ui:VisualElement name="StatBox" style="flex-grow: 0; height: 100%; width: 20%; justify-content: flex-start; align-items: auto; align-self: flex-start; align-content: center;">
+                    <ui:VisualElement class="stat-text-info" style="flex-grow: 1;">
+                        <ui:Label text="스킬 포인트"/>
+                    </ui:VisualElement>
+                    <ui:VisualElement name="VisualElement" class="stat-box">
+                        <ui:Label text="0" name="SkillPoint" class="stat-text-value"/>
+                    </ui:VisualElement>
+                </ui:VisualElement>
+            </ui:VisualElement>
+            <ui:VisualElement style="flex-grow: 0.5; flex-direction: row; align-items: center; justify-content: flex-end; align-self: center; height: auto;">
+                <ui:Label text="성공확률:" class="cost-text"/>
+                <ui:Label text="100%" name="Text_SuccessChance" class="cost-text"/>
+                <ui:Label text="소모체력:" class="cost-text" style="padding-left: 1px; margin-left: 15px;"/>
+                <ui:Label text="30" name="Text_Cost" class="cost-text"/>
+            </ui:VisualElement>
+            <ui:VisualElement name="ButtonArea" style="flex-grow: 1; white-space: normal; flex-direction: column; justify-content: center; align-self: auto; align-items: stretch;">
+                <ui:VisualElement style="flex-grow: 1; flex-direction: row;">
+                    <ui:VisualElement name="VisualElement" class="upgrade-button-area">
+                        <ui:Label text="0&#10;" name="StrUpText" class="upgradepoint-text" style="align-items: flex-start; -unity-text-align: upper-center;"/>
+                        <ui:Button text="힘" name="Button_Strength" class="upgrade-button"/>
+                    </ui:VisualElement>
+                    <ui:VisualElement name="VisualElement" class="upgrade-button-area" style="flex-grow: 1;">
+                        <ui:Label text="0" name="IntelliUpText" class="upgradepoint-text"/>
+                        <ui:Button text="지능" name="Button_Intelligence" class="upgrade-button"/>
+                    </ui:VisualElement>
+                    <ui:VisualElement class="upgrade-button-area" style="flex-grow: 1;">
+                        <ui:Label text="0" name="DexUpText" class="upgradepoint-text"/>
+                        <ui:Button text="민첩" name="Button_Dex" class="upgrade-button"/>
+                    </ui:VisualElement>
+                    <ui:VisualElement class="upgrade-button-area" style="flex-grow: 1;">
+                        <ui:Label text="0" name="VitalUpText" class="upgradepoint-text"/>
+                        <ui:Button text="활력" name="Button_Vital" enable-rich-text="true" class="upgrade-button"/>
+                    </ui:VisualElement>
+                    <ui:VisualElement class="upgrade-button-area" style="flex-grow: 1;">
+                        <ui:Label text="50" name="RelaxText" class="upgradepoint-text"/>
+                        <ui:Button text="휴식" name="Button_Relax" enable-rich-text="true" class="relax-button"/>
+                    </ui:VisualElement>
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

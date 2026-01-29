@@ -68,12 +68,12 @@ public abstract class AIController : MonoBehaviour
         owner.ASC.TryActivateAbilityById(abilityId);
     }
 
-    private void OnEnable()
+    protected virtual void OnEnable()
     {
         owner.ASC.OnAbilityEnded += OnAbilityEnd;
     }
 
-    private void OnDisable()
+    protected virtual void OnDisable()
     {
         owner.ASC.OnAbilityEnded -= OnAbilityEnd;
     }

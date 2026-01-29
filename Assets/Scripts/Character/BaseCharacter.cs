@@ -10,6 +10,7 @@ public abstract class BaseCharacter : MonoBehaviour, IAbilityOwner, IDamageable
     public AnimationTrigger AnimationTrigger => animationTrigger;
     public Transform AttackPoint => attackPoint;
     #endregion
+
     public Rigidbody2D Rb => rb;
     public AbilitySystemComponent ASC => abilitySystemComponent ? abilitySystemComponent : GetComponent<AbilitySystemComponent>();
     public float MoveSpeed => moveSpeed;
@@ -65,7 +66,7 @@ public abstract class BaseCharacter : MonoBehaviour, IAbilityOwner, IDamageable
         CheckGrounded();
     }
 
-    public void TakeDamage(FDamageInfo damageInfo)
+    public virtual void TakeDamage(FDamageInfo damageInfo)
     {
         if (!abilitySystemComponent || isDead) return;
 

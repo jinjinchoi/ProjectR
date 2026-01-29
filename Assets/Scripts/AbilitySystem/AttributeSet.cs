@@ -94,6 +94,7 @@ public class AttributeSet : IAttributeSet
     public void SetBaseValue(EAttributeType type, float value)
     {
         attributes[type].baseValue = value;
+        Recalculate(type);
     }
 
     public float GetBaseValue(EAttributeType type)
