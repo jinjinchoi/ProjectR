@@ -84,4 +84,17 @@ public class UIController_RestArea : BaseUIController
             abilitySystem.ApplyModifier(costModifier);
         }
     }
+
+    public void Relax()
+    {
+        FAttributeModifier modifier = new()
+        {
+            attributeType = EAttributeType.currentHealth,
+            isPermanent = true,
+            operation = EModifierOp.Add,
+            value = GetRelaxValue()
+        };
+
+        abilitySystem.ApplyModifier(modifier);
+    }
 }

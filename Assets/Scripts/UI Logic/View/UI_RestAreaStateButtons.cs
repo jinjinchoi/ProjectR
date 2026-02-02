@@ -63,6 +63,6 @@ public class UI_RestAreaStateButtons
 
     void OnRelaxButtonClicked()
     {
-
+        uiController.Relax();
     }
 }

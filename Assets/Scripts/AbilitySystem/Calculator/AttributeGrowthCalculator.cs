@@ -30,9 +30,7 @@ public class AttributeGrowthCalculator
 
     public float CalculateRelaxPoint(float maxHealth)
     {
-        float relaxCorrection = Random.Range(0.2f, 0.6f);
-
-        return Mathf.Round(maxHealth * relaxCorrection);
+        return Mathf.Round(maxHealth * 0.5f);
     }
 
     public void UpdateUpgradePoint()

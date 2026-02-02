@@ -8,6 +8,12 @@ public class UI_RestAreaMain : MonoBehaviour
     private UI_RestAreaStatView statArea;
     private UI_RestAreaStateButtons statButtons;
 
+    private void Awake()
+    {
+        var root = GetComponent<UIDocument>().rootVisualElement;
+        VisualElement panel = root.Q<VisualElement>("Panel");
+        RestAreaManager.Instance.SetOverlayPannel(panel);
+    }
 
     private void Start()
     {
@@ -17,7 +23,7 @@ public class UI_RestAreaMain : MonoBehaviour
         statArea = new UI_RestAreaStatView();
         statArea.Init(uiController, root);
 
-        statButtons= new UI_RestAreaStateButtons();
+        statButtons = new UI_RestAreaStateButtons();
         statButtons.Init(uiController, root);
     }
 }
