@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba70d7cd721108349a9a1de1cf758f91, type: 3}
+  m_Name: NormalDialogue
+  m_EditorClassIdentifier: Assembly-CSharp::NormalDialogueSO
+  dialogueInfo:
+  - dialogueId: Normal001
+    speakerName: "\uD50C\uB808\uC774\uC5B4"
+    text: "\uCCAB\uBC88\uC9F8 \uB2E4\uC774\uC5BC\uB85C\uADF8 \uD14C\uC2A4\uD2B8.\n\uC774\uAC83\uC740
+      \uC5D4\uD130 \uD14C\uC2A4\uD2B8"
+    nextDialogueId: Normal002
+  - dialogueId: Normal002
+    speakerName: "\uD50C\uB808\uC774\uC5B4"
+    text: "\uB450\uBC88\uC9F8 \uB2E4\uC774\uC5BC\uB85C\uADF8 \uC785\uB2C8\uB2E4.
+      \uAE00\uC744 \uAE38\uAC8C \uB9CC\uB4E4\uACA0\uC2B5\uB2C8\uB2E4. \uAE00\uC774\uC5EC
+      \uAE38\uC5B4\uC838\uB77C \uAE38\uC5B4\uC838\uB77C\uC544\uC544\uC544\u314F\uC544\uC544
+      \uAE38\uAC8C \uB9CC\uB4E4\uC5B4 \uBD05\uB2C8\uB2E4."
+    nextDialogueId: End

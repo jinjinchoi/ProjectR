@@ -1,0 +1,9 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/USS/Loading.uss?fileID=7433441132597879392&amp;guid=e58ced825f2ee1e4a980ac69a8c44af9&amp;type=3#Loading"/>
+    <ui:VisualElement name="Panel" style="flex-grow: 1; background-color: rgb(255, 247, 247);">
+        <ui:VisualElement name="TextArea" style="flex-grow: 1; align-items: center; justify-content: center; align-self: auto;">
+            <ui:Label text="Start!!!" name="Text_Start" class="loading-text"/>
+            <ui:Label text="Press any key or screen" name="Text_Guide" class="loading-guide loading-guide--translucent"/>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

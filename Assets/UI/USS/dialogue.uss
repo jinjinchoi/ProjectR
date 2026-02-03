@@ -1,0 +1,85 @@
+:root {
+}
+
+.dialogue-main {
+    flex-grow: 0;
+    height: 300px;
+    width: 1200px;
+    background-color: rgba(0, 0, 0, 0.59);
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    border-top-width: 3px;
+    border-right-width: 3px;
+    border-bottom-width: 3px;
+    border-left-width: 3px;
+    border-left-color: rgb(255, 255, 255);
+    border-right-color: rgb(255, 255, 255);
+    border-top-color: rgb(255, 255, 255);
+    border-bottom-color: rgb(255, 255, 255);
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding-top: 30px;
+    padding-right: 30px;
+    padding-bottom: 30px;
+    padding-left: 30px;
+}
+
+
+
+.dialogue-name {
+    flex-grow: 0;
+    width: 400px;
+    height: 100px;
+    align-self: flex-start;
+    background-color: rgba(0, 0, 0, 0.59);
+    margin-bottom: 5px;
+    border-top-width: 3px;
+    border-right-width: 0;
+    border-bottom-width: 3px;
+    border-left-width: 0;
+    border-left-color: rgb(255, 199, 0);
+    border-right-color: rgb(255, 199, 0);
+    border-top-color: rgb(255, 199, 0);
+    border-bottom-color: rgb(255, 199, 0);
+    background-repeat: no-repeat no-repeat;
+    justify-content: center;
+}
+
+.dialogue-text-name {
+    align-items: center;
+    justify-content: flex-end;
+    -unity-text-align: upper-center;
+    font-size: 30px;
+    -unity-font-definition: url("project://database/Assets/ExternalAssets/Font/NanumGothic.otf?fileID=12800000&guid=f5dc1d4a67daccb45ad0142353b072ab&type=3#NanumGothic");
+    -unity-font-style: bold;
+    color: rgb(250, 233, 183);
+}
+
+.dialogue-text-main {
+    color: rgb(255, 255, 255);
+    font-size: 30px;
+    -unity-font-definition: url("project://database/Assets/ExternalAssets/Font/NanumGothic.otf?fileID=12800000&guid=f5dc1d4a67daccb45ad0142353b072ab&type=3#NanumGothic");
+    -unity-font-style: normal;
+    white-space: normal;
+}
+
+.nextArrow {
+    flex-grow: 0;
+    width: 30px;
+    height: 30px;
+    align-self: center;
+    justify-content: flex-end;
+    background-image: url("project://database/Assets/ExternalAssets/UI/down-chevron.png?fileID=2800000&guid=dd903d92b9bab5849897f6f3832476b6&type=3#down-chevron");
+    transition-duration: 1s;
+    transition-timing-function: ease;
+    translate: 0 0;
+    position: absolute;
+    bottom: 50px;
+}
+
+.nextArrow-down {
+    translate: 0 10px;
+    transition-duration: 1s;
+}

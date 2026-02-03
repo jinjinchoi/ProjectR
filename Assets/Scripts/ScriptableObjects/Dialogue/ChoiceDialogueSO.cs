@@ -7,10 +7,11 @@ public class ChoiceDialogueInfo
 {
     public string groupId;
     public string dialogueId;
-    public string choiceText;
+    [TextArea(3, 10)] public string choiceText;
     public string nextNodeId;
 }
 
+[CreateAssetMenu(fileName = "ChoiceDialogue", menuName = "Dialogue/Choice")]
 public class ChoiceDialogueSO : ScriptableObject
 {
     public List<ChoiceDialogueInfo> choiceDialogueInfo;

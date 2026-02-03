@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class UIController_Character : BaseUIController
+public class UIController_Character : BaseCharacterUIController
 {
 
     protected override void Awake()

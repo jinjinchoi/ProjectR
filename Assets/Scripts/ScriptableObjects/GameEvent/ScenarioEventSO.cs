@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum ScenarioEventType
+public enum EScenarioEventType
 {
     Dialogue,
     Battle
@@ -11,16 +11,16 @@ public enum ScenarioEventType
 public class ScenarioEventInfo
 {
     public int day;
-    public ScenarioEventType type;
+    public EScenarioEventType type;
     public string eventId;
     public string dialogueId;
     public string battleInfoId;
     //reward
 }
 
-[CreateAssetMenu(fileName = "Scenario", menuName = "GameEvent/Scenario")]
+[CreateAssetMenu(fileName = "ScenarioEvent", menuName = "GameEvent/Scenario")]
 public class ScenarioEventSO : ScriptableObject
 {
     public List<ScenarioEventInfo> scenarioEvent;
-    public int lastDay;
+    public int lastDay = 30;
 }

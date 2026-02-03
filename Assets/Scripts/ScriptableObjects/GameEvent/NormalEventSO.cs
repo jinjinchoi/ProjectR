@@ -11,7 +11,7 @@ public class NormalEventInfo
     // ...reward
 }
 
-[CreateAssetMenu(fileName = "Scenario", menuName = "GameEvent/Normal")]
+[CreateAssetMenu(fileName = "NormalEvent", menuName = "GameEvent/Normal")]
 public class NormalEventSO : ScriptableObject
 {
     public List<NormalEventInfo> NormalEvent;

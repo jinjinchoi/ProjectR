@@ -1,7 +1,7 @@
 using UnityEngine;
 
 
-public class UIController_RestArea : BaseUIController
+public class UIController_RestArea : BaseCharacterUIController
 {
     private AttributeGrowthCalculator growthCalculator;
 

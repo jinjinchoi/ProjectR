@@ -1,0 +1,18 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/USS/dialogue.uss?fileID=7433441132597879392&amp;guid=e7f6c3e7c15f1f24b97dab7ffcfc0d73&amp;type=3#dialogue"/>
+    <ui:VisualElement name="Panel" focusable="true" style="flex-grow: 1; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.51);">
+        <ui:VisualElement name="TopArea" style="flex-grow: 0; height: 20%;"/>
+        <ui:VisualElement name="MidArea" style="flex-grow: 0; height: 40%;"/>
+        <ui:VisualElement name="BottomArea" style="flex-grow: 0; justify-content: center; align-self: center; align-items: center; flex-direction: column; width: 100%; height: 40%;">
+            <ui:VisualElement name="DialogueArea" style="flex-grow: 0; justify-content: center; width: auto;">
+                <ui:VisualElement name="NameArea" class="dialogue-name">
+                    <ui:Label text="캐릭터 이름" name="Text_CharacterName" class="dialogue-text-name"/>
+                </ui:VisualElement>
+                <ui:VisualElement name="TextArea" class="dialogue-main">
+                    <ui:Label text="글을 길게 써보겠습니다&#10;근데 이거 엔터는 그냥 엔터인가요? 텍스트 넘길때는 어떻게 하면 되지? 한번 알아보겠습니다." name="Text_Main" class="dialogue-text-main"/>
+                    <ui:VisualElement name="Img_NextArrow" class="nextArrow"/>
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

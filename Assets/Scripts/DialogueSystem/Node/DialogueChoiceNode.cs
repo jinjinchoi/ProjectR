@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public struct ChoiceInfo
+public struct FChoiceInfo
 {
     public string dialogueId;
     public string text;
@@ -11,5 +11,5 @@ public struct ChoiceInfo
 public class DialogueChoiceNode : DialogueNodeBase
 {
     public string groupId;
-    public List<ChoiceInfo> choices = new();
+    public List<FChoiceInfo> choices = new();
 }

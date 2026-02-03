@@ -11,6 +11,8 @@ public class BattleEventInfo
     Dictionary<string /* enemy id */, int /* enemy level */> enemyInfo;
 }
 
+[CreateAssetMenu(fileName = "BattleEvent", menuName = "GameEvent/Battle")]
+
 public class BattleInfoSO : ScriptableObject
 {
     public List<BattleEventInfo> battleInfo;

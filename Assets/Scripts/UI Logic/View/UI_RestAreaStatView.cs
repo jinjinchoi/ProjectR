@@ -18,6 +18,7 @@ public class UI_RestAreaStatView
     const string dexUpTextName = "DexUpText";
     const string vitalUpTextName = "VitalUpText";
     const string relaxTextName = "RelaxText";
+    const string dayTextName = "DayText";
     #endregion
 
     #region css names
@@ -43,6 +44,8 @@ public class UI_RestAreaStatView
     private Label vitalUpText;
     private Label relaxText;
 
+    private Label dayText;
+
     public void Init(UIController_RestArea uiController, VisualElement root)
     {
         this.uiController = uiController;
@@ -54,6 +57,13 @@ public class UI_RestAreaStatView
         UpdateCostAndChanceText();
     }
 
+    public void Dispose()
+    {
+        uiController.OnAttributeValueChanged -= OnAttributeValueChanged;
+        uiController.OnVitalRatioChanged -= OnHeathRatioChanged;
+        GameManager.Instance.DayChanged -= OnDayChanged;
+    }
+    
     private void InitUIComponents(VisualElement root)
     {
         strText = root.Q<Label>(strTextName);
@@ -71,15 +81,16 @@ public class UI_RestAreaStatView
         dexUpText = root.Q<Label>(dexUpTextName);
         vitalUpText = root.Q<Label>(vitalUpTextName);
         relaxText = root.Q<Label>(relaxTextName);
+
+        dayText = root.Q<Label>(dayTextName);
     }
 
     private void RegisterCallbacks()
     {
-        uiController.OnAttributeValueChanged -= OnAttributeValueChanged;
-        uiController.OnVitalRatioChanged -= OnHeathRatioChanged;
-
         uiController.OnAttributeValueChanged += OnAttributeValueChanged;
         uiController.OnVitalRatioChanged += OnHeathRatioChanged;
+
+        GameManager.Instance.DayChanged += OnDayChanged;
     }
 
     private void InitAttributeText()
@@ -101,6 +112,7 @@ public class UI_RestAreaStatView
         float HealthRatio = uiController.GetHealthPercent();
         OnHeathRatioChanged(true, HealthRatio);
     }
+    
 
     private void UpdateUpgradeValueText()
     {
@@ -179,6 +191,11 @@ public class UI_RestAreaStatView
         float currentHealth = uiController.GetAttributeValue(EAttributeType.currentHealth);
         currentHealthText.text = currentHealth.ToString();
         maxHealthText.text = maxHealth.ToString();
+    }
+
+    private void OnDayChanged(int day)
+    {
+        dayText.text = day.ToString();
     }
 
 }

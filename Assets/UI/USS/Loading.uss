@@ -1,0 +1,25 @@
+:root {
+}
+
+.loading-text {
+    font-size: 100px;
+    -unity-font-definition: url("project://database/Assets/ExternalAssets/Font/NanumGothic.otf?fileID=12800000&guid=f5dc1d4a67daccb45ad0142353b072ab&type=3#NanumGothic");
+    -unity-font-style: bold-and-italic;
+    -unity-text-align: upper-center;
+    text-shadow: 4px 4px 0 rgb(240, 0, 255);
+    -unity-text-outline-color: rgba(0, 0, 0, 0);
+    color: rgb(0, 0, 0);
+    opacity: 1;
+}
+
+.loading-guide {
+    font-size: 30px;
+    -unity-font-definition: url("project://database/Assets/ExternalAssets/Font/NanumGothic.otf?fileID=12800000&guid=f5dc1d4a67daccb45ad0142353b072ab&type=3#NanumGothic");
+    -unity-font-style: bold;
+    transition-duration: 1s;
+}
+
+.loading-guide--translucent {
+    transition-duration: 1s;
+    opacity: 0.1;
+}

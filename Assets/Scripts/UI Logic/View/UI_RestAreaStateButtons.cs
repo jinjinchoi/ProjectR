@@ -59,10 +59,12 @@ public class UI_RestAreaStateButtons
     void OnUpgradeButtonClicked(EAttributeType attributeToUpgrade)
     {
         uiController.UpgaradeAttribute(attributeToUpgrade);
+        GameManager.Instance.ProcessDay();
     }
 
     void OnRelaxButtonClicked()
     {
         uiController.Relax();
+        GameManager.Instance.ProcessDay();
     }
 }

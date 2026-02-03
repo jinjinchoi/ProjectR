@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class DialogueGraph
 {
-    private Dictionary<string /* node id */, DialogueNodeBase> nodeMap;
+    private Dictionary<string /* node id */, DialogueNodeBase> nodeMap = new();
 
     public void Init()
     {
@@ -25,22 +25,22 @@ public class DialogueGraph
 
     private void CreateTextNode()
     {
-        if (DialogueManager.Instance.NormalDialogue == null)
+        if (GameManager.Instance.NormalDialogue == null)
         {
             Debug.LogWarning("NormalDialogue Not Set");
             return;
         }
 
-        List<NormalDialogueInfo> dialogueInfo = DialogueManager.Instance.NormalDialogue.dialogueInfo;
+        List<NormalDialogueInfo> dialogueInfo = GameManager.Instance.NormalDialogue.dialogueInfo;
         foreach (var info in dialogueInfo)
         {
             DialogueTextNode textNode = new()
             {
                 dialogueType = EDialogueType.Text,
                 nodeId = info.dialogueId,
-                nextNodeName = info.nextDialogueId,
+                nextNodeId = info.nextDialogueId,
                 text = info.text,
-                speakerId = info.speakerName
+                speakerName = info.speakerName
             };
 
             nodeMap.Add(info.dialogueId, textNode);
@@ -49,16 +49,16 @@ public class DialogueGraph
 
     private void CreateChoiceNode()
     {
-        if (DialogueManager.Instance.ChoiceDialogue == null)
+        if (GameManager.Instance.ChoiceDialogue == null)
         {
             Debug.LogWarning("ChoiceDialogue Not Set");
             return;
         }
 
-        List<ChoiceDialogueInfo> choicesInfo = DialogueManager.Instance.ChoiceDialogue.choiceDialogueInfo;
+        List<ChoiceDialogueInfo> choicesInfo = GameManager.Instance.ChoiceDialogue.choiceDialogueInfo;
         foreach (var info in choicesInfo)
         {
-            ChoiceInfo choice = new()
+            FChoiceInfo choice = new()
             {
                 dialogueId = info.dialogueId,
                 text = info.choiceText,
