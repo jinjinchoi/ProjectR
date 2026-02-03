@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class EventState
@@ -14,7 +15,6 @@ public class EventManager
 
     private Dictionary<int, ScenarioEventInfo> scenarioEventByDay;
     private List<NormalEventInfo> normalEvents;
-
 
     public void Init(List<ScenarioEventInfo> scenarioEvent, List<NormalEventInfo> normalEvent)
     {
@@ -62,7 +62,7 @@ public class EventManager
             return;
         }
 
-        // TODO: execute dialgue, battle. etc...
+        // TODO: execute battle event
 
     }
 
@@ -71,22 +71,27 @@ public class EventManager
         NormalEventInfo normalEvent = GetRandomNormalEvent();
         if (normalEvent == null)
         {
-            Debug.LogWarning("Event not exist");
+            Debug.Log("Available event does not exist.");
             return;
         }
 
-        // TODO: execute event...
+        EventHub.RaiseDialogueRequested(normalEvent.dialogueId);
+        if (normalEvent.isOnce)
+        {
+            eventState.triggeredEventSet.Add(normalEvent.eventId);
+        }
+        
     }
-
 
     private NormalEventInfo GetRandomNormalEvent()
     {
-        NormalEventInfo evnetInfo = normalEvents[UnityEngine.Random.Range(0, normalEvents.Count)];
-        if (eventState.triggeredEventSet.Contains(evnetInfo.eventId))
-        {
-            return null;
-        }
+        List<NormalEventInfo> availableEvents = normalEvents
+        .Where(e => !eventState.triggeredEventSet.Contains(e.eventId))
+        .ToList();
 
-        return evnetInfo;
+        if (availableEvents.Count == 0)
+            return null;
+
+        return availableEvents[UnityEngine.Random.Range(0, availableEvents.Count)];
     }
 }

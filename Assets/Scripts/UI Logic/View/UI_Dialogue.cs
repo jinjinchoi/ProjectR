@@ -24,8 +24,9 @@ public class UI_Dialogue : MonoBehaviour
         dialogueText = root.Q<Label>("Text_Main");
         nextArrow = root.Q<VisualElement>("Img_NextArrow");
 
+        AbilitySystemComponent asc = GetComponentInParent<AbilitySystemComponent>();
         uiController = new UIController_Dialogue();
-        uiController.Init();
+        uiController.Init(asc);
     }
 
     private void OnEnable()

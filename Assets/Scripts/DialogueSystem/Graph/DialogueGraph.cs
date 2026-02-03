@@ -10,8 +10,10 @@ public class DialogueGraph
     {
         CreateTextNode();
         CreateChoiceNode();
+        CreateRewardNode();
         CreateEndNode();
     }
+
 
     public DialogueNodeBase GetNodeById(string nodeId)
     {
@@ -25,13 +27,13 @@ public class DialogueGraph
 
     private void CreateTextNode()
     {
-        if (GameManager.Instance.NormalDialogue == null)
+        if (GameManager.Instance.NormalDialogueSO == null)
         {
             Debug.LogWarning("NormalDialogue Not Set");
             return;
         }
 
-        List<NormalDialogueInfo> dialogueInfo = GameManager.Instance.NormalDialogue.dialogueInfo;
+        List<NormalDialogueInfo> dialogueInfo = GameManager.Instance.NormalDialogueSO.dialogueInfo;
         foreach (var info in dialogueInfo)
         {
             DialogueTextNode textNode = new()
@@ -49,13 +51,13 @@ public class DialogueGraph
 
     private void CreateChoiceNode()
     {
-        if (GameManager.Instance.ChoiceDialogue == null)
+        if (GameManager.Instance.ChoiceDialogueSO == null)
         {
             Debug.LogWarning("ChoiceDialogue Not Set");
             return;
         }
 
-        List<ChoiceDialogueInfo> choicesInfo = GameManager.Instance.ChoiceDialogue.choiceDialogueInfo;
+        List<ChoiceDialogueInfo> choicesInfo = GameManager.Instance.ChoiceDialogueSO.choiceDialogueInfo;
         foreach (var info in choicesInfo)
         {
             FChoiceInfo choice = new()
@@ -81,6 +83,30 @@ public class DialogueGraph
             {
                 choiceNode.choices.Add(choice);
             }
+        }
+    }
+
+    private void CreateRewardNode()
+    {
+        if (GameManager.Instance.RewardDialogueSO == null)
+        {
+            Debug.LogWarning("RewardDialogueSO Not Set");
+            return;
+        }
+
+        List<RewardNodeInfo> rewardNodeInfo = GameManager.Instance.RewardDialogueSO.rewardNodeInfo;
+        foreach (RewardNodeInfo info in rewardNodeInfo)
+        {
+            DialogueRewardNode node = new()
+            {
+                nodeId = info.nodeId,
+                dialogueType = EDialogueType.Reward,
+                attribute = info.attribute,
+                reward = info.reward,
+                nextNodeId = info.nextNodeId
+            };
+
+            nodeMap.Add(info.nodeId, node);
         }
     }
 

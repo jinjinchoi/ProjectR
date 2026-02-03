@@ -1,5 +1,4 @@
 using System;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public struct FNormalDialogueInfo
@@ -13,10 +12,12 @@ public class UIController_Dialogue
     public event Action<FNormalDialogueInfo> TextDialogueRequested;
 
     private string nodeId;
+    private AbilitySystemComponent abilitySystemComponent;
 
-    public void Init()
+    public void Init(AbilitySystemComponent asc)
     {
         EventHub.DialogueRequested += OnDialogueRequested;
+        abilitySystemComponent = asc;
     }
 
     public void Dispose()
@@ -46,6 +47,10 @@ public class UIController_Dialogue
             case EDialogueType.Choice:
                 break;
 
+            case EDialogueType.Reward:
+                HandleRewardNode();
+                break;
+
             case EDialogueType.End:
                 EventHub.RaiseDialogueFinished();
                 break;
@@ -66,4 +71,39 @@ public class UIController_Dialogue
         TextDialogueRequested?.Invoke(dialogueInfo);
         nodeId = node.nextNodeId;
     }
+
+    private void HandleRewardNode()
+    {
+        DialogueRewardNode node = GameManager.Instance.DialogueManager.GetDialogueNodeBy<DialogueRewardNode>(nodeId);
+        if (node == null) return;
+
+        FAttributeModifier modifier = new()
+        {
+            attributeType = node.attribute,
+            value = node.reward,
+            operation = EModifierOp.Add,
+            isPermanent = true
+        };
+
+        abilitySystemComponent.ApplyModifier(modifier);
+
+        string attributeName = FunctionLibrary.GetAttributeNameByType(node.attribute);
+
+        string msg = node.reward switch
+        {
+            > 0 => $"{attributeName}이(가) {node.reward} 증가하였습니다",
+            < 0 => $"{attributeName}이(가) {Mathf.Abs(node.reward)} 감소하였습니다",
+            _ => $"{attributeName}은(는) 변화가 없습니다"
+        };
+
+        FNormalDialogueInfo dialogueInfo = new()
+        {
+            speakerName = string.Empty,
+            text = msg
+        };
+
+        TextDialogueRequested?.Invoke(dialogueInfo);
+        nodeId = node.nextNodeId;
+    }
+
 }

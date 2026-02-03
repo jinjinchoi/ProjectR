@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
     [Header("Dialogue System")]
     [SerializeField] private NormalDialogueSO normalDialogueSO;
     [SerializeField] private ChoiceDialogueSO choiceDialogueSO;
+    [SerializeField] private RewardDialogueSO rewardDialogueSO;
 
     public EventManager eventManager;
     private DialogueManager dialogueManager;
@@ -20,8 +21,9 @@ public class GameManager : MonoBehaviour
     private int day = 0;
     private int lastActivatedEventDay = 1;
 
-    public NormalDialogueSO NormalDialogue => normalDialogueSO;
-    public ChoiceDialogueSO ChoiceDialogue => choiceDialogueSO;
+    public NormalDialogueSO NormalDialogueSO => normalDialogueSO;
+    public ChoiceDialogueSO ChoiceDialogueSO => choiceDialogueSO;
+    public RewardDialogueSO RewardDialogueSO => rewardDialogueSO;
     public EventManager EventManager => eventManager;
     public DialogueManager DialogueManager => dialogueManager;
 
@@ -72,6 +74,7 @@ public class GameManager : MonoBehaviour
         {
             Debug.Log("NormalEvent Execute");
             eventManager.ExecuteNormalEvent();
+            lastActivatedEventDay = day;
         }
     }
 
@@ -80,7 +83,7 @@ public class GameManager : MonoBehaviour
         int gap = day - lastActivatedEventDay;
 
         // 하루당 확률 증가량
-        float increasePerDay = 0.05f; // 하루당 +5%
+        float increasePerDay = 0.2f; // 하루당 +10%
         float chance = gap * increasePerDay;
 
         // 최대 확률 제한
