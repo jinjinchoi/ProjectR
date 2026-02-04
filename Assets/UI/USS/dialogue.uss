@@ -26,8 +26,6 @@
     padding-left: 30px;
 }
 
-
-
 .dialogue-name {
     flex-grow: 0;
     width: 400px;
@@ -82,4 +80,42 @@
 .nextArrow-down {
     translate: 0 10px;
     transition-duration: 1s;
+}
+
+.selectbox {
+    width: 800px;
+    height: 100px;
+    font-size: 28px;
+    -unity-font-definition: url("project://database/Assets/ExternalAssets/Font/NanumGothic.otf?fileID=12800000&guid=f5dc1d4a67daccb45ad0142353b072ab&type=3#NanumGothic");
+    -unity-font-style: bold;
+    background-color: rgba(0, 0, 0, 0.9);
+    color: rgb(233, 217, 195);
+    -unity-text-outline-width: 0;
+    -unity-text-outline-color: rgb(255, 220, 121);
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    padding-bottom: 0;
+    margin-bottom: 10px;
+    border-left-color: rgb(255, 255, 255);
+    border-right-color: rgb(255, 255, 255);
+    border-top-color: rgb(255, 255, 255);
+    border-bottom-color: rgb(255, 255, 255);
+    border-top-width: 2px;
+    border-right-width: 2px;
+    border-bottom-width: 2px;
+    border-left-width: 2px;
+}
+
+.selectbox:hover {
+    background-color: rgba(36, 36, 36, 0.9);
+    border-left-color: rgb(195, 195, 195);
+    border-right-color: rgb(195, 195, 195);
+    border-top-color: rgb(195, 195, 195);
+    border-bottom-color: rgb(195, 195, 195);
+}
+
+.selectbox:active {
+    background-color: rgba(91, 91, 91, 0.9);
 }

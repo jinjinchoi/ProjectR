@@ -1,4 +1,6 @@
+
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public struct FNormalDialogueInfo
@@ -7,9 +9,16 @@ public struct FNormalDialogueInfo
     public string text;
 }
 
+public struct FChoiceButtonInfo
+{
+    public string choiceText;
+    public string nextNodeId;
+}
+
 public class UIController_Dialogue
 {
     public event Action<FNormalDialogueInfo> TextDialogueRequested;
+    public event Action<List<FChoiceButtonInfo>> ChoiceDialogueRequested;
 
     private string nodeId;
     private AbilitySystemComponent abilitySystemComponent;
@@ -30,6 +39,11 @@ public class UIController_Dialogue
         OnDialogueRequested(nodeId);
     }
 
+    public void CallDialogueById(string dialoguId)
+    {
+        OnDialogueRequested(dialoguId);
+    }
+
     private void OnDialogueRequested(string dialogueId)
     {
         nodeId = dialogueId;
@@ -45,6 +59,7 @@ public class UIController_Dialogue
                 break;
 
             case EDialogueType.Choice:
+                HandleChoiceDialogue();
                 break;
 
             case EDialogueType.Reward:
@@ -72,6 +87,27 @@ public class UIController_Dialogue
         nodeId = node.nextNodeId;
     }
 
+    private void HandleChoiceDialogue()
+    {
+        DialogueChoiceNode node = GameManager.Instance.DialogueManager.GetDialogueNodeBy<DialogueChoiceNode>(nodeId);
+        if (node == null) return;
+
+        List<FChoiceButtonInfo> choiceButtonInfo = new();
+
+        foreach (var choice in node.choices)
+        {
+            FChoiceButtonInfo choiceInfo = new()
+            {
+                choiceText = choice.text,
+                nextNodeId = choice.nextNodeId,
+            };
+
+            choiceButtonInfo.Add(choiceInfo);
+        }
+
+        ChoiceDialogueRequested?.Invoke(choiceButtonInfo);
+    }
+
     private void HandleRewardNode()
     {
         DialogueRewardNode node = GameManager.Instance.DialogueManager.GetDialogueNodeBy<DialogueRewardNode>(nodeId);
@@ -84,11 +120,9 @@ public class UIController_Dialogue
             operation = EModifierOp.Add,
             isPermanent = true
         };
-
         abilitySystemComponent.ApplyModifier(modifier);
 
         string attributeName = FunctionLibrary.GetAttributeNameByType(node.attribute);
-
         string msg = node.reward switch
         {
             > 0 => $"{attributeName}이(가) {node.reward} 증가하였습니다",
@@ -101,8 +135,8 @@ public class UIController_Dialogue
             speakerName = string.Empty,
             text = msg
         };
-
         TextDialogueRequested?.Invoke(dialogueInfo);
+
         nodeId = node.nextNodeId;
     }
 

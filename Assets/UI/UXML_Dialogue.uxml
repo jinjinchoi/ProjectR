@@ -2,7 +2,11 @@
     <Style src="project://database/Assets/UI/USS/dialogue.uss?fileID=7433441132597879392&amp;guid=e7f6c3e7c15f1f24b97dab7ffcfc0d73&amp;type=3#dialogue"/>
     <ui:VisualElement name="Panel" focusable="true" style="flex-grow: 1; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.51);">
         <ui:VisualElement name="TopArea" style="flex-grow: 0; height: 20%;"/>
-        <ui:VisualElement name="MidArea" style="flex-grow: 0; height: 40%;"/>
+        <ui:VisualElement name="MidArea" style="flex-grow: 0; height: 40%; align-items: center; justify-content: center;">
+            <ui:Button text="" name="SelectButton_01" class="selectbox" style="display: none;"/>
+            <ui:Button text="" name="SelectButton_02" class="selectbox" style="display: none;"/>
+            <ui:Button text="" name="SelectButton_03" class="selectbox" style="display: none;"/>
+        </ui:VisualElement>
         <ui:VisualElement name="BottomArea" style="flex-grow: 0; justify-content: center; align-self: center; align-items: center; flex-direction: column; width: 100%; height: 40%;">
             <ui:VisualElement name="DialogueArea" style="flex-grow: 0; justify-content: center; width: auto;">
                 <ui:VisualElement name="NameArea" class="dialogue-name">
