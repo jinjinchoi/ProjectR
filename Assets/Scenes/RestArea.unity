@@ -571,7 +571,7 @@ MonoBehaviour:
   scenarioEventSO: {fileID: 11400000, guid: a8bf4c7dbd6574d4ba70a7b2b28697ed, type: 2}
   normalEventSO: {fileID: 11400000, guid: 156494203916a8745872e9bb3318617d, type: 2}
   normalDialogueSO: {fileID: 11400000, guid: 793adf9b3059e0b4abf56b58acd93c34, type: 2}
-  choiceDialogueSO: {fileID: 0}
+  choiceDialogueSO: {fileID: 11400000, guid: 128bd08bbeb158643bcc594ce0326c71, type: 2}
   rewardDialogueSO: {fileID: 11400000, guid: 5338d12e31eed9f4faa9d082af0db461, type: 2}
 --- !u!4 &1643491967
 Transform:

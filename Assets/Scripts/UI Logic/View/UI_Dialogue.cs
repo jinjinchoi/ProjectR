@@ -47,7 +47,7 @@ public class UI_Dialogue : MonoBehaviour
             selectButtons[i].clicked += () => OnChoiceButtonClicked(index);
         }
 
-        AbilitySystemComponent asc = GetComponentInParent<AbilitySystemComponent>();
+        IAbilitySystemContext asc = GetComponentInParent<IAbilitySystemContext>();
         uiController = new UIController_Dialogue();
         uiController.Init(asc);
     }

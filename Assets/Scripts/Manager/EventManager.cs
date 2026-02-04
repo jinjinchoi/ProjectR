@@ -16,6 +16,8 @@ public class EventManager
     private Dictionary<int, ScenarioEventInfo> scenarioEventByDay;
     private List<NormalEventInfo> normalEvents;
 
+    public string CurrentBattleInfoId { get; private set; }
+
     public void Init(List<ScenarioEventInfo> scenarioEvent, List<NormalEventInfo> normalEvent)
     {
         eventState = new EventState();
@@ -62,8 +64,10 @@ public class EventManager
             return;
         }
 
-        // TODO: execute battle event
-
+        if (scenerioEvent.type == EScenarioEventType.Battle)
+        {
+            CurrentBattleInfoId = scenerioEvent.battleInfoId;
+        }
     }
 
     public void ExecuteNormalEvent()
@@ -94,4 +98,6 @@ public class EventManager
 
         return availableEvents[UnityEngine.Random.Range(0, availableEvents.Count)];
     }
+
+    
 }

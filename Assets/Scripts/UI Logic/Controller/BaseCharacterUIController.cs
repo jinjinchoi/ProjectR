@@ -7,11 +7,11 @@ public class BaseCharacterUIController : MonoBehaviour
     // vital attribute 변화시 비율을 전송하는 event
     public event Action<bool /* true == health, false == mana */, float> OnVitalRatioChanged;
 
-    protected AbilitySystemComponent abilitySystem;
+    protected IAbilitySystemContext abilitySystem;
 
     protected virtual void Awake()
     {
-        abilitySystem = GetComponent<AbilitySystemComponent>();
+        abilitySystem = GetComponent<IAbilitySystemContext>();
     }
 
     protected virtual void Start()
@@ -27,7 +27,7 @@ public class BaseCharacterUIController : MonoBehaviour
 
     private void OnAttritbuteChanged(EAttributeType attribute, float currentValue)
     {
-        if (!abilitySystem) return;
+        if (abilitySystem == null) return;
 
         OnAttributeValueChanged?.Invoke(attribute, currentValue);
 

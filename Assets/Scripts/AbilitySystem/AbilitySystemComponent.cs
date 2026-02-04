@@ -24,6 +24,7 @@ public interface IAbilitySystemContext
     void StopCoroutine(Coroutine routine);
     void RegisterWaitingAbility(EAnimationEventType eventType, AbilitySpec spec, Action callback);
     void UnregisterWaitingAbility(AbilitySpec spec);
+    void ApplyModifier(FAttributeModifier modifier);
 }
 
 // 어빌리티가 애니메이션을 기다릴 때 콜백을 저장하는 클래스
@@ -99,7 +100,6 @@ public class AbilitySystemComponent : MonoBehaviour, IAbilitySystemContext
     {
         abilities.Add(new AbilitySpec(data, this));
     }
-
 
     public void TryActivateAbilityById(EAbilityId abilityId)
     {
@@ -200,6 +200,4 @@ public class AbilitySystemComponent : MonoBehaviour, IAbilitySystemContext
         if (owner != null && owner.AnimationTrigger != null)
             Owner.AnimationTrigger.OnAnimTriggered -= OnAnimationTriggered;
     }
-
-
 }

@@ -1,19 +1,40 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 
 [System.Serializable]
-public class BattleEventInfo
+public class EnemySpawnInfo
 {
-    string eventId;
-    // TODO: 에너미 레벨에 따른 능력치 설정 방법 생각해야함.
-    // 배열을 사용해서 설정하는 방식이 유효할 것으로 생각됨.
-    Dictionary<string /* enemy id */, int /* enemy level */> enemyInfo;
+    public string enemyId;
+    public int level;
+    public int count = 1;
 }
 
-[CreateAssetMenu(fileName = "BattleEvent", menuName = "GameEvent/Battle")]
+[System.Serializable]
+public class BattleEventInfo
+{
+    public string eventId;
+    public string sceneName;
+    public List<EnemySpawnInfo> enemieInfos;
+}
 
+
+[CreateAssetMenu(fileName = "BattleEvent", menuName = "GameEvent/Battle")]
 public class BattleInfoSO : ScriptableObject
 {
-    public List<BattleEventInfo> battleInfo;
+    public List<BattleEventInfo> battleInfoList;
+
+    private Dictionary<string, BattleEventInfo> battleInfoMap;
+
+    public void Init()
+    {
+        battleInfoMap = battleInfoList.ToDictionary(e => e.eventId);
+    }
+
+    public BattleEventInfo GetBattleInfo(string id)
+    {
+        battleInfoMap.TryGetValue(id, out var data);
+        return data;
+    }
 }

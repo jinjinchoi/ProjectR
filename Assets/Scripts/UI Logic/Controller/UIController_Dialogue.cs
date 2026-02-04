@@ -21,9 +21,9 @@ public class UIController_Dialogue
     public event Action<List<FChoiceButtonInfo>> ChoiceDialogueRequested;
 
     private string nodeId;
-    private AbilitySystemComponent abilitySystemComponent;
+    private IAbilitySystemContext abilitySystemComponent;
 
-    public void Init(AbilitySystemComponent asc)
+    public void Init(IAbilitySystemContext asc)
     {
         EventHub.DialogueRequested += OnDialogueRequested;
         abilitySystemComponent = asc;

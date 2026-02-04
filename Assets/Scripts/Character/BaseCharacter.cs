@@ -70,11 +70,13 @@ public abstract class BaseCharacter : MonoBehaviour, IAbilityOwner, IDamageable
     {
         if (!abilitySystemComponent || isDead) return;
 
-        FAttributeModifier damageModifier = new FAttributeModifier();
-        damageModifier.attributeType = EAttributeType.incommingDamage;
-        damageModifier.value = DamageCalculator.CalculateIncomingDamage(abilitySystemComponent.AttributeSet, damageInfo);
-        damageModifier.isPermanent = true;
-        damageModifier.operation = EModifierOp.Add;
+        FAttributeModifier damageModifier = new()
+        {
+            attributeType = EAttributeType.incommingDamage,
+            value = DamageCalculator.CalculateIncomingDamage(abilitySystemComponent.AttributeSet, damageInfo),
+            isPermanent = true,
+            operation = EModifierOp.Add
+        };
 
         if (vfxComponent) vfxComponent.PlayOnDamageVfx();
         abilitySystemComponent.ApplyModifier(damageModifier);
@@ -161,8 +163,6 @@ public abstract class BaseCharacter : MonoBehaviour, IAbilityOwner, IDamageable
             isGrounded = false;
         }
     }
-
-
 
     protected virtual void OnDrawGizmos()
     {

@@ -5,27 +5,33 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
     public event Action<int> DayChanged;
-    
 
+    #region Scriptable Object
     [Header("Event System")]
     [SerializeField] private ScenarioEventSO scenarioEventSO;
     [SerializeField] private NormalEventSO normalEventSO;
+    [SerializeField] private BattleInfoSO battleEventInfoSO;
+    [SerializeField] private EnemyAttribtueSO enemyAttribtueSO;
     [Header("Dialogue System")]
     [SerializeField] private NormalDialogueSO normalDialogueSO;
     [SerializeField] private ChoiceDialogueSO choiceDialogueSO;
     [SerializeField] private RewardDialogueSO rewardDialogueSO;
+    #endregion
 
-    public EventManager eventManager;
+    private EventManager eventManager;
     private DialogueManager dialogueManager;
 
     private int day = 0;
     private int lastActivatedEventDay = 1;
 
+    #region Getter
     public NormalDialogueSO NormalDialogueSO => normalDialogueSO;
     public ChoiceDialogueSO ChoiceDialogueSO => choiceDialogueSO;
     public RewardDialogueSO RewardDialogueSO => rewardDialogueSO;
+    public EnemyAttribtueSO EnemyAttribtueSO => enemyAttribtueSO;
     public EventManager EventManager => eventManager;
     public DialogueManager DialogueManager => dialogueManager;
+    #endregion
 
     private void Awake()
     {
@@ -39,6 +45,8 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
 
         CreateManagerClassess();
+        enemyAttribtueSO.Init();
+        battleEventInfoSO.Init();
     }
 
     private void CreateManagerClassess()
@@ -72,7 +80,6 @@ public class GameManager : MonoBehaviour
         }
         else if (CanTriggerNormalEvent(eventManager))
         {
-            Debug.Log("NormalEvent Execute");
             eventManager.ExecuteNormalEvent();
             lastActivatedEventDay = day;
         }
@@ -90,6 +97,18 @@ public class GameManager : MonoBehaviour
         chance = Mathf.Clamp01(chance);
 
         return UnityEngine.Random.value < chance;
+    }
+
+    public BattleEventInfo GetCurrentEventEnemyInfo()
+    {
+        BattleEventInfo battleInfo = battleEventInfoSO.GetBattleInfo(eventManager.CurrentBattleInfoId);
+
+        if (battleInfo == null)
+        {
+            DebugHelper.LogWarning($"Battle Info not exist. id: {eventManager.CurrentBattleInfoId}");
+        }
+
+        return battleInfo;
     }
 
 }

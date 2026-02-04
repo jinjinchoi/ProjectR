@@ -32,17 +32,13 @@ public class AttributeValue
 
 public enum EAttributeType
 {
-    /// <summary>
-    /// Primary Attribute
-    /// </summary>
+    // Primary Attribute
     strength,
     dexterity,
     intelligence,
     vitality,
 
-    /// <summary>
-    /// Secondary Attribute
-    /// </summary>
+    // Secondary Attribute
     physicalAttackPower,
     magicAttackPower,
     physicalDefensePower,
@@ -51,15 +47,11 @@ public enum EAttributeType
     maxHealth,
     maxMana,
 
-    /// <summary>
-    /// Vital Attribute
-    /// </summary>
+    // Vital Attribute
     currentHealth,
     currentMana,
 
-    /// <summary>
-    /// Meta Attribute
-    /// </summary>
+    // Meta Attribute
     incommingDamage
 
 }
