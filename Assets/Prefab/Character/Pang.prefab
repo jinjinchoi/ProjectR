@@ -126,6 +126,9 @@ MonoBehaviour:
     m_Bits: 256
   attackPoint: {fileID: 3108334452271365320}
   deadLayerName: Dead
+  attributeInfoSO: {fileID: 11400000, guid: b0105fee95f6bf0459f72c133d372261, type: 2}
+  defaultAbilities:
+  - {fileID: 11400000, guid: 5303c493b02f6414684ca0854bc8e756, type: 2}
 --- !u!114 &7058711002588701715
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -138,9 +141,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63e13dfc94e35394a9fce33ea820707f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AbilitySystemComponent
-  attributeInfoSO: {fileID: 11400000, guid: b0105fee95f6bf0459f72c133d372261, type: 2}
-  defaultAbilities:
-  - {fileID: 11400000, guid: 5303c493b02f6414684ca0854bc8e756, type: 2}
 --- !u!114 &7370420253868233965
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -175,7 +175,7 @@ MonoBehaviour:
   detectDistance: 5
   targetDetectTime: 3
   idleAnimName: idle
-  deadAnimName: isDead
+  deathAnimName: isDead
   patrolAnimName: isMoving
   attackAnimName: comboAttack
 --- !u!114 &5180812707033914328

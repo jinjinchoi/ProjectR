@@ -94,14 +94,8 @@ public class AttributeSet : IAttributeSet
         return attributes[type].baseValue;
     }
 
-    public void InitAttribute(EAttributeType type, float baseValue)
+    public void InitAttributeCalcualtor()
     {
-        if (attributes.ContainsKey(type))
-        {
-            attributes[type].baseValue = baseValue;
-            attributes[type].currentValue = baseValue;
-        }
-
         // 계산기에 전략 저장
         calculators = new Dictionary<EAttributeType, IAttributeCalculator>()
         {

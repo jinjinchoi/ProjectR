@@ -1,6 +1,9 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using static Unity.Cinemachine.CinemachineFreeLookModifier;
+using static UnityEngine.AdaptivePerformance.Provider.AdaptivePerformanceSubsystemDescriptor;
 
 public abstract class BaseCharacter : MonoBehaviour, IAbilityOwner, IDamageable
 {
@@ -13,13 +16,6 @@ public abstract class BaseCharacter : MonoBehaviour, IAbilityOwner, IDamageable
     public AnimationTrigger AnimationTrigger => animationTrigger;
     public Transform AttackPoint => attackPoint;
     #endregion
-
-    public Rigidbody2D Rb => rb;
-    public AbilitySystemComponent ASC => abilitySystemComponent ? abilitySystemComponent : GetComponent<AbilitySystemComponent>();
-    public float MoveSpeed => moveSpeed;
-    public bool IsGrounded => isGrounded;
-    public bool IsDead => isDead;
-    public int FacingDir => facingDir;
 
     [Header("Debug")]
     [SerializeField] protected bool showDebug = false;
@@ -34,6 +30,10 @@ public abstract class BaseCharacter : MonoBehaviour, IAbilityOwner, IDamageable
     [SerializeField] private Transform attackPoint;
     [SerializeField] private string deadLayerName = "Dead";
 
+    [Header("ASC")]
+    [SerializeField] private AttributeSO attributeInfoSO;
+    [SerializeField] private List<BaseAbilityDataSO> defaultAbilities; // 캐릭터에게 부여할 ability
+
     private Rigidbody2D rb;
     private AbilitySystemComponent abilitySystemComponent;
     private Animator anim;
@@ -47,16 +47,80 @@ public abstract class BaseCharacter : MonoBehaviour, IAbilityOwner, IDamageable
     private bool isDead = false;
     private int facingDir = 1;
 
+    #region Getter
+    public Rigidbody2D Rb => rb;
+    public AbilitySystemComponent ASC => abilitySystemComponent ? abilitySystemComponent : GetComponent<AbilitySystemComponent>();
+    public float MoveSpeed => moveSpeed;
+    public bool IsGrounded => isGrounded;
+    public bool IsDead => isDead;
+    public int FacingDir => facingDir;
+    #endregion
+
     protected virtual void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
-        abilitySystemComponent = GetComponent<AbilitySystemComponent>();
         vfxComponent = GetComponent<VFXComponent>();
 
         animationTrigger = GetComponentInChildren<AnimationTrigger>();
         anim = GetComponentInChildren<Animator>();
 
         originalLayerMask = gameObject.layer;
+
+        abilitySystemComponent = GetComponent<AbilitySystemComponent>();
+        abilitySystemComponent.SetOwner(this);
+        ApplyDefualtAttribute();
+        GiveDefaultAbility();
+    }
+
+    void ApplyDefualtAttribute()
+    {
+        if (attributeInfoSO == null || defaultAbilities == null)
+        {
+            DebugHelper.LogWarning($"Attribute info or Abilities info is not Set to {gameObject.name}");
+            return;
+        }
+
+        foreach (AttributeInitInfo info in attributeInfoSO.Attributes)
+        {
+            FAttributeModifier modifier = new()
+            {
+                attributeType = info.attributeType,
+                value = info.baseValue,
+                isPermanent = true,
+                operation = EModifierOp.Override
+            };
+            abilitySystemComponent.ApplyModifier(modifier);
+        }
+
+        float maxHealth = abilitySystemComponent.AttributeSet.GetAttributeValue(EAttributeType.maxHealth);
+        float maxMana = abilitySystemComponent.AttributeSet.GetAttributeValue(EAttributeType.maxMana);
+
+        FAttributeModifier healthModifier = new()
+        {
+            attributeType = EAttributeType.currentHealth,
+            value = maxHealth,
+            isPermanent = true,
+            operation = EModifierOp.Override
+        };
+        abilitySystemComponent.ApplyModifier(healthModifier);
+
+        FAttributeModifier manaModifier = new()
+        {
+            attributeType = EAttributeType.currentMana,
+            value = maxMana,
+            isPermanent = true,
+            operation = EModifierOp.Override
+        };
+        abilitySystemComponent.ApplyModifier(manaModifier);
+    }
+
+    void GiveDefaultAbility()
+    {
+        foreach (BaseAbilityDataSO attributeInfoSO in defaultAbilities)
+        {
+            abilitySystemComponent.GiveAbility(attributeInfoSO);
+        }
+        
     }
 
     protected virtual void Start()

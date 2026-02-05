@@ -42,10 +42,7 @@ public class WaitingAbilityEntry
 
 public class AbilitySystemComponent : MonoBehaviour, IAbilitySystemContext
 {
-    [Header("ASC")]
-    [SerializeField] private AttributeSO attributeInfoSO;
-    [Space]
-    [SerializeField] private List<BaseAbilityDataSO> defaultAbilities; // 캐릭터에게 부여할 ability
+
 
     public event Action<EAbilityId> OnAbilityEnded;
     public IAbilityOwner Owner => owner;
@@ -65,36 +62,42 @@ public class AbilitySystemComponent : MonoBehaviour, IAbilitySystemContext
 
     private void Awake()
     {
-        attributeSet = new AttributeSet();
-        owner = GetComponent<IAbilityOwner>();
-
-        if (attributeInfoSO == null || defaultAbilities == null)
+        if (attributeSet == null)
         {
-            Debug.LogWarning($"Attribute info or Abilities info is not Set to {gameObject.name}");
+            attributeSet = new AttributeSet();
+            attributeSet.InitAttributeCalcualtor();
         }
+        
 
-        foreach (AttributeInitInfo info in attributeInfoSO.Attributes)
-        {
-            attributeSet.InitAttribute(info.attributeType, info.baseValue);
-        }
+        //if (attributeInfoSO == null || defaultAbilities == null)
+        //{
+        //    Debug.LogWarning($"Attribute info or Abilities info is not Set to {gameObject.name}");
+        //}
 
-        float maxHealth = attributeSet.GetAttributeValue(EAttributeType.maxHealth);
-        float maxMana = attributeSet.GetAttributeValue(EAttributeType.maxMana);
-        attributeSet.SetBaseValue(EAttributeType.currentHealth, maxHealth);
-        attributeSet.SetBaseValue(EAttributeType.currentMana, maxMana);
+        //foreach (AttributeInitInfo info in attributeInfoSO.Attributes)
+        //{
+        //    attributeSet.InitAttribute(info.attributeType, info.baseValue);
+        //}
 
-        foreach (BaseAbilityDataSO ability in defaultAbilities)
-        {
-            GiveAbility(ability);
-        }
+        //float maxHealth = attributeSet.GetAttributeValue(EAttributeType.maxHealth);
+        //float maxMana = attributeSet.GetAttributeValue(EAttributeType.maxMana);
+        //attributeSet.SetBaseValue(EAttributeType.currentHealth, maxHealth);
+        //attributeSet.SetBaseValue(EAttributeType.currentMana, maxMana);
+
+        //foreach (BaseAbilityDataSO ability in defaultAbilities)
+        //{
+        //    GiveAbility(ability);
+        //}
     }
 
-    private void Start()
-    {
-        if (owner != null && owner.AnimationTrigger != null)
-            Owner.AnimationTrigger.OnAnimTriggered += OnAnimationTriggered;
 
+    public void SetOwner(IAbilityOwner owner)
+    { 
+        this.owner = owner;
+
+        Owner.AnimationTrigger.OnAnimTriggered += OnAnimationTriggered;
     }
+
 
     public void GiveAbility(BaseAbilityDataSO data)
     {
@@ -176,6 +179,12 @@ public class AbilitySystemComponent : MonoBehaviour, IAbilitySystemContext
 
     public void ApplyModifier(FAttributeModifier modifier)
     {
+        if (attributeSet == null)
+        {
+            attributeSet = new AttributeSet();
+            attributeSet.InitAttributeCalcualtor();
+        }
+
         attributeSet.ApplyModifier(modifier);
     }
 

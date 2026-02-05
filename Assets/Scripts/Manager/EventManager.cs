@@ -61,7 +61,7 @@ public class EventManager
         {
             CurrentBattleInfoId = scenerioEvent.battleInfoId;
             string battleSceneName = GameManager.Instance.GetBattleSceneNameBy(CurrentBattleInfoId);
-            GameManager.LoadScene(battleSceneName);
+            GameManager.Instance.LoadScene(battleSceneName);
         }
     }
     public bool CanTriggerNormalEvent(int day)

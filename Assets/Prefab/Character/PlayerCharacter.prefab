@@ -354,6 +354,9 @@ MonoBehaviour:
     m_Bits: 256
   attackPoint: {fileID: 7739427252222814885}
   deadLayerName: Dead
+  attributeInfoSO: {fileID: 11400000, guid: 7d8d4af17d14093478379ec5ae67169b, type: 2}
+  defaultAbilities:
+  - {fileID: 11400000, guid: 3900edc2eabc1aa4d89a601b0ca20ff7, type: 2}
 --- !u!114 &2270688756999833385
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -371,9 +374,10 @@ MonoBehaviour:
   hostileLayerMask:
     serializedVersion: 2
     m_Bits: 128
-  movementStateName: isMoving
-  fallStateName: isFalling
-  attackStateName: idle
+  movementAnimName: isMoving
+  fallAnimName: isFalling
+  attackAnimName: idle
+  deathAnimName: isDead
 --- !u!114 &4053939899401909681
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -386,9 +390,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63e13dfc94e35394a9fce33ea820707f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AbilitySystemComponent
-  attributeInfoSO: {fileID: 11400000, guid: 7d8d4af17d14093478379ec5ae67169b, type: 2}
-  defaultAbilities:
-  - {fileID: 11400000, guid: 3900edc2eabc1aa4d89a601b0ca20ff7, type: 2}
 --- !u!114 &2016862192115421859
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -1,4 +1,6 @@
 using System;
+using System.Linq;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -6,9 +8,11 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
     public event Action<int> DayChanged;
+    public event Func<Task> SceneChangingAsync;
 
     private EventManager eventManager;
     private DialogueManager dialogueManager;
+    private SaveManager saveManager;
 
     private int day = 0;
 
@@ -31,6 +35,7 @@ public class GameManager : MonoBehaviour
     public BattleInfoSO BattleInfoSO => battleEventInfoSO;
     public EventManager EventManager => eventManager;
     public DialogueManager DialogueManager => dialogueManager;
+    public SaveManager SaveManager => saveManager;
     #endregion
 
     private void Awake()
@@ -62,6 +67,9 @@ public class GameManager : MonoBehaviour
             dialogueManager = new DialogueManager();
             dialogueManager.Init();
         }
+
+        saveManager ??= new SaveManager();
+
     }
 
     public void ProcessDay()
@@ -96,8 +104,15 @@ public class GameManager : MonoBehaviour
         return battleInfo;
     }
 
-    public static void LoadScene(string sceneName)
+    public async void LoadScene(string sceneName)
     {
+        if (SceneChangingAsync != null)
+        {
+            foreach (Func<Task> handler in SceneChangingAsync.GetInvocationList().Cast<Func<Task>>())
+            {
+                await handler();
+            }
+        }
         SceneManager.LoadScene(sceneName);
     }
 
