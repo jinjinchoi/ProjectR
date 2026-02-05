@@ -18,4 +18,9 @@ MonoBehaviour:
     eventId: ScenarioEvent001
     dialogueId: Normal001
     battleInfoId: 
+  - day: 5
+    type: 1
+    eventId: ScenarioEvent002
+    dialogueId: 
+    battleInfoId: Battle001
   lastDay: 30

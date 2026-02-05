@@ -119,17 +119,22 @@ public class AttributeSet : IAttributeSet
     {
         if (modifier.attributeType== EAttributeType.currentHealth)
         {
-            attributes[modifier.attributeType].currentValue
-                = Mathf.Clamp(attributes[modifier.attributeType].currentValue, 0f, GetAttributeValue(EAttributeType.maxHealth));
+            attributes[modifier.attributeType].baseValue
+                = Mathf.Clamp(attributes[modifier.attributeType].baseValue, 0f, GetAttributeValue(EAttributeType.maxHealth));
+
+            Recalculate(EAttributeType.currentHealth);
 
             if (GetAttributeValue(modifier.attributeType) <= 0)
                 OnDaed?.Invoke();
+            
         }
 
         if (modifier.attributeType == EAttributeType.currentMana)
         {
-            attributes[modifier.attributeType].currentValue
-                = Mathf.Clamp(attributes[modifier.attributeType].currentValue, 0f, GetAttributeValue(EAttributeType.maxMana));
+            attributes[modifier.attributeType].baseValue
+                = Mathf.Clamp(attributes[modifier.attributeType].baseValue, 0f, GetAttributeValue(EAttributeType.maxMana));
+
+            Recalculate(EAttributeType.currentMana);
         }
 
         if (modifier.attributeType == EAttributeType.incommingDamage)
@@ -137,9 +142,8 @@ public class AttributeSet : IAttributeSet
             HandleIncomingDamage(modifier);
         }
 
+
         OnAttributeChanged?.Invoke(modifier.attributeType, GetAttributeValue(modifier.attributeType));
-
-
     }
 
     private void HandleIncomingDamage(FAttributeModifier modifier)

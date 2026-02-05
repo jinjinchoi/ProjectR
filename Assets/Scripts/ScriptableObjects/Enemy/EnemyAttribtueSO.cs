@@ -32,14 +32,14 @@ public class EnemyInformation
         => Mathf.RoundToInt(magicDefensePowerCurve.Evaluate(level));
 
     public float GetCriticalChance(int level)
-        => Mathf.Clamp01(criticalChanceCurve.Evaluate(level));
+        => Mathf.RoundToInt(criticalChanceCurve.Evaluate(level));
 
     public int GetMaxHealth(int level)
         => Mathf.RoundToInt(maxHealthCurve.Evaluate(level));
     #endregion
 }
 
-[CreateAssetMenu(fileName = "EnemyInformation", menuName = "ASC/EnemyInformation")]
+[CreateAssetMenu(fileName = "Attribute_", menuName = "ASC/EnemyInformation")]
 public class EnemyAttribtueSO : ScriptableObject
 {
     public List<EnemyInformation> enemyInfoList;

@@ -54,7 +54,7 @@ public class EnemyCharacter : BaseCharacter
             ASC.ApplyModifier(MakeSecondaryAttributeModifier(attribute, attributeInfo));
         }
         
-        FAttributeModifier healthModifier = new FAttributeModifier()
+        FAttributeModifier healthModifier = new ()
         {
             attributeType = EAttributeType.currentHealth,
             isPermanent = true,
@@ -69,7 +69,7 @@ public class EnemyCharacter : BaseCharacter
         return new FAttributeModifier()
         {
             attributeType = attribute,
-            isPermanent = true,
+            isPermanent = false,
             operation = EModifierOp.Override,
             value = attributeInfo.GetValueByType(attribute)
         };

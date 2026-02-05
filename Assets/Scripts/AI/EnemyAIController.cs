@@ -4,7 +4,7 @@ using UnityEngine;
 public class EnemyAIController : AIController
 {
     public Enemy_IdleState idleState { get; private set; }
-    public Enemy_DeadState deadState { get; private set; }
+    public Enemy_DeathState deathState { get; private set; }
     public Enemy_PatrolState patrolState { get; private set; }
     public Enemy_AttackState attackState { get; private set; }
     public Enemy_CombatState combatState { get; private set; }
@@ -16,7 +16,7 @@ public class EnemyAIController : AIController
 
     [Header("State")]
     [SerializeField] private string idleAnimName = "idle";
-    [SerializeField] private string deadAnimName = "isDead";
+    [SerializeField] private string deathAnimName = "isDead";
     [SerializeField] private string patrolAnimName = "isMoving";
     [SerializeField] private string attackAnimName = "comboAttack";
 
@@ -26,7 +26,7 @@ public class EnemyAIController : AIController
     {
         base.Awake();
 
-        deadState = new Enemy_DeadState(this, stateMachine, deadAnimName);
+        deathState = new Enemy_DeathState(this, stateMachine, deathAnimName);
         idleState = new Enemy_IdleState(this, stateMachine, idleAnimName);
         patrolState = new Enemy_PatrolState(this, stateMachine, patrolAnimName);
         combatState = new Enemy_CombatState(this, stateMachine, patrolAnimName);
@@ -45,16 +45,8 @@ public class EnemyAIController : AIController
         base.Update();
 
         if (owner.IsDead)
-        {
-            stateMachine.ChangeState(deadState);
             return;
-        }
-
-        if (stateMachine.CurrentState == deadState)
-        {
-            stateMachine.ChangeState(idleState);
-        }
-      
+        
         UpdateTargetDetection();
     }
 

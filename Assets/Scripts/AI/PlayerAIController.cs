@@ -6,20 +6,23 @@ public class PlayerAIController : AIController
     public Player_MovementState movementState { get; private set; }
     public Player_FallState fallState { get; private set; }
     public Player_AttackState attackState { get; private set; }
+    public Player_DeathState deathState { get; private set; }
 
     [Header("Anim")]
-    [SerializeField] private string movementStateName = "isMoving";
-    [SerializeField] private string fallStateName = "isFalling";
-    [SerializeField] private string attackStateName = "idle";
+    [SerializeField] private string movementAnimName = "isMoving";
+    [SerializeField] private string fallAnimName = "isFalling";
+    [SerializeField] private string attackAnimName = "idle";
+    [SerializeField] private string deathAnimName = "isDead";
 
     protected override void Awake()
     {
         base.Awake();
 
-        movementState = new Player_MovementState(this, stateMachine, movementStateName);
-        fallState = new Player_FallState(this, stateMachine, fallStateName);
+        movementState = new Player_MovementState(this, stateMachine, movementAnimName);
+        fallState = new Player_FallState(this, stateMachine, fallAnimName);
+        attackState = new Player_AttackState(this, stateMachine, attackAnimName);
+        deathState = new Player_DeathState(this, stateMachine, deathAnimName);
 
-        attackState = new Player_AttackState(this, stateMachine, attackStateName);
     }
 
     protected override void Start()
@@ -33,6 +36,9 @@ public class PlayerAIController : AIController
     protected override void Update()
     {
         base.Update();
+
+        if (owner.IsDead)
+            return;
 
         if (target == null)
             target = FindClosestTargetWithinBox();

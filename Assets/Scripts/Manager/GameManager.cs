@@ -1,10 +1,16 @@
 using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
     public event Action<int> DayChanged;
+
+    private EventManager eventManager;
+    private DialogueManager dialogueManager;
+
+    private int day = 0;
 
     #region Scriptable Object
     [Header("Event System")]
@@ -17,18 +23,12 @@ public class GameManager : MonoBehaviour
     [SerializeField] private ChoiceDialogueSO choiceDialogueSO;
     [SerializeField] private RewardDialogueSO rewardDialogueSO;
     #endregion
-
-    private EventManager eventManager;
-    private DialogueManager dialogueManager;
-
-    private int day = 0;
-    private int lastActivatedEventDay = 1;
-
     #region Getter
     public NormalDialogueSO NormalDialogueSO => normalDialogueSO;
     public ChoiceDialogueSO ChoiceDialogueSO => choiceDialogueSO;
     public RewardDialogueSO RewardDialogueSO => rewardDialogueSO;
     public EnemyAttribtueSO EnemyAttribtueSO => enemyAttribtueSO;
+    public BattleInfoSO BattleInfoSO => battleEventInfoSO;
     public EventManager EventManager => eventManager;
     public DialogueManager DialogueManager => dialogueManager;
     #endregion
@@ -78,25 +78,10 @@ public class GameManager : MonoBehaviour
         {
             eventManager.ExecuteScenarioEvent(day);
         }
-        else if (CanTriggerNormalEvent(eventManager))
+        else if (eventManager.CanTriggerNormalEvent(day))
         {
-            eventManager.ExecuteNormalEvent();
-            lastActivatedEventDay = day;
+            eventManager.ExecuteNormalEvent(day);
         }
-    }
-
-    private bool CanTriggerNormalEvent(EventManager eventManager)
-    {
-        int gap = day - lastActivatedEventDay;
-
-        // 하루당 확률 증가량
-        float increasePerDay = 0.2f; // 하루당 +10%
-        float chance = gap * increasePerDay;
-
-        // 최대 확률 제한
-        chance = Mathf.Clamp01(chance);
-
-        return UnityEngine.Random.value < chance;
     }
 
     public BattleEventInfo GetCurrentEventEnemyInfo()
@@ -106,9 +91,18 @@ public class GameManager : MonoBehaviour
         if (battleInfo == null)
         {
             DebugHelper.LogWarning($"Battle Info not exist. id: {eventManager.CurrentBattleInfoId}");
-        }
+        } // null check
 
         return battleInfo;
     }
 
+    public static void LoadScene(string sceneName)
+    {
+        SceneManager.LoadScene(sceneName);
+    }
+
+    public string GetBattleSceneNameBy(string battleId)
+    {
+        return BattleInfoSO.GetBattleInfo(battleId).sceneName;
+    }
 }

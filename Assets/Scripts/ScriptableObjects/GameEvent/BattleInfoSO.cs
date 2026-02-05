@@ -7,7 +7,7 @@ using UnityEngine;
 public class EnemySpawnInfo
 {
     public string enemyId;
-    public int level;
+    public int level = 1;
     public int count = 1;
 }
 
@@ -20,7 +20,7 @@ public class BattleEventInfo
 }
 
 
-[CreateAssetMenu(fileName = "BattleEvent", menuName = "GameEvent/Battle")]
+[CreateAssetMenu(fileName = "BattleInformation", menuName = "GameEvent/Battle")]
 public class BattleInfoSO : ScriptableObject
 {
     public List<BattleEventInfo> battleInfoList;
@@ -34,6 +34,12 @@ public class BattleInfoSO : ScriptableObject
 
     public BattleEventInfo GetBattleInfo(string id)
     {
+        if (string.IsNullOrEmpty(id))
+        {
+            DebugHelper.LogWarning("GetBattleInfo called with null or empty id");
+            return null;
+        }
+
         battleInfoMap.TryGetValue(id, out var data);
         return data;
     }

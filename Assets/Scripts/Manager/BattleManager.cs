@@ -5,6 +5,13 @@ public class BattleManager : MonoBehaviour
 {
     [SerializeField] private Transform[] spawnPoints;
 
+    private int spawnedEnemyCount;
+
+    private void Awake()
+    {
+        EventHub.PlayerDied += OnPlayerDied;
+    }
+
     private void Start()
     {
         if (spawnPoints == null || spawnPoints.Length == 0)
@@ -14,7 +21,8 @@ public class BattleManager : MonoBehaviour
         }
 
         BattleEventInfo sceneEnemyInfo = GameManager.Instance.GetCurrentEventEnemyInfo();
-        SpawnEnemy(sceneEnemyInfo.enemieInfos);
+        if (sceneEnemyInfo != null )
+            SpawnEnemy(sceneEnemyInfo.enemieInfos);
     }
 
     private void SpawnEnemy(List<EnemySpawnInfo> enemySpawnInfoList)
@@ -35,6 +43,8 @@ public class BattleManager : MonoBehaviour
 
                 EnemyCharacter enemy = Instantiate(enemyInfo.Prefab, spawnPoint.transform.position, Quaternion.identity);
                 enemy.Init(attributeInfo);
+                enemy.CharacterDied += OnEnemyDied;
+                spawnedEnemyCount++;
             }
         }
     }
@@ -51,5 +61,19 @@ public class BattleManager : MonoBehaviour
             criticalChance = enemyInfo.GetCriticalChance(enemyLevel),
             maxHealth = enemyInfo.GetMaxHealth(enemyLevel)
         };
+    }
+
+    private void OnEnemyDied()
+    {
+        spawnedEnemyCount--;
+        if (spawnedEnemyCount == 0)
+        {
+            // clear
+        }
+    }
+
+    private void OnPlayerDied()
+    {
+        // game over
     }
 }
