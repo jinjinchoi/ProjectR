@@ -1,16 +1,23 @@
 using System.Threading.Tasks;
-using UnityEngine;
 
 public class PlayerCharacter : BaseCharacter
 {
+    private readonly EAttributeType[] PrimaryAttributes =
+    {
+        EAttributeType.strength,
+        EAttributeType.intelligence,
+        EAttributeType.dexterity,
+        EAttributeType.vitality
+    };
 
     protected override void Start()
     {
         base.Start();
 
         GameManager.Instance.SceneChangingAsync += SaveBeforeSceneChange;
-        // TODO: Data Load
+        ApplySavedPrimaryAttribute();
     }
+
     private void OnDisable()
     {
         GameManager.Instance.SceneChangingAsync -= SaveBeforeSceneChange;
@@ -18,7 +25,13 @@ public class PlayerCharacter : BaseCharacter
 
     private Task SaveBeforeSceneChange()
     {
-        PrimaryAttributeData data = new()
+        GameManager.Instance.SaveManager.BackupPrimaryData(MakePrimaryAttributeData());
+        return Task.CompletedTask;
+    }
+
+    private PrimaryAttributeData MakePrimaryAttributeData()
+    {
+        return new()
         {
             strength = ASC.AttributeSet.GetAttributeValue(EAttributeType.strength),
             dexterity = ASC.AttributeSet.GetAttributeValue(EAttributeType.dexterity),
@@ -26,8 +39,28 @@ public class PlayerCharacter : BaseCharacter
             vitality = ASC.AttributeSet.GetAttributeValue(EAttributeType.vitality),
             currentHeath = ASC.AttributeSet.GetAttributeValue(EAttributeType.currentHealth),
         };
+    }
 
-        GameManager.Instance.SaveManager.BackupPrimaryData(data);
-        return Task.CompletedTask;
+    void ApplySavedPrimaryAttribute()
+    {
+        if (GameManager.Instance.SaveManager.PlayerData == null) return;
+
+        DebugHelper.Log("Restore Primary Attribute");
+
+        foreach (var attribute in PrimaryAttributes)
+        {
+            ASC.ApplyModifier(MakePrimaryModifier(attribute, GameManager.Instance.SaveManager.PlayerData));
+        }
+    }
+
+    private FAttributeModifier MakePrimaryModifier(EAttributeType attribute, PrimaryAttributeData data)
+    {
+        return new()
+        {
+            attributeType = attribute,
+            value = data.GetValueByType(attribute),
+            isPermanent = true,
+            operation = EModifierOp.Override
+        };
     }
 }

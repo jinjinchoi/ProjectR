@@ -67,27 +67,6 @@ public class AbilitySystemComponent : MonoBehaviour, IAbilitySystemContext
             attributeSet = new AttributeSet();
             attributeSet.InitAttributeCalcualtor();
         }
-        
-
-        //if (attributeInfoSO == null || defaultAbilities == null)
-        //{
-        //    Debug.LogWarning($"Attribute info or Abilities info is not Set to {gameObject.name}");
-        //}
-
-        //foreach (AttributeInitInfo info in attributeInfoSO.Attributes)
-        //{
-        //    attributeSet.InitAttribute(info.attributeType, info.baseValue);
-        //}
-
-        //float maxHealth = attributeSet.GetAttributeValue(EAttributeType.maxHealth);
-        //float maxMana = attributeSet.GetAttributeValue(EAttributeType.maxMana);
-        //attributeSet.SetBaseValue(EAttributeType.currentHealth, maxHealth);
-        //attributeSet.SetBaseValue(EAttributeType.currentMana, maxMana);
-
-        //foreach (BaseAbilityDataSO ability in defaultAbilities)
-        //{
-        //    GiveAbility(ability);
-        //}
     }
 
 

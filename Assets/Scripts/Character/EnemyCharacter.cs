@@ -26,7 +26,6 @@ public struct FEnemySecondaryAttribute
 }
 
 
-
 public class EnemyCharacter : BaseCharacter
 {
     public event Action<FDamageInfo> OnHit;
@@ -69,7 +68,7 @@ public class EnemyCharacter : BaseCharacter
         return new FAttributeModifier()
         {
             attributeType = attribute,
-            isPermanent = false,
+            isPermanent = false, // secondary attribute는 base value와 상관없이 계산식에 의해 값을 가져오기 때문에 base value를 바꿔도 의미 없음.
             operation = EModifierOp.Override,
             value = attributeInfo.GetValueByType(attribute)
         };
