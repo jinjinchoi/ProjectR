@@ -52,7 +52,6 @@ public class AbilitySystemComponent : MonoBehaviour, IAbilitySystemContext
         {
             if (attributeSet == null)
             {
-                Debug.Log("[AttributeSet] Instance was null. Created a new one.");
                 attributeSet = new AttributeSet();
                 attributeSet.InitAttributeCalcualtor();
             }

@@ -109,3 +109,47 @@
     -unity-text-outline-width: 1px;
     -unity-text-outline-color: rgb(29, 29, 29);
 }
+
+.upgrade-button:active {
+    width: 200px;
+    height: 100px;
+    aspect-ratio: auto;
+    -unity-font-definition: url("project://database/Assets/ExternalAssets/Font/NanumGothic.otf?fileID=12800000&guid=f5dc1d4a67daccb45ad0142353b072ab&type=3#NanumGothic");
+    font-size: 22px;
+    -unity-font-style: bold;
+    border-left-color: rgb(0, 128, 7);
+    border-right-color: rgb(0, 128, 7);
+    border-top-color: rgb(0, 128, 7);
+    border-bottom-color: rgb(0, 128, 7);
+    border-top-width: 5px;
+    border-right-width: 5px;
+    border-bottom-width: 5px;
+    border-left-width: 5px;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+    border-bottom-left-radius: 15px;
+    background-color: rgb(138, 250, 138);
+}
+
+.relax-button:active {
+    width: 200px;
+    height: 100px;
+    aspect-ratio: auto;
+    -unity-font-definition: url("project://database/Assets/ExternalAssets/Font/NanumGothic.otf?fileID=12800000&guid=f5dc1d4a67daccb45ad0142353b072ab&type=3#NanumGothic");
+    font-size: 22px;
+    -unity-font-style: bold;
+    border-left-color: rgb(1, 50, 166);
+    border-right-color: rgb(1, 50, 166);
+    border-top-color: rgb(1, 50, 166);
+    border-bottom-color: rgb(1, 50, 166);
+    border-top-width: 5px;
+    border-right-width: 5px;
+    border-bottom-width: 5px;
+    border-left-width: 5px;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+    border-bottom-left-radius: 15px;
+    background-color: rgb(176, 203, 248);
+}

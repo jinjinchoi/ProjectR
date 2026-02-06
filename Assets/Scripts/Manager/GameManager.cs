@@ -80,6 +80,12 @@ public class GameManager : MonoBehaviour
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
+    public void ResetManager()
+    {
+        saveManager?.Reset();
+        eventManager?.Reset();
+    }
+
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         isLoading = false;

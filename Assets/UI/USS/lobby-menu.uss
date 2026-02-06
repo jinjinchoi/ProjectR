@@ -67,6 +67,30 @@
     align-items: center;
     justify-content: center;
     align-self: flex-end;
+    background-color: rgb(224, 224, 224);
+    border-left-color: rgb(0, 121, 164);
+    border-right-color: rgb(0, 121, 164);
+    border-top-color: rgb(0, 121, 164);
+    border-bottom-color: rgb(0, 121, 164);
+    border-top-width: 3px;
+    border-right-width: 3px;
+    border-bottom-width: 3px;
+    border-left-width: 3px;
+    -unity-font-definition: url("project://database/Assets/ExternalAssets/Font/NanumGothic.otf?fileID=12800000&guid=f5dc1d4a67daccb45ad0142353b072ab&type=3#NanumGothic");
+    -unity-font-style: bold;
+    font-size: 20px;
+}
+
+.detail-button:active {
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
+    border-bottom-right-radius: 30px;
+    border-bottom-left-radius: 30px;
+    width: 200px;
+    height: 80px;
+    align-items: center;
+    justify-content: center;
+    align-self: flex-end;
     background-color: rgb(207, 207, 207);
     border-left-color: rgb(0, 121, 164);
     border-right-color: rgb(0, 121, 164);
@@ -98,6 +122,63 @@
     white-space: normal;
 }
 
+.config-button {
+    -unity-text-auto-size: none;
+    background-image: url("project://database/Assets/ExternalAssets/UI/cogwheel.png?fileID=2800000&guid=73bb326d05785a34c873132cbf80314b&type=3#cogwheel");
+    width: 70px;
+    height: 70px;
+    background-color: rgba(255, 255, 255, 0);
+    margin-top: 20px;
+    margin-right: 20px;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    transition-duration: 0.2s;
+    border-left-color: rgba(0, 0, 0, 0);
+    border-right-color: rgba(0, 0, 0, 0);
+    border-top-color: rgba(0, 0, 0, 0);
+    border-bottom-color: rgba(0, 0, 0, 0);
+    -unity-background-image-tint-color: rgb(255, 255, 255);
+}
 
+.config-button:hover {
+    -unity-text-auto-size: none;
+    background-image: url("project://database/Assets/ExternalAssets/UI/cogwheel.png?fileID=2800000&guid=73bb326d05785a34c873132cbf80314b&type=3#cogwheel");
+    width: 70px;
+    height: 70px;
+    background-color: rgba(255, 255, 255, 0);
+    margin-top: 20px;
+    margin-right: 20px;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    transition-duration: 0.2s;
+    transition-timing-function: ease;
+    scale: 1.25 1.25;
+}
 
-
+.config-button:active {
+    -unity-text-auto-size: none;
+    background-image: url("project://database/Assets/ExternalAssets/UI/cogwheel.png?fileID=2800000&guid=73bb326d05785a34c873132cbf80314b&type=3#cogwheel");
+    width: 70px;
+    height: 70px;
+    background-color: rgba(255, 255, 255, 0);
+    margin-top: 20px;
+    margin-right: 20px;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    transition-duration: 0.2s;
+    transition-timing-function: ease;
+    scale: 1.25 1.25;
+    -unity-background-image-tint-color: rgb(183, 183, 183);
+}

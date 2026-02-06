@@ -71,3 +71,7 @@
 .menu-button:hover {
     background-color: rgb(218, 247, 253);
 }
+
+.menu-button:active {
+    background-color: rgb(244, 251, 253);
+}

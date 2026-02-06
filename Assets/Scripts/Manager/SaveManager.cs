@@ -32,4 +32,9 @@ public class SaveManager
     {
         playerData = data;
     }
+
+    public void Reset()
+    {
+        playerData = null;
+    }
 }

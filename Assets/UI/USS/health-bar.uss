@@ -47,6 +47,8 @@
     padding-left: 0;
     min-width: 0%;
     max-width: 100%;
+    transition-duration: 0.5s;
+    transition-timing-function: ease-in-out;
 }
 
 .progressbar-lobby-main {
@@ -67,6 +69,8 @@
     align-items: center;
     align-self: auto;
     justify-content: center;
+    transition-duration: 0.5s;
+    transition-timing-function: ease-in-out;
 }
 
 .progressbar-lobby-main-warning {

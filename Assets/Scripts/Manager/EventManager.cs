@@ -27,6 +27,15 @@ public class EventManager
 
         normalEvents = normalEvent;
     }
+
+    public void Reset()
+    {
+        lastNormalEventDay = 1;
+        canTriggerNormalEvent = true;
+        triggeredEventSet.Clear();
+        CurrentBattleInfoId = string.Empty;
+    }
+
     public bool IsScenarioExist(int day)
     {
         return scenarioEventByDay.ContainsKey(day);
