@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 
 public class PlayerCharacter : BaseCharacter
@@ -51,6 +52,15 @@ public class PlayerCharacter : BaseCharacter
         {
             ASC.ApplyModifier(MakePrimaryModifier(attribute, GameManager.Instance.SaveManager.PlayerData));
         }
+
+        FAttributeModifier healthModifier = new()
+        {
+            attributeType = EAttributeType.currentHealth,
+            isPermanent = true,
+            operation = EModifierOp.Override,
+            value = GameManager.Instance.SaveManager.PlayerData.currentHeath
+        };
+        ASC.ApplyModifier(healthModifier);
     }
 
     private FAttributeModifier MakePrimaryModifier(EAttributeType attribute, PrimaryAttributeData data)
@@ -62,5 +72,12 @@ public class PlayerCharacter : BaseCharacter
             isPermanent = true,
             operation = EModifierOp.Override
         };
+    }
+
+    protected override void OnDead()
+    {
+        base.OnDead();
+
+        EventHub.RaisePlayerDied();
     }
 }

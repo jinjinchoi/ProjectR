@@ -1,0 +1,79 @@
+:root {
+}
+
+.gameover-title-main {
+    -unity-font-definition: url("project://database/Assets/ExternalAssets/Font/NanumGothic.otf?fileID=12800000&guid=f5dc1d4a67daccb45ad0142353b072ab&type=3#NanumGothic");
+    font-size: 100px;
+    -unity-text-align: upper-center;
+    -unity-font-style: bold;
+    color: rgb(245, 10, 10);
+}
+
+.gameover-title-sub {
+    -unity-text-align: upper-center;
+    color: rgb(255, 255, 255);
+    -unity-font-definition: url("project://database/Assets/ExternalAssets/Font/NanumGothic.otf?fileID=12800000&guid=f5dc1d4a67daccb45ad0142353b072ab&type=3#NanumGothic");
+    font-size: 30px;
+    -unity-font-style: normal;
+}
+
+.gameover-button {
+    width: 800px;
+    height: 100px;
+    font-size: 30px;
+    -unity-font-definition: url("project://database/Assets/ExternalAssets/Font/NanumGothic.otf?fileID=12800000&guid=f5dc1d4a67daccb45ad0142353b072ab&type=3#NanumGothic");
+    -unity-font-style: bold;
+    color: rgb(255, 255, 255);
+    background-color: rgba(0, 0, 0, 0);
+    border-left-color: rgba(0, 0, 0, 0);
+    border-right-color: rgba(0, 0, 0, 0);
+    border-top-color: rgba(0, 0, 0, 0);
+    border-bottom-color: rgba(0, 0, 0, 0);
+}
+
+.gameover-button:hover {
+    width: 800px;
+    height: 100px;
+    font-size: 30px;
+    -unity-font-definition: url("project://database/Assets/ExternalAssets/Font/NanumGothic.otf?fileID=12800000&guid=f5dc1d4a67daccb45ad0142353b072ab&type=3#NanumGothic");
+    -unity-font-style: bold;
+    color: rgb(255, 255, 255);
+    background-color: rgba(255, 255, 255, 0.24);
+    border-left-color: rgba(0, 0, 0, 0);
+    border-right-color: rgba(0, 0, 0, 0);
+    border-top-color: rgba(0, 0, 0, 0);
+    border-bottom-color: rgba(0, 0, 0, 0);
+}
+
+.gameover-button:active {
+    width: 800px;
+    height: 100px;
+    font-size: 30px;
+    -unity-font-definition: url("project://database/Assets/ExternalAssets/Font/NanumGothic.otf?fileID=12800000&guid=f5dc1d4a67daccb45ad0142353b072ab&type=3#NanumGothic");
+    -unity-font-style: bold;
+    color: rgb(255, 255, 255);
+    background-color: rgba(255, 255, 255, 0.47);
+    border-left-color: rgba(0, 0, 0, 0);
+    border-right-color: rgba(0, 0, 0, 0);
+    border-top-color: rgba(0, 0, 0, 0);
+    border-bottom-color: rgba(0, 0, 0, 0);
+}
+
+
+
+.gameover-panel {
+    opacity: 1;
+    width: 100%;
+    height: 100%;
+    flex-grow: 0;
+    background-color: rgb(0, 0, 0);
+    transition-duration: 2.5s;
+}
+
+.gameover-panel--hide {
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    flex-grow: 0;
+    background-color: rgb(0, 0, 0);
+}

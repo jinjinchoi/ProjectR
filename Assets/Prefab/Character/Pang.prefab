@@ -15,7 +15,6 @@ GameObject:
   - component: {fileID: 7058711002588701715}
   - component: {fileID: 7370420253868233965}
   - component: {fileID: 8661496917907071719}
-  - component: {fileID: 5180812707033914328}
   m_Layer: 7
   m_Name: Pang
   m_TagString: Untagged
@@ -178,18 +177,6 @@ MonoBehaviour:
   deathAnimName: isDead
   patrolAnimName: isMoving
   attackAnimName: comboAttack
---- !u!114 &5180812707033914328
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1850949304411411149}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7ef9ba6cbcd462d46838319f21aa6315, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UIControllerBase
 --- !u!1 &2169961177815001548
 GameObject:
   m_ObjectHideFlags: 0

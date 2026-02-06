@@ -33,7 +33,7 @@ public class AttributeGrowthCalculator
         return Mathf.Round(maxHealth * 0.5f);
     }
 
-    public void UpdateUpgradePoint()
+    public void RecalculateUpgradePoint()
     {
         strPoint = CalculateUpgradeValue();
         intelliPoint = CalculateUpgradeValue();

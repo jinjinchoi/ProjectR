@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -8,10 +9,11 @@ public class UI_RestAreaMain : MonoBehaviour
     private UI_RestAreaStatView statArea;
     private UI_RestAreaStateButtons statButtons;
 
-
-    private void Start()
+    private void Awake()
     {
-        uiController = GetComponentInParent<UIController_RestArea>();
+        uiController = new UIController_RestArea();
+        uiController.Init(GetComponentInParent<IAbilitySystemContext>());
+
         var root = GetComponent<UIDocument>().rootVisualElement;
 
         statArea = new UI_RestAreaStatView();
@@ -31,8 +33,20 @@ public class UI_RestAreaMain : MonoBehaviour
     {
         EventHub.DialogueRequested -= OnDialogueRequested;
         EventHub.DialogueFinished -= OnDialogueFinished;
-
+        GameManager.Instance.SceneChangingAsync -= HandleSceneLoadingUI;
         statArea?.Dispose();
+    }
+
+    private void Start()
+    {
+        GameManager.Instance.SceneChangingAsync += HandleSceneLoadingUI;
+    }
+
+    private Task HandleSceneLoadingUI()
+    {
+        var root = GetComponent<UIDocument>().rootVisualElement;
+        root.style.display = DisplayStyle.None;
+        return Task.CompletedTask;
     }
 
     private void OnDialogueRequested(string dialogueId)

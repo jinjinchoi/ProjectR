@@ -46,7 +46,19 @@ public class AbilitySystemComponent : MonoBehaviour, IAbilitySystemContext
 
     public event Action<EAbilityId> OnAbilityEnded;
     public IAbilityOwner Owner => owner;
-    public IAttributeSet AttributeSet => attributeSet;
+    public IAttributeSet AttributeSet
+    {
+        get
+        {
+            if (attributeSet == null)
+            {
+                Debug.Log("[AttributeSet] Instance was null. Created a new one.");
+                attributeSet = new AttributeSet();
+                attributeSet.InitAttributeCalcualtor();
+            }
+            return attributeSet;
+        }
+    }
 
     /*
      * abilities :현재 보유하고 있는 ability list,
@@ -63,8 +75,11 @@ public class AbilitySystemComponent : MonoBehaviour, IAbilitySystemContext
 
     public void Init(IAbilityOwner owner)
     {
-        attributeSet = new AttributeSet();
-        attributeSet.InitAttributeCalcualtor();
+        if (attributeSet == null)
+        {
+            attributeSet = new AttributeSet();
+            attributeSet.InitAttributeCalcualtor();
+        }
         this.owner = owner;
         Owner.AnimationTrigger.OnAnimTriggered += OnAnimationTriggered;
     }

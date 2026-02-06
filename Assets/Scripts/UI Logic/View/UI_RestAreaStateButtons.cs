@@ -11,6 +11,8 @@ public class UI_RestAreaStateButtons
     const string vitalButtonName = "Button_Vital";
     const string relaxButtonName = "Button_Relax";
 
+    private VisualElement root;
+
     private Button strButton;
     private Button intelliButton;
     private Button dexButton;
@@ -22,12 +24,12 @@ public class UI_RestAreaStateButtons
     public void Init(UIController_RestArea uiController, VisualElement root)
     {
         this.uiController = uiController;
+        this.root = root;
 
-        InitComponents(root);
+        InitComponents();
         BindButtons();
-
     }
-    private void InitComponents(VisualElement root)
+    private void InitComponents()
     {
         strButton = root.Q<Button>(strButtonName);
         intelliButton = root.Q<Button>(intelliButtonName);
@@ -59,12 +61,10 @@ public class UI_RestAreaStateButtons
     void OnUpgradeButtonClicked(EAttributeType attributeToUpgrade)
     {
         uiController.UpgaradeAttribute(attributeToUpgrade);
-        GameManager.Instance.ProcessDay();
     }
 
     void OnRelaxButtonClicked()
     {
         uiController.Relax();
-        GameManager.Instance.ProcessDay();
     }
 }

@@ -12,7 +12,8 @@ public class UI_HealthBar : MonoBehaviour
         var root = GetComponent<UIDocument>().rootVisualElement;
         progressbarMain = root.Q<VisualElement>(progressbarName);
 
-        uiController = GetComponentInParent<UIController_Character>();
+        uiController = new UIController_Character();
+        uiController.Init(GetComponentInParent<IAbilitySystemContext>());
     }
 
     private void OnEnable()
@@ -23,12 +24,7 @@ public class UI_HealthBar : MonoBehaviour
     private void OnDisable()
     {
         uiController.OnVitalRatioChanged -= UpdateProgressBar;
-    }
-
-    void Start()
-    {
-        UpdateProgressBar(true, uiController.GetHealthRatio());
-        DebugHelper.Log("Update Healthbar");
+        uiController.Dispose();
     }
 
     private void LateUpdate()
@@ -46,7 +42,5 @@ public class UI_HealthBar : MonoBehaviour
             progressbarMain.style.width = Length.Percent(progress * 100f);
         }
     }
-
-
 
 }

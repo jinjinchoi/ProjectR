@@ -5,12 +5,12 @@ public class UIController_RestArea : BaseCharacterUIController
 {
     private AttributeGrowthCalculator growthCalculator;
 
-    protected override void Awake()
+    public override void Init(IAbilitySystemContext asc)
     {
-        base.Awake();
+        base.Init(asc);
 
         growthCalculator = new AttributeGrowthCalculator();
-        growthCalculator.UpdateUpgradePoint();
+        growthCalculator.RecalculateUpgradePoint();
     }
 
     public float GetAttributeValue(EAttributeType attributeType)
@@ -83,6 +83,9 @@ public class UIController_RestArea : BaseCharacterUIController
 
             abilitySystem.ApplyModifier(costModifier);
         }
+
+        growthCalculator.RecalculateUpgradePoint();
+        GameManager.Instance.ProcessDay();
     }
 
     public void Relax()
@@ -96,5 +99,8 @@ public class UIController_RestArea : BaseCharacterUIController
         };
 
         abilitySystem.ApplyModifier(modifier);
+
+        growthCalculator.RecalculateUpgradePoint();
+        GameManager.Instance.ProcessDay();
     }
 }

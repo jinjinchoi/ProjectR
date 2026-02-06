@@ -28,6 +28,8 @@ public class UI_RestAreaStatView
 
     private UIController_RestArea uiController;
 
+    private VisualElement root;
+
     private VisualElement progressbarMain;
     private Label strText;
     private Label intelliText;
@@ -49,8 +51,9 @@ public class UI_RestAreaStatView
     public void Init(UIController_RestArea uiController, VisualElement root)
     {
         this.uiController = uiController;
+        this.root = root;
 
-        InitUIComponents(root);
+        InitUIComponents();
         RegisterCallbacks();
         InitAttributeText();
         UpdateUpgradeValueText();
@@ -64,7 +67,7 @@ public class UI_RestAreaStatView
         GameManager.Instance.DayChanged -= OnDayChanged;
     }
     
-    private void InitUIComponents(VisualElement root)
+    private void InitUIComponents()
     {
         strText = root.Q<Label>(strTextName);
         intelliText = root.Q<Label>(intelliTextName);
@@ -164,8 +167,7 @@ public class UI_RestAreaStatView
                 break;
         }
 
-        UpdateCostAndChanceText();
-        UpdateUpgradeValueText();
+        
     }
 
     private void OnHeathRatioChanged(bool isHealth, float ratio)
@@ -196,6 +198,9 @@ public class UI_RestAreaStatView
     private void OnDayChanged(int day)
     {
         dayText.text = day.ToString();
+
+        UpdateCostAndChanceText();
+        UpdateUpgradeValueText();
     }
 
 }

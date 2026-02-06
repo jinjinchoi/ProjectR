@@ -2,13 +2,6 @@ using UnityEngine;
 
 public class UIController_Character : BaseCharacterUIController
 {
-    protected override void Awake()
-    {
-        base.Awake();
-
-        BaseCharacter character = GetComponent<BaseCharacter>(); // TODO: 구조 문제 생길 가능성 있음.
-        abilitySystem = character.ASC;
-    }
 
     public float GetHealthRatio()
     {

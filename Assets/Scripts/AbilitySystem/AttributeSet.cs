@@ -120,7 +120,6 @@ public class AttributeSet : IAttributeSet
 
             if (GetAttributeValue(modifier.attributeType) <= 0)
                 OnDaed?.Invoke();
-            
         }
 
         if (modifier.attributeType == EAttributeType.currentMana)
@@ -135,7 +134,6 @@ public class AttributeSet : IAttributeSet
         {
             HandleIncomingDamage(modifier);
         }
-
 
         OnAttributeChanged?.Invoke(modifier.attributeType, GetAttributeValue(modifier.attributeType));
     }

@@ -50,7 +50,7 @@ public class PlayerAIController : AIController
 
         if (detectedEnemy.Length == 0)
         {
-            Debug.Log("detected Enemy is 0, FindClosestTarget");
+            //Debug.Log("detected Enemy is 0, FindClosestTarget");
             return null;
         }
 

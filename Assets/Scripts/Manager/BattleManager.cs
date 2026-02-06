@@ -4,6 +4,7 @@ using UnityEngine;
 public class BattleManager : MonoBehaviour
 {
     [SerializeField] private Transform[] spawnPoints;
+    [SerializeField] private string restAreaSceneName = "RestArea";
 
     private int spawnedEnemyCount;
 
@@ -68,7 +69,7 @@ public class BattleManager : MonoBehaviour
         spawnedEnemyCount--;
         if (spawnedEnemyCount == 0)
         {
-            // clear
+            _ = GameManager.Instance.LoadSceneAsync(restAreaSceneName);
         }
     }
 

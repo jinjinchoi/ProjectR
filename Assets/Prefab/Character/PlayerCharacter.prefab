@@ -242,7 +242,6 @@ GameObject:
   - component: {fileID: 2270688756999833385}
   - component: {fileID: 4053939899401909681}
   - component: {fileID: 2016862192115421859}
-  - component: {fileID: 8285393914332515726}
   m_Layer: 6
   m_Name: PlayerCharacter
   m_TagString: Untagged
@@ -404,18 +403,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::VFXComponent
   onHitMaterial: {fileID: 2100000, guid: 31cae8c6dadf39543b32a638bb9c9c3d, type: 2}
   onHitVFXDuration: 0.15
---- !u!114 &8285393914332515726
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3884493160397306294}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7ef9ba6cbcd462d46838319f21aa6315, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UIControllerBase
 --- !u!1 &4106110293173070531
 GameObject:
   m_ObjectHideFlags: 0

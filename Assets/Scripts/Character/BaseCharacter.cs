@@ -2,8 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static Unity.Cinemachine.CinemachineFreeLookModifier;
-using static UnityEngine.AdaptivePerformance.Provider.AdaptivePerformanceSubsystemDescriptor;
 
 public abstract class BaseCharacter : MonoBehaviour, IAbilityOwner, IDamageable
 {
@@ -172,7 +170,7 @@ public abstract class BaseCharacter : MonoBehaviour, IAbilityOwner, IDamageable
 
     }
 
-    private void OnDead()
+    protected virtual void OnDead()
     {
         isDead = true;
         int deadLayer = LayerMask.NameToLayer(deadLayerName);

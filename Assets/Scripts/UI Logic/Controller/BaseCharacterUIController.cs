@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class BaseCharacterUIController : MonoBehaviour
+public class BaseCharacterUIController
 {
     public event Action<EAttributeType, float> OnAttributeValueChanged;
     // vital attribute 변화시 비율을 전송하는 event
@@ -9,20 +9,15 @@ public class BaseCharacterUIController : MonoBehaviour
 
     protected IAbilitySystemContext abilitySystem;
 
-    protected virtual void Awake()
+    public virtual void Init(IAbilitySystemContext asc)
     {
-        abilitySystem = GetComponent<IAbilitySystemContext>();
+        abilitySystem = asc;
+        abilitySystem.AttributeSet.OnAttributeChanged += OnAttritbuteChanged;
     }
 
-    protected virtual void Start()
+    public virtual void Dispose()
     {
-        if (abilitySystem == null)
-        {
-            Debug.LogWarning($"Ability Component not set to {gameObject.name}");
-            return;
-        }
-
-        abilitySystem.AttributeSet.OnAttributeChanged += OnAttritbuteChanged;
+        abilitySystem.AttributeSet.OnAttributeChanged -= OnAttritbuteChanged;
     }
 
     private void OnAttritbuteChanged(EAttributeType attribute, float currentValue)
@@ -52,11 +47,5 @@ public class BaseCharacterUIController : MonoBehaviour
 
             OnVitalRatioChanged?.Invoke(false, mana / maxMana);
         }
-    }
-
-    protected virtual void OnDisable()
-    {
-        abilitySystem.AttributeSet.OnAttributeChanged -= OnAttritbuteChanged;
-
     }
 }

@@ -20,7 +20,7 @@ MonoBehaviour:
       m_Curve:
       - serializedVersion: 3
         time: 1
-        value: 20
+        value: 40
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -140,7 +140,7 @@ MonoBehaviour:
       m_Curve:
       - serializedVersion: 3
         time: 1
-        value: 600
+        value: 450
         inSlope: 0
         outSlope: 0
         tangentMode: 0

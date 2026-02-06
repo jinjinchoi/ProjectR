@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour
     private SaveManager saveManager;
 
     private int day = 0;
+    private bool isLoading = false;
 
     #region Scriptable Object
     [Header("Event System")]
@@ -52,6 +53,8 @@ public class GameManager : MonoBehaviour
         CreateManagerClassess();
         enemyAttribtueSO.Init();
         battleEventInfoSO.Init();
+
+        SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
     private void CreateManagerClassess()
@@ -70,6 +73,16 @@ public class GameManager : MonoBehaviour
 
         saveManager ??= new SaveManager();
 
+    }
+
+    void OnDestroy()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        isLoading = false;
     }
 
     public void ProcessDay()
@@ -104,16 +117,27 @@ public class GameManager : MonoBehaviour
         return battleInfo;
     }
 
-    public async void LoadScene(string sceneName)
+    public async Task LoadSceneAsync(string sceneName)
     {
+        if (isLoading) return;
+        isLoading = true;
+
         if (SceneChangingAsync != null)
         {
             foreach (Func<Task> handler in SceneChangingAsync.GetInvocationList().Cast<Func<Task>>())
             {
-                await handler();
+                try
+                {
+                    await handler();
+                }
+                catch (Exception e)
+                {
+                    Debug.LogException(e);
+                }
             }
         }
-        SceneManager.LoadScene(sceneName);
+
+        await SceneManager.LoadSceneAsync(sceneName);
     }
 
     public string GetBattleSceneNameBy(string battleId)

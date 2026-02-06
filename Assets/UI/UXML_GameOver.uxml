@@ -1,0 +1,16 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/USS/gameover.uss?fileID=7433441132597879392&amp;guid=9363161e8eecf2240a9987e2fc11bd0c&amp;type=3#gameover"/>
+    <ui:VisualElement name="Panel" class="gameover-panel">
+        <ui:VisualElement name="TopArea" style="flex-grow: 0.5; justify-content: center;">
+            <ui:Label text="GAME OVER" class="gameover-title-main"/>
+            <ui:Label text="포기하지마. 할 수 있어." class="gameover-title-sub"/>
+        </ui:VisualElement>
+        <ui:VisualElement name="BottomArea" style="flex-grow: 0.5;">
+            <ui:VisualElement name="ButtonArea" style="flex-grow: 1; align-items: center; justify-content: flex-start;">
+                <ui:Button text="재도전" name="RestartButton" class="gameover-button"/>
+                <ui:Button text="불러오기" name="LoadButton" class="gameover-button"/>
+                <ui:Button text="게임 종료" name="QuiteButton" class="gameover-button"/>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
