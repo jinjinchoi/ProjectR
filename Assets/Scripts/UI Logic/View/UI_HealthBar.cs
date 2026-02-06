@@ -13,14 +13,13 @@ public class UI_HealthBar : MonoBehaviour
         progressbarMain = root.Q<VisualElement>(progressbarName);
 
         uiController = GetComponentInParent<UIController_Character>();
-
     }
 
     private void OnEnable()
     {
         uiController.OnVitalRatioChanged += UpdateProgressBar;
-
     }
+
     private void OnDisable()
     {
         uiController.OnVitalRatioChanged -= UpdateProgressBar;
@@ -30,7 +29,6 @@ public class UI_HealthBar : MonoBehaviour
     {
         UpdateProgressBar(true, uiController.GetHealthRatio());
         DebugHelper.Log("Update Healthbar");
-
     }
 
     private void LateUpdate()

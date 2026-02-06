@@ -60,23 +60,14 @@ public class AbilitySystemComponent : MonoBehaviour, IAbilitySystemContext
     private AttributeSet attributeSet;
     private IAbilityOwner owner;
 
-    private void Awake()
+
+    public void Init(IAbilityOwner owner)
     {
-        if (attributeSet == null)
-        {
-            attributeSet = new AttributeSet();
-            attributeSet.InitAttributeCalcualtor();
-        }
-    }
-
-
-    public void SetOwner(IAbilityOwner owner)
-    { 
+        attributeSet = new AttributeSet();
+        attributeSet.InitAttributeCalcualtor();
         this.owner = owner;
-
         Owner.AnimationTrigger.OnAnimTriggered += OnAnimationTriggered;
     }
-
 
     public void GiveAbility(BaseAbilityDataSO data)
     {
@@ -160,8 +151,8 @@ public class AbilitySystemComponent : MonoBehaviour, IAbilitySystemContext
     {
         if (attributeSet == null)
         {
-            attributeSet = new AttributeSet();
-            attributeSet.InitAttributeCalcualtor();
+            DebugHelper.LogWarning("attribute set not exist");
+            return;
         }
 
         attributeSet.ApplyModifier(modifier);

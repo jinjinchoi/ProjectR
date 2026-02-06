@@ -67,7 +67,7 @@ public abstract class BaseCharacter : MonoBehaviour, IAbilityOwner, IDamageable
         originalLayerMask = gameObject.layer;
 
         abilitySystemComponent = GetComponent<AbilitySystemComponent>();
-        abilitySystemComponent.SetOwner(this);
+        abilitySystemComponent.Init(this);
         ApplyDefualtAttribute();
         GiveDefaultAbility();
     }
