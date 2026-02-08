@@ -1,10 +1,10 @@
-using System;
+ï»¿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 
-// onwerÀÇ Á¤º¸¸¦ °¡Á®¿À´Â ÀÎÅÍÆäÀÌ½º
+// onwerì˜ ì •ë³´ë¥¼ ê°€ì ¸ì˜¤ëŠ” ì¸í„°í˜ì´ìŠ¤
 public interface IAbilityOwner
 {
     Animator Anim { get; }
@@ -13,7 +13,7 @@ public interface IAbilityOwner
     Transform AttackPoint { get; }
 }
 
-// ¾îºô¸®Æ¼°¡ Á÷Á¢ ASC¿¡ Á¢±ÙÇÏÁö ¾Ê°íµµ ASCÀÇ ±â´ÉÀ» »ç¿ëÇÏ°Ô ÇØÁÖ´Â ÀÎÅÍÆäÀÌ½º
+// ì–´ë¹Œë¦¬í‹°ê°€ ì§ì ‘ ASCì— ì ‘ê·¼í•˜ì§€ ì•Šê³ ë„ ASCì˜ ê¸°ëŠ¥ì„ ì‚¬ìš©í•˜ê²Œ í•´ì£¼ëŠ” ì¸í„°í˜ì´ìŠ¤
 public interface IAbilitySystemContext
 {
     IAbilityOwner Owner { get; }
@@ -25,9 +25,10 @@ public interface IAbilitySystemContext
     void RegisterWaitingAbility(EAnimationEventType eventType, AbilitySpec spec, Action callback);
     void UnregisterWaitingAbility(AbilitySpec spec);
     void ApplyModifier(FAttributeModifier modifier);
+    EAbilityId GetRandomAbilityId();
 }
 
-// ¾îºô¸®Æ¼°¡ ¾Ö´Ï¸ŞÀÌ¼ÇÀ» ±â´Ù¸± ¶§ Äİ¹éÀ» ÀúÀåÇÏ´Â Å¬·¡½º
+// ì–´ë¹Œë¦¬í‹°ê°€ ì• ë‹ˆë©”ì´ì…˜ì„ ê¸°ë‹¤ë¦´ ë•Œ ì½œë°±ì„ ì €ì¥í•˜ëŠ” í´ë˜ìŠ¤
 public class WaitingAbilityEntry
 {
     public AbilitySpec spec;
@@ -42,8 +43,6 @@ public class WaitingAbilityEntry
 
 public class AbilitySystemComponent : MonoBehaviour, IAbilitySystemContext
 {
-
-
     public event Action<EAbilityId> OnAbilityEnded;
     public IAbilityOwner Owner => owner;
     public IAttributeSet AttributeSet
@@ -60,9 +59,9 @@ public class AbilitySystemComponent : MonoBehaviour, IAbilitySystemContext
     }
 
     /*
-     * abilities :ÇöÀç º¸À¯ÇÏ°í ÀÖ´Â ability list,
-     * activeAbilitySpecs :½ÇÇàÁßÀÎ ability map
-     * waitingAbilitiesByAnimEvent: anim event¸¦ ±â´Ù¸®°í ÀÖ´Â ability map
+     * abilities :í˜„ì¬ ë³´ìœ í•˜ê³  ìˆëŠ” ability list,
+     * activeAbilitySpecs :ì‹¤í–‰ì¤‘ì¸ ability map
+     * waitingAbilitiesByAnimEvent: anim eventë¥¼ ê¸°ë‹¤ë¦¬ê³  ìˆëŠ” ability map
      */
     private List<AbilitySpec> abilities = new();
     private Dictionary<EAbilityId, AbilitySpec> activeAbilitySpecs = new();
@@ -129,14 +128,14 @@ public class AbilitySystemComponent : MonoBehaviour, IAbilitySystemContext
 
     public void RegisterWaitingAbility(EAnimationEventType eventType, AbilitySpec spec, Action callback)
     {
-        // list°¡ Á¸ÀçÇÏÁö ¾ÊÀ¸¸é »ı¼ºÇØ¼­ map¿¡ Ãß°¡
+        // listê°€ ì¡´ì¬í•˜ì§€ ì•Šìœ¼ë©´ ìƒì„±í•´ì„œ mapì— ì¶”ê°€
         if (!waitingAbilitiesByAnimEvent.TryGetValue(eventType, out List<WaitingAbilityEntry> list))
         {
             list = new List<WaitingAbilityEntry>();
             waitingAbilitiesByAnimEvent.Add(eventType, list);
         }
 
-        // list¿¡ specÀÌ ÀÌ¹Ì ÀÖ´ÂÁö È®ÀÎ. (Áßº¹ ¹æÁö)
+        // listì— specì´ ì´ë¯¸ ìˆëŠ”ì§€ í™•ì¸. (ì¤‘ë³µ ë°©ì§€)
         if (list.Exists(e => e.spec == spec))
             return;
 
@@ -145,7 +144,7 @@ public class AbilitySystemComponent : MonoBehaviour, IAbilitySystemContext
 
     public void UnregisterWaitingAbility(AbilitySpec spec)
     {
-        // value°¡ ¾ø´Â EAnimationEventType¸¦ ¸ğÀ¸´Â ¹è¿­.
+        // valueê°€ ì—†ëŠ” EAnimationEventTypeë¥¼ ëª¨ìœ¼ëŠ” ë°°ì—´.
         List<EAnimationEventType> emptyKeys = new();
 
         foreach (var pair in waitingAbilitiesByAnimEvent)
@@ -153,10 +152,10 @@ public class AbilitySystemComponent : MonoBehaviour, IAbilitySystemContext
             pair.Value.RemoveAll(e => e.spec == spec);
 
             if (pair.Value.Count == 0)
-                emptyKeys.Add(pair.Key); // ´õÀÌ»ó value°¡ ¾ø´Â EventTypeÀ» ÀúÀå.
+                emptyKeys.Add(pair.Key); // ë”ì´ìƒ valueê°€ ì—†ëŠ” EventTypeì„ ì €ì¥.
         }
 
-        // Map¿¡¼­ value°¡ ¾ø´Â EventType Á¦°Å.
+        // Mapì—ì„œ valueê°€ ì—†ëŠ” EventType ì œê±°.
         foreach (EAnimationEventType key in emptyKeys)
             waitingAbilitiesByAnimEvent.Remove(key);
     }
@@ -176,7 +175,7 @@ public class AbilitySystemComponent : MonoBehaviour, IAbilitySystemContext
     {
         if (!waitingAbilitiesByAnimEvent.TryGetValue(eventType, out List<WaitingAbilityEntry> list)) return;
 
-        WaitingAbilityEntry[] snapshot = list.ToArray(); // Áß°£¿¡ removeµÇ´Â »óÈ²À» ¹æÁöÇÏ±â À§ÇØ ½º³À¼¦.
+        WaitingAbilityEntry[] snapshot = list.ToArray(); // ì¤‘ê°„ì— removeë˜ëŠ” ìƒí™©ì„ ë°©ì§€í•˜ê¸° ìœ„í•´ ìŠ¤ëƒ…ìƒ·.
         foreach (WaitingAbilityEntry entry in snapshot)
         {
             entry.callback?.Invoke();
@@ -192,5 +191,54 @@ public class AbilitySystemComponent : MonoBehaviour, IAbilitySystemContext
     {
         if (owner != null && owner.AnimationTrigger != null)
             Owner.AnimationTrigger.OnAnimTriggered -= OnAnimationTriggered;
+    }
+
+    public EAbilityId GetRandomAbilityId()
+    {
+        if (abilities.Count == 0)
+            return EAbilityId.None;
+
+        // ì¸ë±ìŠ¤ ë¦¬ìŠ¤íŠ¸ ìƒì„±
+        List<int> indices = new();
+        for (int i = 0; i < abilities.Count; i++)
+        {
+            if (abilities[i].abilityData.abilityId == EAbilityId.Common_NormalAttack)
+                continue;
+
+            indices.Add(i);
+        }
+
+        // Fisherâ€“Yates Shuffle Algorithm (ë¬´ì‘ìœ„ ìˆœì—´ ìƒì„± ì•Œê³ ë¦¬ì¦˜)
+        // ë°°ì—´ì˜ ë§ˆì§€ë§‰ ìš”ì†Œë¡œë¶€í„° ì‹œì‘  // ë°°ì—´ì˜ ì²«ë²ˆì§¸ ìš”ì†Œì— ë„ì°©í•  ë•Œê¹Œì§€ ë°˜ë³µ
+        for (int i = indices.Count - 1; i > 0; i--)
+        {
+            // 0ë¶€í„° í˜„ì¬ ì¸ë±ìŠ¤(i) ì‚¬ì´ì—ì„œ ë¬´ì‘ìœ„ ì •ìˆ˜ jë¥¼ ì„ íƒ
+            int j = UnityEngine.Random.Range(0, i + 1);
+            // iì™€ jì˜ ìœ„ì¹˜ë¥¼ ì„œë¡œ ë³€ê²½
+            (indices[i], indices[j]) = (indices[j], indices[i]);
+        }
+
+        // ìˆœì„œëŒ€ë¡œ ê²€ì‚¬
+        foreach (int index in indices)
+        {
+            var spec = abilities[index];
+            if (spec.ability.CanActivate(spec, this))
+            {
+                return spec.abilityData.abilityId;
+            }
+        }
+
+        return EAbilityId.None;
+    }
+
+    public DamageAbilityDataSO GetDamageAbilityData(EAbilityId abilityId)
+    {
+        AbilitySpec spec = abilities.Find(a => a.abilityData.abilityId == abilityId);
+        if (spec?.abilityData is DamageAbilityDataSO damageAbilityDataSO)
+        {
+            return damageAbilityDataSO;
+        }
+
+        return null;
     }
 }

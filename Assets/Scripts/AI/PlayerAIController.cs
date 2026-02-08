@@ -7,6 +7,7 @@ public class PlayerAIController : AIController
     public Player_FallState fallState { get; private set; }
     public Player_AttackState attackState { get; private set; }
     public Player_DeathState deathState { get; private set; }
+    public Player_SkillState skillState { get; private set; }
 
     [Header("Anim")]
     [SerializeField] private string movementAnimName = "isMoving";
@@ -22,7 +23,7 @@ public class PlayerAIController : AIController
         fallState = new Player_FallState(this, stateMachine, fallAnimName);
         attackState = new Player_AttackState(this, stateMachine, attackAnimName);
         deathState = new Player_DeathState(this, stateMachine, deathAnimName);
-
+        skillState = new Player_SkillState(this, stateMachine, movementAnimName);
     }
 
     protected override void Start()
@@ -31,7 +32,6 @@ public class PlayerAIController : AIController
 
         stateMachine.Initialize(movementState);
     }
-
 
     protected override void Update()
     {
@@ -81,13 +81,23 @@ public class PlayerAIController : AIController
 
         target = FindClosestTargetWithinBox();
 
-        if (CanEnterAttackState())
+        if (PendingAbilityId != EAbilityId.None)
         {
-            TryActivateAbilityBy(abilityId);
+            TryActivateAbilityBy(PendingAbilityId);
+            PendingAbilityId = EAbilityId.None;
+        }
+        else if (CanEnterAttackState())
+        {
+            TryActivateAbilityBy(EAbilityId.Common_NormalAttack);
         }
         else
         {
             stateMachine.ChangeState(movementState);
         }
+    }
+
+    public EAbilityId GetRandomAbilityId()
+    {
+        return owner.ASC.GetRandomAbilityId();
     }
 }

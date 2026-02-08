@@ -8,7 +8,7 @@ public abstract class BaseCharacter : MonoBehaviour, IAbilityOwner, IDamageable
     public event Action CharacterDied;
 
     // ability나 ai controller 등에서 상호 참조를 막기 위해 actor에 직접 접근하는 것이 아닌 인터페이스 사용
-    #region IAbilityActor
+    #region IAbilityOwner
     public Animator Anim => anim;
     public Transform OwnerTransform => transform;
     public AnimationTrigger AnimationTrigger => animationTrigger;

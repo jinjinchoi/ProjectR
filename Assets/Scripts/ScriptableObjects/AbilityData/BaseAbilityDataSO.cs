@@ -7,7 +7,6 @@ public abstract class BaseAbilityDataSO : ScriptableObject
     public EAbilityId abilityId;
     public string abilityName;
     public float cooldown;
-    [Space]
 
     [Header("Anim Info")]
     public string animBoolName;

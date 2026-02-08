@@ -1,7 +1,6 @@
-using UnityEngine;
-
 public class Player_MovementState : PlayerBaseState
 {
+
     public Player_MovementState(PlayerAIController aiController, StateMachine stateMachine, string animStateName) : base(aiController, stateMachine, animStateName)
     {
     }
@@ -9,7 +8,6 @@ public class Player_MovementState : PlayerBaseState
     public override void Enter()
     {
         base.Enter();
-
     }
 
     public override void Update()
@@ -17,16 +15,25 @@ public class Player_MovementState : PlayerBaseState
         base.Update();
 
         if (!aiController.Owner.IsGrounded)
+        {
             stateMachine.ChangeState(aiController.fallState);
+            return;
+        }
+
+        if (aiController.PendingAbilityId != EAbilityId.None && aiController.CanEnterSkillState(aiController.PendingAbilityId))
+        {
+            stateMachine.ChangeState(aiController.skillState);
+            return;
+        }
 
         if (aiController.CanEnterAttackState())
         {
             stateMachine.ChangeState(aiController.attackState);
+            return;
         }
-        else
-        {
-           aiController.MovoToTarget();
-        }
+
+        aiController.MovoToTarget();
+
     }
 
     public override void Exit()
@@ -34,4 +41,5 @@ public class Player_MovementState : PlayerBaseState
         base.Exit();
 
     }
+
 }

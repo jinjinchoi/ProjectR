@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public abstract class AIController : MonoBehaviour
@@ -8,9 +9,17 @@ public abstract class AIController : MonoBehaviour
 
     [Header("Combat")]
     [SerializeField] protected float attackRange = 1.5f;
-    [SerializeField] protected Vector2 hostileDetectSize = new Vector2(50, 10);
+    [SerializeField] protected Vector2 hostileDetectSize = new (50, 10);
     [SerializeField] protected LayerMask hostileLayerMask;
+    [Range(0, 1)]
+    [SerializeField] protected float skillProbability = 0.25f;
+
     public BaseCharacter Owner => owner;
+    public EAbilityId PendingAbilityId;
+
+    private Coroutine skillStateDecisionCo;
+
+
     protected virtual void Awake()
     {
         owner = GetComponent<BaseCharacter>();
@@ -19,7 +28,7 @@ public abstract class AIController : MonoBehaviour
 
     protected virtual void Start()
     {
-       
+        skillStateDecisionCo = StartCoroutine(AttackDecisionLoop());
     }
 
     protected virtual void Update()
@@ -30,6 +39,37 @@ public abstract class AIController : MonoBehaviour
     protected virtual void FixedUpdate()
     {
         stateMachine.FixedUpdateActiveState();
+    }
+
+    protected virtual void OnEnable()
+    {
+        owner.ASC.OnAbilityEnded += OnAbilityEnd;
+    }
+
+    protected virtual void OnDisable()
+    {
+        owner.ASC.OnAbilityEnded -= OnAbilityEnd;
+        StopCoroutine(skillStateDecisionCo);
+    }
+
+    private IEnumerator AttackDecisionLoop()
+    {
+        while (true)
+        {
+            if (PendingAbilityId == EAbilityId.None)
+            {
+                DecideAttackType();
+            }
+            yield return new WaitForSeconds(2f);
+        }
+    }
+
+    private void DecideAttackType()
+    {
+        if (Random.value <= skillProbability)
+        {
+            PendingAbilityId = owner.ASC.GetRandomAbilityId();
+        }
     }
 
     public void MovoToTarget()
@@ -61,6 +101,7 @@ public abstract class AIController : MonoBehaviour
         return Vector2.Distance(owner.transform.position, target.position) <= attackRange;
     }
 
+
     public void TryActivateAbilityBy(EAbilityId abilityId)
     {
         int dir = GetDirectionToTarget();
@@ -68,14 +109,14 @@ public abstract class AIController : MonoBehaviour
         owner.ASC.TryActivateAbilityById(abilityId);
     }
 
-    protected virtual void OnEnable()
+    public bool CanEnterSkillState(EAbilityId abilityId)
     {
-        owner.ASC.OnAbilityEnded += OnAbilityEnd;
-    }
+        if (target == null || PendingAbilityId == EAbilityId.None) return false;
 
-    protected virtual void OnDisable()
-    {
-        owner.ASC.OnAbilityEnded -= OnAbilityEnd;
+        if (owner.ASC.GetDamageAbilityData(abilityId) is not DamageAbilityDataSO data)
+            return false;
+
+        return Vector2.Distance(owner.transform.position, target.position) <= data.minAttackRange;
     }
 
     protected virtual void OnAbilityEnd(EAbilityId abilityId)

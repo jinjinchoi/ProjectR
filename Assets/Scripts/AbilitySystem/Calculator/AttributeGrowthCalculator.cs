@@ -9,8 +9,10 @@ public class AttributeGrowthCalculator
 
     public int skilPoint { get; private set; }
 
-    private const float GuaranteedHp = 0.6f;
-    private const float CostCorrection = 0.05f;
+    private const float GuaranteedHp = 0.8f;
+    private const float CostCorrection = 0.2f;
+    private const int minUpgradeValue = 3;
+    private const int maxUpgradeValue = 10;
 
     public float CalculateCost(float maxHealth)
     {
@@ -19,7 +21,8 @@ public class AttributeGrowthCalculator
 
     public float CalculateSuccessChance(float hpPercent)
     {
-        return Mathf.Clamp01(hpPercent / GuaranteedHp);
+        float normalizedHp = Mathf.InverseLerp(CostCorrection, GuaranteedHp, hpPercent);
+        return Mathf.Clamp01(normalizedHp);
     }
 
     public bool IsSuccessUpgrade(float hpPercent)
@@ -45,6 +48,6 @@ public class AttributeGrowthCalculator
 
     private int CalculateUpgradeValue()
     {
-        return Random.Range(1, 5);
+        return Random.Range(minUpgradeValue, maxUpgradeValue);
     }
 }

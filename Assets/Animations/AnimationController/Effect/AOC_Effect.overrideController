@@ -1,0 +1,13 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!221 &22100000
+AnimatorOverrideController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: AOC_Effect
+  m_Controller: {fileID: 9100000, guid: a21b728082f8d4241b3a734379be4947, type: 2}
+  m_Clips:
+  - m_OriginalClip: {fileID: 7400000, guid: 61db17e38ec604c4abd18e9c4dcf7625, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 866c27132a3d9d84cbb082498753e86e, type: 2}

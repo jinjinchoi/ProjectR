@@ -356,6 +356,7 @@ MonoBehaviour:
   attributeInfoSO: {fileID: 11400000, guid: 7d8d4af17d14093478379ec5ae67169b, type: 2}
   defaultAbilities:
   - {fileID: 11400000, guid: 3900edc2eabc1aa4d89a601b0ca20ff7, type: 2}
+  - {fileID: 11400000, guid: 78fdf12b0412c4048b316ba158944b0a, type: 2}
 --- !u!114 &2270688756999833385
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -373,6 +374,8 @@ MonoBehaviour:
   hostileLayerMask:
     serializedVersion: 2
     m_Bits: 128
+  skillProbability: 0.25
+  PendingAbilityId: 0
   movementAnimName: isMoving
   fallAnimName: isFalling
   attackAnimName: idle

@@ -82,6 +82,8 @@ public class GameManager : MonoBehaviour
 
     public void ResetManager()
     {
+        day = 0;
+
         saveManager?.Reset();
         eventManager?.Reset();
     }

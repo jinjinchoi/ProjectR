@@ -2,7 +2,8 @@ using UnityEngine;
 
 public enum EAbilityId
 {
-    None = 0,
+    None,
 
-    Common_NormalAttack
+    Common_NormalAttack,
+    ThunderStrike
 }

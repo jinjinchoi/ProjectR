@@ -9,6 +9,8 @@ public class AbilitySpec
     public AbilityLogicBase ability;
     public int level;
 
+    public float lastActivatedTime;
+
     public AbilitySpec(BaseAbilityDataSO data, AbilitySystemComponent asc)
     {
         this.abilityData = data;

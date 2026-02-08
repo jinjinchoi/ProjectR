@@ -61,5 +61,13 @@ public abstract class AbilityLogicBase
         callback?.Invoke();
     }
 
+    protected bool IsCooldownReady(AbilitySpec spec)
+    {
+        if(spec.lastActivatedTime <= 0) return true;
+
+        float elapsed = Time.time - spec.lastActivatedTime;
+        return elapsed >= spec.abilityData.cooldown;
+    }
+    
 
 }

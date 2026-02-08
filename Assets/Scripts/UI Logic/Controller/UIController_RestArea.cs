@@ -1,5 +1,4 @@
-using UnityEngine;
-
+using System.Diagnostics;
 
 public class UIController_RestArea : BaseCharacterUIController
 {
@@ -82,6 +81,11 @@ public class UIController_RestArea : BaseCharacterUIController
             };
 
             abilitySystem.ApplyModifier(costModifier);
+            EffectManager.Instance.ActivateEffect(EEffectType.Healing, abilitySystem.Owner.OwnerTransform.position);
+        }
+        else
+        {
+            abilitySystem.Owner.Anim.SetTrigger("Hit");
         }
 
         growthCalculator.RecalculateUpgradePoint();
@@ -100,7 +104,9 @@ public class UIController_RestArea : BaseCharacterUIController
 
         abilitySystem.ApplyModifier(modifier);
 
+        EffectManager.Instance.ActivateEffect(EEffectType.Healing, abilitySystem.Owner.OwnerTransform.position);
         growthCalculator.RecalculateUpgradePoint();
         GameManager.Instance.ProcessDay();
     }
+
 }
