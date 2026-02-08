@@ -17,11 +17,11 @@ MonoBehaviour:
   cooldown: 5
   animBoolName: jumpSkill
   animTag: Skill
-  damageMultiplier: 100
+  damageMultiplier: 150
   minAttackRange: 5
   attackDamageRadius: 1
   hostileTargetLayer:
     serializedVersion: 2
     m_Bits: 128
   damageType: 2
-  knockbackPower: {x: 0, y: 0}
+  knockbackPower: {x: 1.5, y: 1}

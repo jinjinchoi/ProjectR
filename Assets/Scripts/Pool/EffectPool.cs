@@ -68,5 +68,15 @@ public class EffectPool : MonoBehaviour
         effect.GetComponent<AnimatorPooledEffect>().Play(clipMap[type]);
     }
 
+    public void ActivateAttackableEffect(EEffectType type, Vector3 pos, FAttackData attackData)
+    {
+        if (!clipMap.ContainsKey(type)) return;
+
+        GameObject effect = pool.Get();
+        effect.transform.position = pos;
+        effect.GetComponent<ExplosionEffect>().SetDamageData(attackData);
+        effect.GetComponent<AnimatorPooledEffect>().Play(clipMap[type]);
+    }
+
   
 }

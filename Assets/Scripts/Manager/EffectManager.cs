@@ -21,4 +21,10 @@ public class EffectManager : MonoBehaviour
     {
         effectPool.Play(effectType, pos);
     }
+
+    public void ActivateAttackableEffect(EEffectType type, Vector3 pos, FAttackData attackData)
+    {
+        effectPool.ActivateAttackableEffect(type, pos, attackData);
+    }
+
 }

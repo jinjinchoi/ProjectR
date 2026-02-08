@@ -12,7 +12,7 @@ public class AnimatorPooledEffect : MonoBehaviour
     Animator animator;
     AnimatorOverrideController overrideController;
 
-    void Awake()
+    protected virtual void Awake()
     {
         animator = GetComponentInChildren<Animator>();
         overrideController = new AnimatorOverrideController(animator.runtimeAnimatorController);

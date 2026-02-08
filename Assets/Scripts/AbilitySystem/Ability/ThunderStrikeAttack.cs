@@ -28,23 +28,41 @@ public class ThunderStrikeAttack : AbilityLogicBase
 
         WaitAnimationEvent(spec, context, EAnimationEventType.Attack, () =>
         {
+
             if (ThunderStrikeCo != null)
                 context.StopCoroutine(ThunderStrikeCo);
 
-            ThunderStrikeCo = context.StartCoroutine(SpawnThunderEffect());
+            ThunderStrikeCo = context.StartCoroutine(SpawnThunderEffect(spec, context));
         });
 
     }
 
 
-    private IEnumerator SpawnThunderEffect()
+    private IEnumerator SpawnThunderEffect(AbilitySpec spec, IAbilitySystemContext context)
     {
-        foreach (var pair in thunderPairs)
-        {
-            EffectManager.Instance.ActivateEffect(EEffectType.Thunder, pair.left);
-            EffectManager.Instance.ActivateEffect(EEffectType.Thunder, pair.right);
 
-            // Apply Damage
+        if (spec.abilityData is not DamageAbilityDataSO attackDataSO)
+            yield break;
+        
+
+        FDamageInfo damageInfo = DamageCalculator.CalculateOutgoingDamage(
+                            context.AttributeSet,
+                            context.Owner,
+                            attackDataSO.damageType,
+                            attackDataSO.damageMultiplier,
+                            attackDataSO.knockbackPower);
+
+        FAttackData attackData = new()
+        {
+            damageInfo = damageInfo,
+            Radius = attackDataSO.attackDamageRadius,
+            IsValid = true,
+            TargetLayerMask = attackDataSO.hostileTargetLayer
+        };
+        foreach (var (left, right) in thunderPairs)
+        {
+            EffectManager.Instance.ActivateAttackableEffect(EEffectType.Thunder, left, attackData);
+            EffectManager.Instance.ActivateAttackableEffect(EEffectType.Thunder, right, attackData);
 
             yield return new WaitForSeconds(interval);
         }
