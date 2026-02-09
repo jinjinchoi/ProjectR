@@ -5,6 +5,6 @@ public class Ability_ThunderStrikeSO : DamageAbilityDataSO
 {
     public override AbilityLogicBase CreateInstance()
     {
-        return new ThunderStrikeAttack();
+        return new ThunderStrikeAbility();
     }
 }

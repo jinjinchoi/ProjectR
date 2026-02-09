@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7dc3d314d2824804d8c5a7da527bfb7b, type: 3}
+  m_Name: Player - ChargeAttack
+  m_EditorClassIdentifier: Assembly-CSharp::Ability_ChargeAttackSO
+  abilityId: 3
+  abilityName: "\uD30C\uC6CC \uD0DC\uD074"
+  cooldown: 5
+  animBoolName: isSlide
+  animTag: Skill
+  damageMultiplier: 100
+  minAttackRange: 5
+  attackDamageRadius: 1.5
+  hostileTargetLayer:
+    serializedVersion: 2
+    m_Bits: 128
+  damageType: 1
+  knockbackPower: {x: 7, y: 3}
+  KnockbackDuration: 1.25
+  ChargeSpeed: 10

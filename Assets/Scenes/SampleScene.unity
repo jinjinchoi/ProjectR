@@ -1046,6 +1046,10 @@ PrefabInstance:
       propertyPath: skillProbability
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3856051598611772715, guid: 7f62c75badf4be34d839f1d79fd79c88, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 3884493160397306294, guid: 7f62c75badf4be34d839f1d79fd79c88, type: 3}
       propertyPath: m_Name
       value: Player

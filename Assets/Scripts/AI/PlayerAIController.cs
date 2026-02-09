@@ -5,15 +5,16 @@ public class PlayerAIController : AIController
 {
     public Player_MovementState movementState { get; private set; }
     public Player_FallState fallState { get; private set; }
-    public Player_AttackState attackState { get; private set; }
     public Player_DeathState deathState { get; private set; }
+    public Player_AttackState attackState { get; private set; }
     public Player_SkillState skillState { get; private set; }
 
     [Header("Anim")]
     [SerializeField] private string movementAnimName = "isMoving";
     [SerializeField] private string fallAnimName = "isFalling";
-    [SerializeField] private string attackAnimName = "idle";
     [SerializeField] private string deathAnimName = "isDead";
+    [SerializeField] private string attackTriggerName = "comboActive";
+    [SerializeField] private string skillTriggerName = "skillActive";
 
     protected override void Awake()
     {
@@ -21,9 +22,9 @@ public class PlayerAIController : AIController
 
         movementState = new Player_MovementState(this, stateMachine, movementAnimName);
         fallState = new Player_FallState(this, stateMachine, fallAnimName);
-        attackState = new Player_AttackState(this, stateMachine, attackAnimName);
         deathState = new Player_DeathState(this, stateMachine, deathAnimName);
-        skillState = new Player_SkillState(this, stateMachine, movementAnimName);
+        attackState = new Player_AttackState(this, stateMachine, movementAnimName, attackTriggerName);
+        skillState = new Player_SkillState(this, stateMachine, movementAnimName, skillTriggerName);
     }
 
     protected override void Start()
@@ -83,12 +84,11 @@ public class PlayerAIController : AIController
 
         if (PendingAbilityId != EAbilityId.None)
         {
-            TryActivateAbilityBy(PendingAbilityId);
-            PendingAbilityId = EAbilityId.None;
+            stateMachine.ChangeState(skillState);
         }
         else if (CanEnterAttackState())
         {
-            TryActivateAbilityBy(EAbilityId.Common_NormalAttack);
+            stateMachine.ChangeState(attackState);
         }
         else
         {

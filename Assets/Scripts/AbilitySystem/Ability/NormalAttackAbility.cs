@@ -5,7 +5,7 @@ public class NormalAttackAbility : AbilityLogicBase
 {
     private Coroutine comboTimerCo;
     private int comboCount = 1;
-    bool isActivated = false;
+    
 
     public NormalAttackAbility()
     {
@@ -13,7 +13,8 @@ public class NormalAttackAbility : AbilityLogicBase
 
     public override void ActivateAbility(AbilitySpec spec, IAbilitySystemContext context)
     {
-        isActivated = true;
+        base.ActivateAbility(spec, context);
+
         StopComboResetTimer(context);
 
         if (spec.abilityData is not Common_NormalAttackDataSO attackAbilityData)
@@ -26,7 +27,7 @@ public class NormalAttackAbility : AbilityLogicBase
         Animator animator = context.Owner.Anim;
         animator.SetInteger(attackAbilityData.comboCountName, comboCount);
 
-        PlayAnimationAndWait(spec, context, () =>
+        PlayAbilityAnimationAndWait(spec, context, () =>
         {
             context.EndAbility(spec);
         });
@@ -53,6 +54,8 @@ public class NormalAttackAbility : AbilityLogicBase
 
     public override void OnEndAbility(AbilitySpec spec, IAbilitySystemContext context)
     {
+        base.OnEndAbility(spec, context);
+
         if (spec.abilityData is not Common_NormalAttackDataSO attackData)
             return;
 
@@ -63,7 +66,6 @@ public class NormalAttackAbility : AbilityLogicBase
         else
             comboTimerCo = context.StartCoroutine(ComboReset());
 
-        isActivated = false;
     }
 
     private IEnumerator ComboReset()
@@ -84,10 +86,5 @@ public class NormalAttackAbility : AbilityLogicBase
     public override bool CanActivate(AbilitySpec spec, IAbilitySystemContext context)
     {
         return !isActivated;
-    }
-
-    public override void CancelAbility(AbilitySpec spec, IAbilitySystemContext context)
-    {
-        context.EndAbility(spec);
     }
 }

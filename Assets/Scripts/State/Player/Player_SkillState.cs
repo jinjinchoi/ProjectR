@@ -1,8 +1,8 @@
 using UnityEngine;
 
-public class Player_SkillState : PlayerBaseState
+public class Player_SkillState : PlayerCombatState
 {
-    public Player_SkillState(PlayerAIController aiController, StateMachine stateMachine, string animStateName) : base(aiController, stateMachine, animStateName)
+    public Player_SkillState(PlayerAIController aiController, StateMachine stateMachine, string animStateName, string animTriggerName) : base(aiController, stateMachine, animStateName, animTriggerName)
     {
     }
 
@@ -11,13 +11,11 @@ public class Player_SkillState : PlayerBaseState
         base.Enter();
 
         aiController.StopOwner();
-        aiController.Owner.Anim.SetBool(animBoolName, false);
        
         Debug.Log($"Activate : {aiController.PendingAbilityId}");
         aiController.TryActivateAbilityBy(aiController.PendingAbilityId);
         aiController.PendingAbilityId = EAbilityId.None;
 
     }
-
 
 }

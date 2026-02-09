@@ -44,9 +44,12 @@ public abstract class BaseCharacter : MonoBehaviour, IAbilityOwner, IDamageable
     private Coroutine knockbackCo;
     private bool isDead = false;
     private int facingDir = 1;
+    private DamageDealer damageDealer;
+
 
     #region Getter
     public Rigidbody2D Rb => rb;
+    public DamageDealer DamageDealer => damageDealer;
     public AbilitySystemComponent ASC => abilitySystemComponent ? abilitySystemComponent : GetComponent<AbilitySystemComponent>();
     public float MoveSpeed => moveSpeed;
     public bool IsGrounded => isGrounded;
@@ -61,6 +64,8 @@ public abstract class BaseCharacter : MonoBehaviour, IAbilityOwner, IDamageable
 
         animationTrigger = GetComponentInChildren<AnimationTrigger>();
         anim = GetComponentInChildren<Animator>();
+        damageDealer = GetComponentInChildren<DamageDealer>();
+
 
         originalLayerMask = gameObject.layer;
 

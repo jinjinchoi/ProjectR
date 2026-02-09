@@ -2,22 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ThunderStrikeAttack : AbilityLogicBase
+public class ThunderStrikeAbility : AbilityLogicBase
 {
-    private List<(Vector3 left, Vector3 right)> thunderPairs = new();
+    private readonly List<(Vector3 left, Vector3 right)> thunderPairs = new();
     private Coroutine ThunderStrikeCo;
 
     // TODO: SO 파일로 옮겨야함
     float spacing = 1.5f;
     float interval = 0.2f;
 
-    bool isActive = false;
 
     public override void ActivateAbility(AbilitySpec spec, IAbilitySystemContext context)
     {
-        isActive = true;
+        base.ActivateAbility(spec, context);
 
-        PlayAnimationAndWait(spec, context, () =>
+        PlayAbilityAnimationAndWait(spec, context, () =>
         {
             context.EndAbility(spec);
         });
@@ -28,7 +27,6 @@ public class ThunderStrikeAttack : AbilityLogicBase
 
         WaitAnimationEvent(spec, context, EAnimationEventType.Attack, () =>
         {
-
             if (ThunderStrikeCo != null)
                 context.StopCoroutine(ThunderStrikeCo);
 
@@ -76,17 +74,13 @@ public class ThunderStrikeAttack : AbilityLogicBase
 
     public override bool CanActivate(AbilitySpec spec, IAbilitySystemContext context)
     {
-        return IsCooldownReady(spec) && !isActive;
-    }
-
-    public override void CancelAbility(AbilitySpec spec, IAbilitySystemContext context)
-    {
-        context.EndAbility(spec);
+        return IsCooldownReady(spec) && !isActivated;
     }
 
     public override void OnEndAbility(AbilitySpec spec, IAbilitySystemContext context)
     {
+        base.OnEndAbility(spec, context);
+
         spec.lastActivatedTime = Time.time;
-        isActive = false;
     }
 }

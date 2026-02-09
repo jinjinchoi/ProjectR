@@ -5,5 +5,6 @@ public enum EAbilityId
     None,
 
     Common_NormalAttack,
-    ThunderStrike
+    ThunderStrike,
+    ChargeAttack
 }
