@@ -28,7 +28,7 @@ public class EffectPool : MonoBehaviour
 
     private void Awake()
     {
-        pool = new ObjectPool<GameObject>(Create, OnGet, OnRelease, OnDestroyEffect, collectionCheck: false, defaultCapacity: 5, maxSize: 50);
+        pool = new ObjectPool<GameObject>(Create, OnGet, OnRelease, OnDestroyEffect, collectionCheck: false, defaultCapacity: 6, maxSize: 50);
 
         clipMap = new Dictionary<EEffectType, AnimationClip>();
         foreach (var entry in clipList)

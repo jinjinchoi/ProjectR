@@ -9,5 +9,6 @@ public abstract class DamageAbilityDataSO : BaseAbilityDataSO
     public LayerMask hostileTargetLayer;
     public EDamageType damageType;
     public Vector2 knockbackPower = Vector2.zero;
+    public float KnockbackDuration = 0.15f;
 
 }

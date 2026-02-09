@@ -36,13 +36,8 @@ public class NormalAttackAbility : AbilityLogicBase
             if (spec.abilityData is Common_NormalAttackDataSO attackData)
             {
                 Collider2D[] hits = Physics2D.OverlapCircleAll(context.Owner.AttackPoint.position, attackData.attackDamageRadius, attackData.hostileTargetLayer);
-                
-                FDamageInfo damageInfo = DamageCalculator.CalculateOutgoingDamage(
-                               context.AttributeSet,
-                               context.Owner,
-                               attackData.damageType,
-                               attackData.damageMultiplier,
-                               attackData.knockbackPower);
+
+                FDamageInfo damageInfo = DamageCalculator.CalculateOutgoingDamage(context, attackData, context.Owner.OwnerTransform);
 
                 foreach (var hit in hits)
                 {

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Player - ThunderStrike
   m_EditorClassIdentifier: Assembly-CSharp::Ability_ThunderStrikeSO
   abilityId: 2
-  abilityName: "\uBC88\uAC1C \uD0C0\uACA9"
+  abilityName: "\uCC9C\uACF5\uC758 \uBC88\uAC1C"
   cooldown: 5
   animBoolName: jumpSkill
   animTag: Skill
@@ -24,4 +24,5 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   damageType: 2
-  knockbackPower: {x: 1.5, y: 1}
+  knockbackPower: {x: 3, y: 1.2}
+  KnockbackDuration: 0.2

@@ -17,13 +17,14 @@ MonoBehaviour:
   cooldown: 0
   animBoolName: comboAttack
   animTag: Attack
-  damageMultiplier: 100
-  attackDistance: 1.5
-  attackRadius: 1.5
+  damageMultiplier: 60
+  minAttackRange: 1.5
+  attackDamageRadius: 1.5
   hostileTargetLayer:
     serializedVersion: 2
     m_Bits: 128
   damageType: 1
+  knockbackPower: {x: 1, y: 0.8}
+  KnockbackDuration: 0.15
   maxComboCount: 3
   comboCountName: comboCount
-  knockbackPower: {x: 1, y: 0.8}

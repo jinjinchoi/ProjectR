@@ -151,10 +151,10 @@ public abstract class BaseCharacter : MonoBehaviour, IAbilityOwner, IDamageable
             if (knockbackCo != null)
                 StopCoroutine(knockbackCo);
 
-            int dir = transform.position.x > damageInfo.Instigator.OwnerTransform.position.x ? 1 : -1;
+            int dir = transform.position.x > damageInfo.DamageSource.position.x ? 1 : -1;
             Vector2 kncokback = damageInfo.KnockbackPower;
             kncokback.x *= dir;
-            knockbackCo = StartCoroutine(ExcuteKnockback(kncokback, 0.15f));
+            knockbackCo = StartCoroutine(ExcuteKnockback(kncokback, damageInfo.KnockbackDuration));
         }
     }
 

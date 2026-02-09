@@ -2,31 +2,29 @@ using UnityEngine;
 
 public class DamageCalculator
 {
-    static public FDamageInfo CalculateOutgoingDamage(IAttributeSet attackerAS, IAbilityOwner instigator, EDamageType damageType, float damageMultiplier, Vector2 KnockbackPower = default)
+    // 대미지를 입힐때 얼마나 대미지를 입힐지 구하는 함수
+    static public FDamageInfo CalculateOutgoingDamage(IAbilitySystemContext context, DamageAbilityDataSO damageDataSO, Transform damageSource)
     {
         float damage = 0;
 
-        if (damageType == EDamageType.Physical)
+        if (damageDataSO.damageType == EDamageType.Physical)
         {
-            damage = attackerAS.GetAttributeValue(EAttributeType.physicalAttackPower);
+            damage = context.AttributeSet.GetAttributeValue(EAttributeType.physicalAttackPower);
         }
-        if (damageType == EDamageType.Magic)
+        if (damageDataSO.damageType == EDamageType.Magic)
         {
-            damage = attackerAS.GetAttributeValue(EAttributeType.magicAttackPower);
+            damage = context.AttributeSet.GetAttributeValue(EAttributeType.magicAttackPower);
         }
-        damage *= damageMultiplier / 100;
+        damage *= damageDataSO.damageMultiplier / 100;
 
-        float criticalChance = attackerAS.GetAttributeValue(EAttributeType.criticalChance);
+        float criticalChance = context.AttributeSet.GetAttributeValue(EAttributeType.criticalChance);
         float random = Random.value * 100f;
         bool isCritical = random < criticalChance;
-        if (isCritical)
-        {
-            damage *= 1.4f;
-        }
 
-       return new FDamageInfo(instigator, Mathf.Round(damage), damageType, isCritical, KnockbackPower);
+        return new FDamageInfo(context.Owner, damageSource, Mathf.Round(damage), damageDataSO.damageType, isCritical, damageDataSO.knockbackPower, damageDataSO.KnockbackDuration);
     }
 
+    // 대미지를 받을때 얼마나 받을지 구하는 함수
     static public float CalculateIncomingDamage(IAttributeSet victimAS, FDamageInfo damageInfo)
     {
         float defanse = 0;
@@ -43,6 +41,10 @@ public class DamageCalculator
         if (defanse > 0)
             defanse /= 100;
 
-        return Mathf.Round(damageInfo.Damage * (1 - defanse));
+        float damage = damageInfo.OriginalDamage * (1 - defanse);
+
+        if (damageInfo.IsCritical) damage *= 1.4f;
+
+        return Mathf.Round(damage);
     }
 }

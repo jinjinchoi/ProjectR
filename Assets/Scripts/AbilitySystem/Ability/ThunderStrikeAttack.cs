@@ -44,20 +44,11 @@ public class ThunderStrikeAttack : AbilityLogicBase
         if (spec.abilityData is not DamageAbilityDataSO attackDataSO)
             yield break;
         
-
-        FDamageInfo damageInfo = DamageCalculator.CalculateOutgoingDamage(
-                            context.AttributeSet,
-                            context.Owner,
-                            attackDataSO.damageType,
-                            attackDataSO.damageMultiplier,
-                            attackDataSO.knockbackPower);
-
         FAttackData attackData = new()
         {
-            damageInfo = damageInfo,
-            Radius = attackDataSO.attackDamageRadius,
-            IsValid = true,
-            TargetLayerMask = attackDataSO.hostileTargetLayer
+            context = context,
+            damageDataSO = attackDataSO,
+            isKnockbackFromInstigator = true
         };
         foreach (var (left, right) in thunderPairs)
         {

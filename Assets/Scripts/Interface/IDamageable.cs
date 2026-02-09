@@ -3,18 +3,22 @@ using UnityEngine;
 public struct FDamageInfo
 {
     public IAbilityOwner Instigator;
-    public float Damage;
+    public Transform DamageSource;
+    public float OriginalDamage;
     public EDamageType DamageType;
     public bool IsCritical;
     public Vector2 KnockbackPower;
+    public float KnockbackDuration;
 
-    public FDamageInfo(IAbilityOwner instigator, float damage, EDamageType damageType, bool isCritical, Vector2 knockbackPower)
+    public FDamageInfo(IAbilityOwner instigator, Transform damageSource, float damage, EDamageType damageType, bool isCritical, Vector2 knockbackPower, float knockbackDuration)
     {
         Instigator = instigator;
-        Damage = damage;
+        DamageSource = damageSource;
+        OriginalDamage = damage;
         DamageType = damageType;
         IsCritical = isCritical;
         KnockbackPower = knockbackPower;
+        KnockbackDuration = knockbackDuration;
     }
 }
 
