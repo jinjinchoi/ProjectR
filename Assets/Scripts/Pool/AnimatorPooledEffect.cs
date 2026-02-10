@@ -1,8 +1,6 @@
 using UnityEngine;
 using UnityEngine.Pool;
 
-
-
 public class AnimatorPooledEffect : MonoBehaviour
 {
     static readonly int PlayHash = Animator.StringToHash("Play");
@@ -18,7 +16,6 @@ public class AnimatorPooledEffect : MonoBehaviour
         overrideController = new AnimatorOverrideController(animator.runtimeAnimatorController);
         animator.runtimeAnimatorController = overrideController;
     }
-
 
     public void Init(IObjectPool<GameObject> pool)
     {

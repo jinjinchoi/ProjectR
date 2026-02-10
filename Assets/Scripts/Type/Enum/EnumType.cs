@@ -17,3 +17,10 @@ public enum EGameEventType
     Detrimental,
     Battle
 }
+
+public enum EFaction
+{
+    Neutral,
+    Player,
+    Enemy
+}

@@ -10,9 +10,11 @@ public abstract class BaseCharacter : MonoBehaviour, IAbilityOwner, IDamageable
     // ability나 ai controller 등에서 상호 참조를 막기 위해 actor에 직접 접근하는 것이 아닌 인터페이스 사용
     #region IAbilityOwner
     public Animator Anim => anim;
-    public Transform OwnerTransform => transform;
+    public Transform Transform => transform;
     public AnimationTrigger AnimationTrigger => animationTrigger;
     public Transform AttackPoint => attackPoint;
+    public EFaction Faction => faction;
+    public int FacingDir => facingDir;
     #endregion
 
     [Header("Debug")]
@@ -27,6 +29,8 @@ public abstract class BaseCharacter : MonoBehaviour, IAbilityOwner, IDamageable
     [Header("Combat")]
     [SerializeField] private Transform attackPoint;
     [SerializeField] private string deadLayerName = "Dead";
+    [SerializeField] protected EFaction faction = EFaction.Neutral;
+
 
     [Header("ASC")]
     [SerializeField] private AttributeSO attributeInfoSO;
@@ -46,7 +50,6 @@ public abstract class BaseCharacter : MonoBehaviour, IAbilityOwner, IDamageable
     private int facingDir = 1;
     private DamageDealer damageDealer;
 
-
     #region Getter
     public Rigidbody2D Rb => rb;
     public DamageDealer DamageDealer => damageDealer;
@@ -54,7 +57,6 @@ public abstract class BaseCharacter : MonoBehaviour, IAbilityOwner, IDamageable
     public float MoveSpeed => moveSpeed;
     public bool IsGrounded => isGrounded;
     public bool IsDead => isDead;
-    public int FacingDir => facingDir;
     #endregion
 
     protected virtual void Awake()

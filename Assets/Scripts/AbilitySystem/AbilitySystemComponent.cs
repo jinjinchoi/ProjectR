@@ -8,9 +8,11 @@ using UnityEngine;
 public interface IAbilityOwner
 {
     Animator Anim { get; }
-    Transform OwnerTransform { get; }
+    Transform Transform { get; }
     AnimationTrigger AnimationTrigger { get; }
     Transform AttackPoint { get; }
+    EFaction Faction { get; }
+    int FacingDir { get; }
 }
 
 // 어빌리티가 직접 ASC에 접근하지 않고도 ASC의 기능을 사용하게 해주는 인터페이스

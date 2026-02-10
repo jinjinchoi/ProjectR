@@ -89,7 +89,7 @@ public class ChargeAttackAbility : AbilityLogicBase, IHitHandler
 
         hitTargets.Add(target);
 
-        FDamageInfo damageInfo = DamageCalculator.CalculateOutgoingDamage(cachedContext, cachedDataSO, cachedContext.Owner.OwnerTransform);
+        FDamageInfo damageInfo = DamageCalculator.CalculateOutgoingDamage(cachedContext, cachedDataSO, cachedContext.Owner.Transform);
         target.TakeDamage(damageInfo);
 
     }

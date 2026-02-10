@@ -17,6 +17,7 @@ public class PlayerCharacter : BaseCharacter
         base.Awake();
     }
 
+
     protected override void Start()
     {
         base.Start();
@@ -29,6 +30,7 @@ public class PlayerCharacter : BaseCharacter
     {
         GameManager.Instance.SceneChangingAsync -= SaveBeforeSceneChange;
     }
+
 
     private Task SaveBeforeSceneChange()
     {

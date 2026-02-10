@@ -21,8 +21,8 @@ public class ThunderStrikeAbility : AbilityLogicBase
             context.EndAbility(spec);
         });
 
-        Vector3 origin = context.Owner.OwnerTransform.position;
-        Vector3 rightDir = context.Owner.OwnerTransform.right;
+        Vector3 origin = context.Owner.Transform.position;
+        Vector3 rightDir = context.Owner.Transform.right;
         SetThunderPosition(origin, rightDir);
 
         WaitAnimationEvent(spec, context, EAnimationEventType.Attack, () =>
@@ -50,8 +50,8 @@ public class ThunderStrikeAbility : AbilityLogicBase
         };
         foreach (var (left, right) in thunderPairs)
         {
-            EffectManager.Instance.ActivateAttackableEffect(EEffectType.Thunder, left, attackData);
-            EffectManager.Instance.ActivateAttackableEffect(EEffectType.Thunder, right, attackData);
+            PoolingManager.Instance.ActivateAttackableEffect(EEffectType.Thunder, left, attackData);
+            PoolingManager.Instance.ActivateAttackableEffect(EEffectType.Thunder, right, attackData);
 
             yield return new WaitForSeconds(interval);
         }

@@ -36,7 +36,7 @@ public class ExplosionEffect : MonoBehaviour
         {
             if (hit.TryGetComponent<IDamageable>(out var damageable))
             {
-                Transform KnockbackSource = attackData.isKnockbackFromInstigator ? attackData.context.Owner.OwnerTransform : transform;
+                Transform KnockbackSource = attackData.isKnockbackFromInstigator ? attackData.context.Owner.Transform : transform;
                 FDamageInfo damageInfo = DamageCalculator.CalculateOutgoingDamage(attackData.context, attackData.damageDataSO, KnockbackSource);
                 damageable.TakeDamage(damageInfo);
             }

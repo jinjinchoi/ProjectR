@@ -125,6 +125,7 @@ MonoBehaviour:
     m_Bits: 256
   attackPoint: {fileID: 3108334452271365320}
   deadLayerName: Dead
+  faction: 2
   attributeInfoSO: {fileID: 11400000, guid: b0105fee95f6bf0459f72c133d372261, type: 2}
   defaultAbilities:
   - {fileID: 11400000, guid: 5303c493b02f6414684ca0854bc8e756, type: 2}
@@ -171,6 +172,8 @@ MonoBehaviour:
   hostileLayerMask:
     serializedVersion: 2
     m_Bits: 64
+  skillProbability: 0.25
+  PendingAbilityId: 0
   detectDistance: 5
   targetDetectTime: 3
   idleAnimName: idle

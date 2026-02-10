@@ -81,7 +81,7 @@ public class UIController_RestArea : BaseCharacterUIController
             };
 
             abilitySystem.ApplyModifier(costModifier);
-            EffectManager.Instance.ActivateEffect(EEffectType.Healing, abilitySystem.Owner.OwnerTransform.position);
+            PoolingManager.Instance.ActivateEffect(EEffectType.Healing, abilitySystem.Owner.Transform.position);
         }
         else
         {
@@ -104,7 +104,7 @@ public class UIController_RestArea : BaseCharacterUIController
 
         abilitySystem.ApplyModifier(modifier);
 
-        EffectManager.Instance.ActivateEffect(EEffectType.Healing, abilitySystem.Owner.OwnerTransform.position);
+        PoolingManager.Instance.ActivateEffect(EEffectType.Healing, abilitySystem.Owner.Transform.position);
         growthCalculator.RecalculateUpgradePoint();
         GameManager.Instance.ProcessDay();
     }

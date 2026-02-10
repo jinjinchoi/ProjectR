@@ -9,10 +9,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7371391565101500778}
-  - component: {fileID: 7969296764274975662}
   - component: {fileID: 2090375930418573254}
+  - component: {fileID: 5190785951272818190}
   m_Layer: 0
-  m_Name: ___EFFECTMANAGER___
+  m_Name: ___POOLINGMANAGER___
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -33,18 +33,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7969296764274975662
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6449643246952777460}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8fb90495dd9f0c646ac9f563b6719bee, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EffectManager
 --- !u!114 &2090375930418573254
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -63,3 +51,16 @@ MonoBehaviour:
     clip: {fileID: 7400000, guid: 8e0d1b9efbb49164689f6a5994cb0721, type: 2}
   - type: 2
     clip: {fileID: 7400000, guid: 866c27132a3d9d84cbb082498753e86e, type: 2}
+--- !u!114 &5190785951272818190
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6449643246952777460}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13e5f2629fbffa24496db12146206d4b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PoolingManager
+  poolConfigs: {fileID: 11400000, guid: a98d29c79565b694ebdbee75365533c9, type: 2}

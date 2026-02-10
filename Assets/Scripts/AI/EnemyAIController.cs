@@ -109,7 +109,7 @@ public class EnemyAIController : AIController
     private void OnHit(FDamageInfo damageInfo)
     {
         if (!target)
-            target = damageInfo.Instigator.OwnerTransform;
+            target = damageInfo.Instigator.Transform;
     }
 
     protected override void OnEnable()

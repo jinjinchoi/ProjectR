@@ -46,6 +46,7 @@ public class EnemyCharacter : BaseCharacter
         base.Awake();
     }
 
+
     public void Init(FEnemySecondaryAttribute attributeInfo)
     {
         foreach (var attribute in SecondaryAttributes)
