@@ -118,7 +118,7 @@ public class UIController_Dialogue
             attributeType = node.attribute,
             value = node.reward,
             operation = EModifierOp.Add,
-            isPermanent = true
+            policy = EModifierPolicy.Instant
         };
         abilitySystemComponent.ApplyModifier(modifier);
 

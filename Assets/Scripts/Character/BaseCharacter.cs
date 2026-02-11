@@ -91,7 +91,7 @@ public abstract class BaseCharacter : MonoBehaviour, IAbilityOwner, IDamageable
             {
                 attributeType = info.attributeType,
                 value = info.baseValue,
-                isPermanent = true,
+                policy = EModifierPolicy.Instant,
                 operation = EModifierOp.Override
             };
             abilitySystemComponent.ApplyModifier(modifier);
@@ -104,7 +104,7 @@ public abstract class BaseCharacter : MonoBehaviour, IAbilityOwner, IDamageable
         {
             attributeType = EAttributeType.currentHealth,
             value = maxHealth,
-            isPermanent = true,
+            policy = EModifierPolicy.Instant,
             operation = EModifierOp.Override
         };
         abilitySystemComponent.ApplyModifier(healthModifier);
@@ -113,7 +113,7 @@ public abstract class BaseCharacter : MonoBehaviour, IAbilityOwner, IDamageable
         {
             attributeType = EAttributeType.currentMana,
             value = maxMana,
-            isPermanent = true,
+            policy = EModifierPolicy.Instant,
             operation = EModifierOp.Override
         };
         abilitySystemComponent.ApplyModifier(manaModifier);
@@ -146,7 +146,7 @@ public abstract class BaseCharacter : MonoBehaviour, IAbilityOwner, IDamageable
         {
             attributeType = EAttributeType.incommingDamage,
             value = DamageCalculator.CalculateIncomingDamage(abilitySystemComponent.AttributeSet, damageInfo),
-            isPermanent = true,
+            policy = EModifierPolicy.Instant,
             operation = EModifierOp.Add
         };
 

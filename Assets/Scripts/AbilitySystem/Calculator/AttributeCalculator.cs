@@ -21,19 +21,19 @@ public abstract class AttributeCalculatorBase : IAttributeCalculator
 
         foreach (var mod in attributeSet.GetModifiers(type))
         {
-            switch (mod.operation)
+            switch (mod.Modifier.operation)
             {
                 case EModifierOp.Add:
-                    add += mod.value;
+                    add += mod.Modifier.value;
                     break;
 
                 case EModifierOp.Multiply:
-                    mul *= mod.value;
+                    mul *= mod.Modifier.value;
                     break;
 
                 case EModifierOp.Override:
                     hasOverride = true;
-                    overrideValue = mod.value;
+                    overrideValue = mod.Modifier.value;
                     break;
             }
         }

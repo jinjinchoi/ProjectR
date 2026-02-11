@@ -65,7 +65,7 @@ public class UIController_RestArea : BaseCharacterUIController
             FAttributeModifier upgradeModifier = new()
             {
                 attributeType = attribute,
-                isPermanent = true,
+                policy = EModifierPolicy.Instant,
                 operation = EModifierOp.Add,
                 value = GetUpgradeValue(attribute)
             };
@@ -75,7 +75,7 @@ public class UIController_RestArea : BaseCharacterUIController
             FAttributeModifier costModifier = new()
             {
                 attributeType = EAttributeType.incommingDamage,
-                isPermanent = true,
+                policy = EModifierPolicy.Instant,
                 operation = EModifierOp.Add,
                 value = GetUpgradeCost()
             };
@@ -97,7 +97,7 @@ public class UIController_RestArea : BaseCharacterUIController
         FAttributeModifier modifier = new()
         {
             attributeType = EAttributeType.currentHealth,
-            isPermanent = true,
+            policy = EModifierPolicy.Instant,
             operation = EModifierOp.Add,
             value = GetRelaxValue()
         };

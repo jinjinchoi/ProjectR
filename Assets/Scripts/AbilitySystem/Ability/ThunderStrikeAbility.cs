@@ -81,6 +81,5 @@ public class ThunderStrikeAbility : AbilityLogicBase
     {
         base.OnEndAbility(spec, context);
 
-        spec.lastActivatedTime = Time.time;
     }
 }

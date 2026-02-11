@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.Rendering.VirtualTexturing.Debugging;
 
 public enum EModifierOp
 {
@@ -10,12 +11,35 @@ public enum EModifierOp
     Override
 }
 
+public enum EModifierPolicy
+{
+    Instant,   // BaseValue 변경
+    Duration,
+    Infinite 
+}
+
 public struct FAttributeModifier
 {
     public EAttributeType attributeType;
     public float value;
     public EModifierOp operation; // Add, Mul, Override
-    public bool isPermanent; // change base value
+    public EModifierPolicy policy;
+}
+
+public readonly struct FModifierHandle
+{
+    public readonly int Id;
+
+    public FModifierHandle(int id)
+    {
+        Id = id;
+    }
+}
+
+public class ActiveModifier
+{
+    public FModifierHandle Handle;
+    public FAttributeModifier Modifier;
 }
 
 public class AttributeValue
@@ -68,7 +92,9 @@ public class AttributeSet : IAttributeSet
     // 어트리뷰트에 따른 값을 저장
     private Dictionary<EAttributeType, AttributeValue> attributes = new();
     // 어트리뷰트 별로 적용되어있는 modifer 저장
-    private Dictionary<EAttributeType, List<FAttributeModifier>> modifiers = new();
+    private Dictionary<EAttributeType, List<ActiveModifier>> modifiers = new();
+    Dictionary<FModifierHandle, ActiveModifier> modifierHandleMap = new();
+    private int handleCounter = 0;
     // 2차 속성 계산을 위한 전략 저장
     private Dictionary<EAttributeType, IAttributeCalculator> calculators = new();
 
@@ -80,7 +106,7 @@ public class AttributeSet : IAttributeSet
         foreach (EAttributeType type in Enum.GetValues(typeof(EAttributeType)))
         {
             attributes[type] = new AttributeValue(0f);
-            modifiers[type] = new List<FAttributeModifier>();
+            modifiers[type] = new List<ActiveModifier>();
         }
     }
     public void SetBaseValue(EAttributeType type, float value)
@@ -147,24 +173,26 @@ public class AttributeSet : IAttributeSet
         healthMod.attributeType = EAttributeType.currentHealth;
         healthMod.value = -localIncomingDamage;
         healthMod.operation = EModifierOp.Add;
-        healthMod.isPermanent = true;
+        healthMod.policy = EModifierPolicy.Instant;
 
-        ApplyModifier(healthMod);
+        ApplyPermanentModifier(healthMod);
     }
 
-    public void ApplyModifier(FAttributeModifier modifier)
+    public void ApplyPermanentModifier(FAttributeModifier modifier)
     {
-        if (modifier.isPermanent)
-        {
-            ApplyModifierToBaseValue(modifier);
-        }
-        else
-        {
-            AddToModifierList(modifier);
-        }
+        ApplyModifierToBaseValue(modifier);
+        Recalculate(modifier.attributeType);
+        PostAttributeChange(modifier);
+    }
+
+    public FModifierHandle ApplyActiveModifier(FAttributeModifier modifier)
+    {
+        var handle = AddToModifierList(modifier);
 
         Recalculate(modifier.attributeType);
         PostAttributeChange(modifier);
+
+        return handle;
     }
 
     private void ApplyModifierToBaseValue(FAttributeModifier modifier)
@@ -185,22 +213,35 @@ public class AttributeSet : IAttributeSet
         }
     }
 
-    private void AddToModifierList(FAttributeModifier modifier)
+    private FModifierHandle AddToModifierList(FAttributeModifier modifier)
     {
         if (!modifiers.ContainsKey(modifier.attributeType))
-            modifiers[modifier.attributeType] = new List<FAttributeModifier>();
+            modifiers[modifier.attributeType] = new();
 
-        modifiers[modifier.attributeType].Add(modifier);
+        var handle = new FModifierHandle(++handleCounter);
+        var active = new ActiveModifier
+        {
+            Handle = handle,
+            Modifier = modifier
+        };
+
+        modifiers[modifier.attributeType].Add(active);
+        modifierHandleMap.Add(handle, active);
+
+        return handle;
     }
 
-    public void RemoveModifier(FAttributeModifier modifier)
+    public void RemoveModifier(FModifierHandle handle)
     {
-        if (!modifiers.ContainsKey(modifier.attributeType))
+        if (!modifierHandleMap.TryGetValue(handle, out var active))
             return;
 
-        modifiers[modifier.attributeType].Remove(modifier);
-        Recalculate(modifier.attributeType);
-        PostAttributeChange(modifier);
+        EAttributeType attribute = active.Modifier.attributeType;
+        modifiers[attribute].Remove(active);
+        modifierHandleMap.Remove(handle);
+
+        Recalculate(attribute);
+        PostAttributeChange(active.Modifier);
 
     }
 
@@ -214,7 +255,7 @@ public class AttributeSet : IAttributeSet
 
         FAttributeModifier mod;
         mod.attributeType = type;
-        mod.isPermanent = true;
+        mod.policy = EModifierPolicy.Instant;
         mod.value = 0;
         mod.operation = EModifierOp.None;
         PostAttributeChange(mod);
@@ -230,10 +271,10 @@ public class AttributeSet : IAttributeSet
         return attributes[type].currentValue;
     }
 
-    public List<FAttributeModifier> GetModifiers(EAttributeType type)
+    public List<ActiveModifier> GetModifiers(EAttributeType type)
     {
         if (!modifiers.ContainsKey(type))
-            return new List<FAttributeModifier>();
+            return new List<ActiveModifier>();
 
         return modifiers[type];
     }
@@ -249,19 +290,19 @@ public class AttributeSet : IAttributeSet
 
         foreach (var mod in modifiers[type])
         {
-            switch (mod.operation)
+            switch (mod.Modifier.operation)
             {
                 case EModifierOp.Add:
-                    add += mod.value;
+                    add += mod.Modifier.value;
                     break;
 
                 case EModifierOp.Multiply:
-                    mul *= mod.value;
+                    mul *= mod.Modifier.value;
                     break;
 
                 case EModifierOp.Override:
                     hasOverride = true;
-                    overrideValue = mod.value;
+                    overrideValue = mod.Modifier.value;
                     break;
             }
         }

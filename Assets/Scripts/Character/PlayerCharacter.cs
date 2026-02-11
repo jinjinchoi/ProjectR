@@ -64,7 +64,7 @@ public class PlayerCharacter : BaseCharacter
         FAttributeModifier healthModifier = new()
         {
             attributeType = EAttributeType.currentHealth,
-            isPermanent = true,
+            policy = EModifierPolicy.Instant,
             operation = EModifierOp.Override,
             value = GameManager.Instance.SaveManager.PlayerData.currentHeath
         };
@@ -77,7 +77,7 @@ public class PlayerCharacter : BaseCharacter
         {
             attributeType = attribute,
             value = data.GetValueByType(attribute),
-            isPermanent = true,
+            policy = EModifierPolicy.Instant,
             operation = EModifierOp.Override
         };
     }

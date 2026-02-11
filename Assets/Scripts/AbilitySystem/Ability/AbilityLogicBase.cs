@@ -28,6 +28,7 @@ public abstract class AbilityLogicBase
     public virtual void OnEndAbility(AbilitySpec spec, IAbilitySystemContext context)
     {
         isActivated = false;
+        spec.lastActivatedTime = Time.time;
     }
     public virtual void CancelAbility(AbilitySpec spec, IAbilitySystemContext context)
     {

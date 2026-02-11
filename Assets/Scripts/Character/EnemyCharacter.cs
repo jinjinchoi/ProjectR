@@ -57,7 +57,7 @@ public class EnemyCharacter : BaseCharacter
         FAttributeModifier healthModifier = new()
         {
             attributeType = EAttributeType.currentHealth,
-            isPermanent = true,
+            policy = EModifierPolicy.Instant,
             operation = EModifierOp.Add,
             value = ASC.AttributeSet.GetAttributeValue(EAttributeType.maxHealth)
         };
@@ -69,7 +69,7 @@ public class EnemyCharacter : BaseCharacter
         return new FAttributeModifier()
         {
             attributeType = attribute,
-            isPermanent = false, // secondary attribute는 base value와 상관없이 계산식에 의해 값을 가져오기 때문에 base value를 바꿔도 의미 없음.
+            policy = EModifierPolicy.Infinite,
             operation = EModifierOp.Override,
             value = attributeInfo.GetValueByType(attribute)
         };

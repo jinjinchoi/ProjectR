@@ -133,11 +133,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6466579710955251819, guid: 9119c2f06ac50554e8db0152c91cec31, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -7.375156
+      value: 4.07
       objectReference: {fileID: 0}
     - target: {fileID: 6466579710955251819, guid: 9119c2f06ac50554e8db0152c91cec31, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.6977179
+      value: -0.79
       objectReference: {fileID: 0}
     - target: {fileID: 6466579710955251819, guid: 9119c2f06ac50554e8db0152c91cec31, type: 3}
       propertyPath: m_LocalPosition.z
@@ -311,7 +311,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -25.057575, y: 3.3349948, z: 6.2561073}
+  m_LocalPosition: {x: -15.317575, y: -0.11500517, z: 6.2561073}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -719,7 +719,7 @@ Transform:
   m_GameObject: {fileID: 1199578880}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -25.057575, y: 3.3349948, z: 6.2561073}
+  m_LocalPosition: {x: -15.317575, y: -0.11500517, z: 6.2561073}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1004,11 +1004,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 376767371726976693, guid: 7f62c75badf4be34d839f1d79fd79c88, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -26.55
+      value: -16.81
       objectReference: {fileID: 0}
     - target: {fileID: 376767371726976693, guid: 7f62c75badf4be34d839f1d79fd79c88, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.52
+      value: 0.07
       objectReference: {fileID: 0}
     - target: {fileID: 376767371726976693, guid: 7f62c75badf4be34d839f1d79fd79c88, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1042,34 +1042,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2270688756999833385, guid: 7f62c75badf4be34d839f1d79fd79c88, type: 3}
-      propertyPath: skillProbability
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 3884493160397306294, guid: 7f62c75badf4be34d839f1d79fd79c88, type: 3}
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
-    - target: {fileID: 7651841742770528895, guid: 7f62c75badf4be34d839f1d79fd79c88, type: 3}
-      propertyPath: defaultAbilities.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7651841742770528895, guid: 7f62c75badf4be34d839f1d79fd79c88, type: 3}
-      propertyPath: 'defaultAbilities.Array.data[0]'
-      value: 
-      objectReference: {fileID: 11400000, guid: 6ff6e3ff6d097e9428d49487f629371d, type: 2}
-    - target: {fileID: 7651841742770528895, guid: 7f62c75badf4be34d839f1d79fd79c88, type: 3}
-      propertyPath: 'defaultAbilities.Array.data[1]'
-      value: 
-      objectReference: {fileID: 11400000, guid: 9662b78b2f5223548833234cc89be70d, type: 2}
-    - target: {fileID: 7651841742770528895, guid: 7f62c75badf4be34d839f1d79fd79c88, type: 3}
-      propertyPath: 'defaultAbilities.Array.data[2]'
-      value: 
-      objectReference: {fileID: 11400000, guid: 3900edc2eabc1aa4d89a601b0ca20ff7, type: 2}
-    - target: {fileID: 7651841742770528895, guid: 7f62c75badf4be34d839f1d79fd79c88, type: 3}
-      propertyPath: 'defaultAbilities.Array.data[3]'
-      value: 
-      objectReference: {fileID: 11400000, guid: 3900edc2eabc1aa4d89a601b0ca20ff7, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

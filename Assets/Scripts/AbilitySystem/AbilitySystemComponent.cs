@@ -26,7 +26,7 @@ public interface IAbilitySystemContext
     void StopCoroutine(Coroutine routine);
     void RegisterWaitingAbility(EAnimationEventType eventType, AbilitySpec spec, Action callback);
     void UnregisterWaitingAbility(AbilitySpec spec);
-    void ApplyModifier(FAttributeModifier modifier);
+    FModifierHandle? ApplyModifier(FAttributeModifier modifier);
     EAbilityId GetRandomAbilityId();
 }
 
@@ -162,15 +162,23 @@ public class AbilitySystemComponent : MonoBehaviour, IAbilitySystemContext
             waitingAbilitiesByAnimEvent.Remove(key);
     }
 
-    public void ApplyModifier(FAttributeModifier modifier)
+    public FModifierHandle? ApplyModifier(FAttributeModifier modifier)
     {
         if (attributeSet == null)
         {
             DebugHelper.LogWarning("attribute set not exist");
-            return;
+            return null;
         }
 
-        attributeSet.ApplyModifier(modifier);
+        if (modifier.policy == EModifierPolicy.Instant)
+        {
+            attributeSet.ApplyPermanentModifier(modifier);
+            return null;
+        }
+        else
+        {
+            return attributeSet.ApplyActiveModifier(modifier);
+        }
     }
 
     private void OnAnimationTriggered(EAnimationEventType eventType)
