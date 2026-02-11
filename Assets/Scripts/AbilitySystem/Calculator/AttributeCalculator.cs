@@ -1,13 +1,19 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public interface IAttributeCalculator
 {
     float GetAttributeValue(AttributeSet attributeSet, EAttributeType type);
+    public abstract EAttributeType TargetAttribute { get; }
+    public abstract IReadOnlyList<EAttributeType> Dependencies { get; }
 }
 
 // 2차 속성 계산을 위한 클래스. 클래스 생성 후 Attribute Set 클래스에서 적용해야함.
 public abstract class AttributeCalculatorBase : IAttributeCalculator
 {
+    public abstract EAttributeType TargetAttribute { get; }
+    public abstract IReadOnlyList<EAttributeType> Dependencies { get; }
+
     protected abstract float CalculateAttribute(AttributeSet attributeSet);
 
     public float GetAttributeValue(AttributeSet attributeSet, EAttributeType type)
@@ -44,6 +50,15 @@ public abstract class AttributeCalculatorBase : IAttributeCalculator
 
 public class PhysicalAttackPowerCalculator : AttributeCalculatorBase
 {
+    public override EAttributeType TargetAttribute
+      => EAttributeType.physicalAttackPower;
+
+    public override IReadOnlyList<EAttributeType> Dependencies => new[]
+    {
+        EAttributeType.strength,
+        EAttributeType.dexterity
+    };
+
     protected override float CalculateAttribute(AttributeSet attributeSet)
     {
         float str = attributeSet.GetAttributeValue(EAttributeType.strength);
@@ -55,6 +70,14 @@ public class PhysicalAttackPowerCalculator : AttributeCalculatorBase
 
 public class PhysicalDefensePowerCalculator : AttributeCalculatorBase
 {
+    public override EAttributeType TargetAttribute => EAttributeType.physicalDefensePower;
+
+    public override IReadOnlyList<EAttributeType> Dependencies => new[]
+    {
+        EAttributeType.strength,
+        EAttributeType.dexterity
+    };
+
     protected override float CalculateAttribute(AttributeSet attributeSet)
     {
         float str = attributeSet.GetAttributeValue(EAttributeType.strength);
@@ -66,6 +89,14 @@ public class PhysicalDefensePowerCalculator : AttributeCalculatorBase
 
 public class MagicAttackPowerCalculator : AttributeCalculatorBase
 {
+    public override EAttributeType TargetAttribute => EAttributeType.magicAttackPower;
+
+    public override IReadOnlyList<EAttributeType> Dependencies => new[]
+    {
+        EAttributeType.intelligence,
+        EAttributeType.dexterity
+    };
+
     protected override float CalculateAttribute(AttributeSet attributeSet)
     {
         float intell = attributeSet.GetAttributeValue(EAttributeType.intelligence);
@@ -77,6 +108,14 @@ public class MagicAttackPowerCalculator : AttributeCalculatorBase
 
 public class MagicDefensePowerCalculator : AttributeCalculatorBase
 {
+    public override EAttributeType TargetAttribute => EAttributeType.magicAttackPower;
+
+    public override IReadOnlyList<EAttributeType> Dependencies => new[]
+    {
+        EAttributeType.intelligence,
+        EAttributeType.vitality
+    };
+
     protected override float CalculateAttribute(AttributeSet attributeSet)
     {
         float intell = attributeSet.GetAttributeValue(EAttributeType.intelligence);
@@ -88,6 +127,14 @@ public class MagicDefensePowerCalculator : AttributeCalculatorBase
 
 public class CriticalChanceCalculator : AttributeCalculatorBase
 {
+    public override EAttributeType TargetAttribute => EAttributeType.criticalChance;
+
+    public override IReadOnlyList<EAttributeType> Dependencies => new[]
+    { 
+        EAttributeType.strength,
+        EAttributeType.dexterity
+    };
+
     protected override float CalculateAttribute(AttributeSet attributeSet)
     {
         float str = attributeSet.GetAttributeValue(EAttributeType.strength);
@@ -101,6 +148,14 @@ public class CriticalChanceCalculator : AttributeCalculatorBase
 
 public class MaxHealthChanceCalculator : AttributeCalculatorBase
 {
+    public override EAttributeType TargetAttribute => EAttributeType.maxHealth;
+
+    public override IReadOnlyList<EAttributeType> Dependencies => new[]
+    {
+        EAttributeType.strength,
+        EAttributeType.vitality
+    };
+
     protected override float CalculateAttribute(AttributeSet attributeSet)
     {
         float str = attributeSet.GetAttributeValue(EAttributeType.strength);
@@ -112,6 +167,14 @@ public class MaxHealthChanceCalculator : AttributeCalculatorBase
 
 public class MaxManaChanceCalculator : AttributeCalculatorBase
 {
+    public override EAttributeType TargetAttribute => EAttributeType.maxMana;
+
+    public override IReadOnlyList<EAttributeType> Dependencies => new[]
+    { 
+        EAttributeType.vitality,
+        EAttributeType.intelligence
+    };
+
     protected override float CalculateAttribute(AttributeSet attributeSet)
     {
         float vit = attributeSet.GetAttributeValue(EAttributeType.vitality);

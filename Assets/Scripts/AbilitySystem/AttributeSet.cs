@@ -1,7 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
-using static UnityEngine.Rendering.VirtualTexturing.Debugging;
 
 public enum EModifierOp
 {
@@ -15,7 +16,7 @@ public enum EModifierPolicy
 {
     Instant,   // BaseValue 변경
     Duration,
-    Infinite 
+    Infinite
 }
 
 public struct FAttributeModifier
@@ -85,6 +86,7 @@ public interface IAttributeSet
     float GetAttributeValue(EAttributeType type);
     event Action OnDaed;
     event Action<EAttributeType, float> OnAttributeChanged;
+    void RemoveModifier(FModifierHandle handle);
 }
 
 public class AttributeSet : IAttributeSet
@@ -97,6 +99,8 @@ public class AttributeSet : IAttributeSet
     private int handleCounter = 0;
     // 2차 속성 계산을 위한 전략 저장
     private Dictionary<EAttributeType, IAttributeCalculator> calculators = new();
+    // 1차 속성에 따라 변하는 2차 속성 저장
+    private readonly Dictionary<EAttributeType /*primary attribute*/, HashSet<EAttributeType> /* dependent attributes */> dependencyMap = new();
 
     public event Action OnDaed;
     public event Action<EAttributeType, float> OnAttributeChanged;
@@ -108,6 +112,8 @@ public class AttributeSet : IAttributeSet
             attributes[type] = new AttributeValue(0f);
             modifiers[type] = new List<ActiveModifier>();
         }
+
+
     }
     public void SetBaseValue(EAttributeType type, float value)
     {
@@ -122,7 +128,8 @@ public class AttributeSet : IAttributeSet
 
     public void InitAttributeCalcualtor()
     {
-        // 계산기에 전략 저장
+        // 전략 저장
+        calculators.Clear();
         calculators = new Dictionary<EAttributeType, IAttributeCalculator>()
         {
             { EAttributeType.physicalAttackPower, new PhysicalAttackPowerCalculator() },
@@ -133,11 +140,108 @@ public class AttributeSet : IAttributeSet
             { EAttributeType.maxHealth, new MaxHealthChanceCalculator() },
             { EAttributeType.maxMana, new MaxManaChanceCalculator() },
         };
+
+        // dependencyMap 구조:
+        // key   = 어떤 속성이 변경되었는가 (Primary)
+        // value = 그 속성에 의존하는 속성들 (Recalculate 대상)
+        //
+        // 예:
+        // Strength → [MaxHealth, PhysicalAttackPower]
+        // Vitality → [MaxHealth, PhysicalDefensePower]
+        //
+        dependencyMap.Clear();
+        
+        foreach (var calculator in calculators)
+        {
+            // calculator.Key   = TargetAttribute
+            // calculator.Value = 해당 Attribute의 Calculator
+            foreach (EAttributeType dependency in calculator.Value.Dependencies)
+            {
+                // dependency: 현재 Calculator가 의존하고 있는 attribute
+
+                // dependencyMap에 이미 리스트가 존재하는지 확인
+                if (!dependencyMap.TryGetValue(dependency, out HashSet<EAttributeType> hasSet))
+                {
+                    // 없으면 새로 생성
+                    hasSet = new HashSet<EAttributeType>();
+                    dependencyMap[dependency] = hasSet;
+                }
+
+                // dependency가 변경되었을 때 재계산해야 할 TargetAttribute 추가
+                hasSet.Add(calculator.Value.TargetAttribute);
+            }
+        }
+
+#if UNITY_EDITOR
+        ValidateNoCircularDependency(calculators.Values);
+#endif
+    }
+
+    // DFS 사용하여 계산 로직에 순환 있는지 확인
+    private void ValidateNoCircularDependency(IEnumerable<IAttributeCalculator> calculators)
+    {
+        // dependency있는 attribute를 모은 그래프 생성
+        var graph = new Dictionary<EAttributeType, List<EAttributeType>>();
+        foreach (var calc in calculators)
+        {
+            graph[calc.TargetAttribute] = calc.Dependencies.ToList();
+        }
+
+        // 탐색할 attribute와 방문 상태를 저장하는 Map.
+        // 검사할 attribute는 calculator를 통해 생성하는 attribute.
+        Dictionary<EAttributeType /* 검사할 attribute*/, int> visitState = new();
+        foreach (var node in graph.Keys)
+            visitState[node] = 0;
+
+        // 그래프에 존재하는 attribute 순환 있나 검사 시작
+        foreach (EAttributeType attribute in graph.Keys)
+        {
+            if (visitState[attribute] == 0)
+            {
+                if (HasCycleDFS(attribute, graph, visitState))
+                {
+                    throw new Exception($"[AttributeSystem] Circular dependency detected at {attribute}");
+                }
+            }
+        }
+    }
+
+    // DFS 검사를 통해 그래프에 존재하는 attribute의 자식 노드들을 전부 검사.
+    private bool HasCycleDFS(EAttributeType attribute, Dictionary<EAttributeType, List<EAttributeType>> graph, Dictionary<EAttributeType, int> visitState)
+    {
+        // 현재 검사중인 attribute 표시
+        visitState[attribute] = 1;
+
+        // attribute와 관련된 dependencies 확인
+        if (graph.TryGetValue(attribute, out List<EAttributeType> dependencies))
+        {
+            foreach (var dependentAttribute in dependencies)
+            {
+                // 현재 검사중인 attribute에 존재하는 dependent attribute가 또 dependency를 가지고 있는지 확인.
+                if (!graph.ContainsKey(dependentAttribute)) continue;
+
+                // 해당 attribute를 이미 방문했는지 확인
+                if (visitState[dependentAttribute] == 1)
+                    return true; // 방문했으면 순환 중임
+
+                // 아직 방문 안했으면 방문
+                if (visitState[dependentAttribute] == 0)
+                {
+                    // 재귀함수로 검사 시작
+                    if (HasCycleDFS(attribute, graph, visitState))
+                        return true; // 자식 노드들 중 (순환)true가 반환되면 부모에도 전파
+                }
+            }
+        }
+
+        // 모든 자식 노드 확인 후 검사 완료 표시. 공통 부모를 가질 수 있기 때문에 별도의 표시 통해 재검사 방지.
+        visitState[attribute] = 2;
+        return false;
     }
 
     private void PostAttributeChange(FAttributeModifier modifier)
     {
-        if (modifier.attributeType== EAttributeType.currentHealth)
+        if (modifier.attributeType == EAttributeType.currentHealth)
         {
             attributes[modifier.attributeType].baseValue
                 = Mathf.Clamp(attributes[modifier.attributeType].baseValue, 0f, GetAttributeValue(EAttributeType.maxHealth));
@@ -162,6 +266,19 @@ public class AttributeSet : IAttributeSet
         }
 
         OnAttributeChanged?.Invoke(modifier.attributeType, GetAttributeValue(modifier.attributeType));
+        ProcessDirty(modifier.attributeType);
+    }
+
+    // attribute 변경 후 그와 연관된 attribute 있으면 재계산
+    public void ProcessDirty(EAttributeType changedAttribute)
+    {
+        if (dependencyMap.TryGetValue(changedAttribute, out var dependencies))
+        {
+            foreach (var dependency in dependencies)
+            {
+                Recalculate(dependency);
+            }
+        }
     }
 
     private void HandleIncomingDamage(FAttributeModifier modifier)
@@ -261,13 +378,14 @@ public class AttributeSet : IAttributeSet
         PostAttributeChange(mod);
     }
 
+    public void ClearAllModifiers()
+    {
+        modifiers.Clear();
+
+    }
+
     public float GetAttributeValue(EAttributeType type)
     {
-        if (calculators.TryGetValue(type, out IAttributeCalculator calculator))
-        {
-            return calculator.GetAttributeValue(this, type);
-        }
-
         return attributes[type].currentValue;
     }
 
@@ -281,6 +399,12 @@ public class AttributeSet : IAttributeSet
 
     private void Recalculate(EAttributeType type)
     {
+        if (calculators.TryGetValue(type, out IAttributeCalculator calculator))
+        {
+            attributes[type].currentValue = calculator.GetAttributeValue(this, type);
+            return;
+        }
+
         float baseValue = attributes[type].baseValue;
 
         float add = 0f;

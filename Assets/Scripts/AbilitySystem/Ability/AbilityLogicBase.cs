@@ -81,5 +81,9 @@ public abstract class AbilityLogicBase
         return elapsed >= spec.abilityData.cooldown;
     }
     
+    protected bool IsCooldownReadyAndNotActivated(AbilitySpec spec)
+    {
+        return IsCooldownReady(spec) && !isActivated;
+    }
 
 }

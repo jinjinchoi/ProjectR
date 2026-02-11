@@ -37,6 +37,7 @@ public class UI_HealthBar : MonoBehaviour
 
     private void UpdateProgressBar(bool isHealthChanged, float progress)
     {
+
         if (isHealthChanged)
         {
             progressbarMain.style.width = Length.Percent(progress * 100f);

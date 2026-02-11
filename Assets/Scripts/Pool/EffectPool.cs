@@ -7,7 +7,8 @@ public enum EEffectType
 {
     None,
     Healing,
-    Thunder
+    Thunder,
+    HolySword
 }
 
 [System.Serializable]

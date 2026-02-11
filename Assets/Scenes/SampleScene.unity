@@ -1042,10 +1042,34 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2270688756999833385, guid: 7f62c75badf4be34d839f1d79fd79c88, type: 3}
+      propertyPath: skillProbability
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3884493160397306294, guid: 7f62c75badf4be34d839f1d79fd79c88, type: 3}
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 7651841742770528895, guid: 7f62c75badf4be34d839f1d79fd79c88, type: 3}
+      propertyPath: defaultAbilities.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7651841742770528895, guid: 7f62c75badf4be34d839f1d79fd79c88, type: 3}
+      propertyPath: 'defaultAbilities.Array.data[0]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 09e9064ceda161048be58aed4ddcea5c, type: 2}
+    - target: {fileID: 7651841742770528895, guid: 7f62c75badf4be34d839f1d79fd79c88, type: 3}
+      propertyPath: 'defaultAbilities.Array.data[1]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 9662b78b2f5223548833234cc89be70d, type: 2}
+    - target: {fileID: 7651841742770528895, guid: 7f62c75badf4be34d839f1d79fd79c88, type: 3}
+      propertyPath: 'defaultAbilities.Array.data[2]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 6ff6e3ff6d097e9428d49487f629371d, type: 2}
+    - target: {fileID: 7651841742770528895, guid: 7f62c75badf4be34d839f1d79fd79c88, type: 3}
+      propertyPath: 'defaultAbilities.Array.data[3]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 09e9064ceda161048be58aed4ddcea5c, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

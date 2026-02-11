@@ -72,6 +72,14 @@ public class AbilitySystemComponent : MonoBehaviour, IAbilitySystemContext
     private AttributeSet attributeSet;
     private IAbilityOwner owner;
 
+    private void OnDisable()
+    {
+        if (owner != null && owner.AnimationTrigger != null)
+            Owner.AnimationTrigger.OnAnimTriggered -= OnAnimationTriggered;
+
+        attributeSet?.ClearAllModifiers();
+    }
+
 
     public void Init(IAbilityOwner owner)
     {
@@ -196,12 +204,6 @@ public class AbilitySystemComponent : MonoBehaviour, IAbilitySystemContext
             waitingAbilitiesByAnimEvent.Remove(eventType);
     }
 
-
-    private void OnDisable()
-    {
-        if (owner != null && owner.AnimationTrigger != null)
-            Owner.AnimationTrigger.OnAnimTriggered -= OnAnimationTriggered;
-    }
 
     public EAbilityId GetRandomAbilityId()
     {
