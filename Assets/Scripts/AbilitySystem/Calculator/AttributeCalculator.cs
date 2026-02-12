@@ -11,7 +11,10 @@ public interface IAttributeCalculator
 // 2차 속성 계산을 위한 클래스. 클래스 생성 후 Attribute Set 클래스에서 적용해야함.
 public abstract class AttributeCalculatorBase : IAttributeCalculator
 {
+    // 현재 계산기가 담당하고 있는 attribute
     public abstract EAttributeType TargetAttribute { get; }
+
+    // 계산기가 담당하는 attribute를 올리기 위해 필요한 attribute를 저장하는 list
     public abstract IReadOnlyList<EAttributeType> Dependencies { get; }
 
     protected abstract float CalculateAttribute(AttributeSet attributeSet);

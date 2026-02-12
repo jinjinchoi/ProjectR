@@ -8,7 +8,8 @@ public enum EEffectType
     None,
     Healing,
     Thunder,
-    HolySword
+    HolySword,
+    HolyPury
 }
 
 [System.Serializable]

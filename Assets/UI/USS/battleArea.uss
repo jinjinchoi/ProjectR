@@ -1,0 +1,11 @@
+:root {
+}
+
+.day-text {
+    font-size: 30px;
+    -unity-font-definition: url("project://database/Assets/ExternalAssets/Font/NanumGothic.otf?fileID=12800000&guid=f5dc1d4a67daccb45ad0142353b072ab&type=3#NanumGothic");
+    -unity-font-style: bold;
+    text-shadow: 0 0 10px rgb(255, 255, 255);
+    -unity-text-outline-color: rgb(255, 255, 255);
+    -unity-text-outline-width: 0;
+}

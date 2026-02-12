@@ -26,6 +26,9 @@ public class BaseCharacterUIController
 
         OnAttributeValueChanged?.Invoke(attribute, currentValue);
 
+        if (attribute is EAttributeType.maxHealth)
+            Debug.Log($"{attribute} : {currentValue}");
+
         if (attribute is EAttributeType.currentHealth or EAttributeType.maxHealth)
         {
             float health = abilitySystem.AttributeSet.GetAttributeValue(EAttributeType.currentHealth);

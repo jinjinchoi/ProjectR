@@ -151,8 +151,6 @@ public class UI_RestAreaStatView
 
             case EAttributeType.vitality:
                 vitalText.text = value.ToString();
-                float maxHealth = uiController.GetAttributeValue(EAttributeType.maxHealth);
-
                 break;
 
             case EAttributeType.currentHealth:

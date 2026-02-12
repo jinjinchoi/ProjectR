@@ -1,0 +1,30 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/USS/battleArea.uss?fileID=7433441132597879392&amp;guid=3686d54b1e631e64d8069640c7d54d09&amp;type=3#battleArea"/>
+    <Style src="project://database/Assets/UI/USS/lobby-menu.uss?fileID=7433441132597879392&amp;guid=cc76a46f2f696074ca99d9f5f137291c&amp;type=3#lobby-menu"/>
+    <Style src="project://database/Assets/UI/USS/health-bar.uss?fileID=7433441132597879392&amp;guid=2cc2dc83ebf9ba94182416d0ad8e8ae9&amp;type=3#health-bar"/>
+    <ui:VisualElement name="Panel" style="flex-grow: 1;">
+        <ui:VisualElement name="Top" style="flex-grow: 0.7;">
+            <ui:VisualElement name="VisualElement" style="flex-grow: 0; align-items: center; width: 95%; background-size: 100% 100%; height: 20%; justify-content: space-between; align-self: center; flex-direction: row;">
+                <ui:VisualElement style="flex-grow: 0; flex-direction: row; align-items: center; justify-content: flex-start; align-self: center;">
+                    <ui:Label text="Day:" name="Label" class="day-text"/>
+                    <ui:Label text="1" name="DayText" class="day-text"/>
+                </ui:VisualElement>
+                <ui:VisualElement style="flex-grow: 0;">
+                    <ui:Button text="" class="config-button"/>
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement name="Bottom" style="flex-grow: 0.3; justify-content: center;">
+            <ui:VisualElement name="BuffArea" style="flex-grow: 0; width: 40%; align-items: flex-start; justify-content: flex-start; align-self: center; flex-direction: row;"/>
+            <ui:VisualElement name="HealthBarArea" style="flex-grow: 0; width: 40%; height: 30%; align-self: center; justify-content: flex-start;">
+                <ui:VisualElement name="Health_BG" class="progressbar-lobby-bg" style="flex-grow: 1;">
+                    <ui:VisualElement name="Health_Main" class="progressbar-lobby-main" style="flex-grow: 1;">
+                        <ui:Label text="100" name="CurrentHealth" class="health-text"/>
+                        <ui:Label text="/" name="Label" class="health-text"/>
+                        <ui:Label text="100" name="MaxHealth" class="health-text"/>
+                    </ui:VisualElement>
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

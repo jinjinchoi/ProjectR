@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
-using static Unity.Cinemachine.CinemachineFreeLookModifier;
 
 public enum EModifierOp
 {
@@ -113,9 +111,8 @@ public class AttributeSet : IAttributeSet
             attributes[type] = new AttributeValue(0f);
             modifiers[type] = new List<ActiveModifier>();
         }
-
-
     }
+
     public void SetBaseValue(EAttributeType type, float value)
     {
         attributes[type].baseValue = value;

@@ -8,7 +8,8 @@ public enum EAbilityId
     ThunderStrike,
     ChargeAttack,
     SwordAura,
-    HolySwordBuff
+    HolySwordBuff,
+    Genesis
 }
 
 

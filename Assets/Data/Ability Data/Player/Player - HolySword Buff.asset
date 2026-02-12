@@ -28,5 +28,5 @@ MonoBehaviour:
   KnockbackDuration: 0.15
   attribute: 3
   value: 30
-  duration: 2
+  duration: 5
   effectType: 3
