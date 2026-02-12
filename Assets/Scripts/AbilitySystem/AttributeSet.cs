@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using static Unity.Cinemachine.CinemachineFreeLookModifier;
 
 public enum EModifierOp
 {
@@ -266,17 +267,20 @@ public class AttributeSet : IAttributeSet
         }
 
         OnAttributeChanged?.Invoke(modifier.attributeType, GetAttributeValue(modifier.attributeType));
-        ProcessDirty(modifier.attributeType);
+        ProcessDirty(modifier);
     }
 
+
     // attribute 변경 후 그와 연관된 attribute 있으면 재계산
-    public void ProcessDirty(EAttributeType changedAttribute)
+    public void ProcessDirty(FAttributeModifier modifier)
     {
-        if (dependencyMap.TryGetValue(changedAttribute, out var dependencies))
+        if (dependencyMap.TryGetValue(modifier.attributeType, out var dependencies))
         {
             foreach (var dependency in dependencies)
             {
+                CalculateDependentAttribute(dependency);
                 Recalculate(dependency);
+                OnAttributeChanged?.Invoke(dependency, GetAttributeValue(dependency));
             }
         }
     }
@@ -381,7 +385,6 @@ public class AttributeSet : IAttributeSet
     public void ClearAllModifiers()
     {
         modifiers.Clear();
-
     }
 
     public float GetAttributeValue(EAttributeType type)
@@ -397,13 +400,16 @@ public class AttributeSet : IAttributeSet
         return modifiers[type];
     }
 
-    private void Recalculate(EAttributeType type)
+    private void CalculateDependentAttribute(EAttributeType type)
     {
         if (calculators.TryGetValue(type, out IAttributeCalculator calculator))
         {
-            attributes[type].currentValue = calculator.GetAttributeValue(this, type);
-            return;
+            attributes[type].baseValue = calculator.GetAttributeValue(this, type);
         }
+    }
+
+    private void Recalculate(EAttributeType type)
+    {
 
         float baseValue = attributes[type].baseValue;
 
@@ -433,6 +439,6 @@ public class AttributeSet : IAttributeSet
 
         float finalValue = hasOverride ? overrideValue : (baseValue + add) * mul;
 
-        attributes[type].currentValue = finalValue;
+        attributes[type].currentValue = Mathf.Round(finalValue);
     }
 }

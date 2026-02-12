@@ -26,10 +26,7 @@ public class BaseCharacterUIController
 
         OnAttributeValueChanged?.Invoke(attribute, currentValue);
 
-        bool isHealthValueChanged =
-            attribute == EAttributeType.currentHealth ||
-            attribute == EAttributeType.currentMana;
-        if (isHealthValueChanged)
+        if (attribute is EAttributeType.currentHealth or EAttributeType.maxHealth)
         {
             float health = abilitySystem.AttributeSet.GetAttributeValue(EAttributeType.currentHealth);
             float maxHealth = abilitySystem.AttributeSet.GetAttributeValue(EAttributeType.maxHealth);
@@ -37,10 +34,7 @@ public class BaseCharacterUIController
             OnVitalRatioChanged?.Invoke(true, health / maxHealth);
         }
 
-        bool isManaValueChanged =
-            attribute == EAttributeType.currentMana ||
-            attribute == EAttributeType.maxMana;
-        if (isManaValueChanged)
+        if (attribute is EAttributeType.currentMana or EAttributeType.maxMana)
         {
             float mana = abilitySystem.AttributeSet.GetAttributeValue(EAttributeType.currentMana);
             float maxMana = abilitySystem.AttributeSet.GetAttributeValue(EAttributeType.maxMana);

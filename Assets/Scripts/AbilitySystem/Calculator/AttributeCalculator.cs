@@ -18,33 +18,7 @@ public abstract class AttributeCalculatorBase : IAttributeCalculator
 
     public float GetAttributeValue(AttributeSet attributeSet, EAttributeType type)
     {
-        float defalutValue = CalculateAttribute(attributeSet);
-
-        float add = 0f;
-        float mul = 1f;
-        bool hasOverride = false;
-        float overrideValue = 0f;
-
-        foreach (var mod in attributeSet.GetModifiers(type))
-        {
-            switch (mod.Modifier.operation)
-            {
-                case EModifierOp.Add:
-                    add += mod.Modifier.value;
-                    break;
-
-                case EModifierOp.Multiply:
-                    mul *= mod.Modifier.value;
-                    break;
-
-                case EModifierOp.Override:
-                    hasOverride = true;
-                    overrideValue = mod.Modifier.value;
-                    break;
-            }
-        }
-
-        return Mathf.Round(hasOverride ? overrideValue : (defalutValue + add) * mul);
+        return CalculateAttribute(attributeSet);
     }
 }
 
