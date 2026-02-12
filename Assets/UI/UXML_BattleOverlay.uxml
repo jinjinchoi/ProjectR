@@ -17,11 +17,12 @@
         <ui:VisualElement name="Bottom" style="flex-grow: 0.3; justify-content: center;">
             <ui:VisualElement name="BuffArea" style="flex-grow: 0; width: 40%; align-items: flex-start; justify-content: flex-start; align-self: center; flex-direction: row;"/>
             <ui:VisualElement name="HealthBarArea" style="flex-grow: 0; width: 40%; height: 30%; align-self: center; justify-content: flex-start;">
-                <ui:VisualElement name="Health_BG" class="progressbar-lobby-bg" style="flex-grow: 1;">
-                    <ui:VisualElement name="Health_Main" class="progressbar-lobby-main" style="flex-grow: 1;">
-                        <ui:Label text="100" name="CurrentHealth" class="health-text"/>
+                <ui:VisualElement name="Health_BG" class="progressbar-lobby-bg" style="flex-grow: 1; justify-content: center;">
+                    <ui:VisualElement name="HealthBar-Main" class="progressbar-lobby-main" style="flex-grow: 1;"/>
+                    <ui:VisualElement name="VisualElement" style="flex-grow: 1; flex-direction: row; justify-content: flex-start; position: absolute; align-items: auto; align-self: center; align-content: auto;">
+                        <ui:Label text="100" name="Text_CurrentHealth" class="health-text"/>
                         <ui:Label text="/" name="Label" class="health-text"/>
-                        <ui:Label text="100" name="MaxHealth" class="health-text"/>
+                        <ui:Label text="100" name="Text_MaxHealth" class="health-text"/>
                     </ui:VisualElement>
                 </ui:VisualElement>
             </ui:VisualElement>

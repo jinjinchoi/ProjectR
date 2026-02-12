@@ -8,11 +8,8 @@ public class UI_RestAreaStatView
     const string intelliTextName = "IntelligenceText";
     const string dexTextName = "DexText";
     const string vitalTextName = "VitalText";
-    const string currentHealthTextName = "Text_CurrentHealth";
-    const string maxHealthTextName = "Text_MaxHealth";
     const string successChanceTextName = "Text_SuccessChance";
     const string costTextName = "Text_Cost";
-    const string progressbarName = "HealthBar-Main";
     const string strUpTextName = "StrUpText";
     const string intelliUpTextName = "IntelliUpText";
     const string dexUpTextName = "DexUpText";
@@ -21,22 +18,15 @@ public class UI_RestAreaStatView
     const string dayTextName = "DayText";
     #endregion
 
-    #region css names
-    private const string HealthWaningClassName = "progressbar-lobby-main-warning";
-    private const string HealthDangerClassName = "progressbar-lobby-main-danger";
-    #endregion
 
     private UIController_RestArea uiController;
 
     private VisualElement root;
 
-    private VisualElement progressbarMain;
     private Label strText;
     private Label intelliText;
     private Label dexText;
     private Label vitalText;
-    private Label currentHealthText;
-    private Label maxHealthText;
     private Label successChanceText;
     private Label costText;
 
@@ -63,7 +53,6 @@ public class UI_RestAreaStatView
     public void Dispose()
     {
         uiController.OnAttributeValueChanged -= OnAttributeValueChanged;
-        uiController.OnVitalRatioChanged -= OnHeathRatioChanged;
         GameManager.Instance.DayChanged -= OnDayChanged;
     }
     
@@ -73,11 +62,8 @@ public class UI_RestAreaStatView
         intelliText = root.Q<Label>(intelliTextName);
         dexText = root.Q<Label>(dexTextName);
         vitalText = root.Q<Label>(vitalTextName);
-        currentHealthText = root.Q<Label>(currentHealthTextName);
-        maxHealthText = root.Q<Label>(maxHealthTextName);
         successChanceText = root.Q<Label>(successChanceTextName);
         costText = root.Q<Label>(costTextName);
-        progressbarMain = root.Q<VisualElement>(progressbarName);
 
         strUpText = root.Q<Label>(strUpTextName);
         intelliUpText = root.Q<Label>(intelliUpTextName);
@@ -91,8 +77,6 @@ public class UI_RestAreaStatView
     private void RegisterCallbacks()
     {
         uiController.OnAttributeValueChanged += OnAttributeValueChanged;
-        uiController.OnVitalRatioChanged += OnHeathRatioChanged;
-
         GameManager.Instance.DayChanged += OnDayChanged;
     }
 
@@ -109,11 +93,6 @@ public class UI_RestAreaStatView
         intelliText.text = intelli.ToString();
         dexText.text = dex.ToString();
         vitalText.text = vital.ToString();
-        currentHealthText.text = currentHealth.ToString();
-        maxHealthText.text = maxHealth.ToString();
-
-        float HealthRatio = uiController.GetHealthPercent();
-        OnHeathRatioChanged(true, HealthRatio);
     }
     
 
@@ -153,44 +132,11 @@ public class UI_RestAreaStatView
                 vitalText.text = value.ToString();
                 break;
 
-            case EAttributeType.currentHealth:
-                currentHealthText.text = value.ToString();
-                break;
-
-            case EAttributeType.maxHealth:
-                maxHealthText.text = value.ToString();
-                break;
-
             default:
                 break;
         }
 
         
-    }
-
-    private void OnHeathRatioChanged(bool isHealth, float ratio)
-    {
-        if (!isHealth) return;
-        
-        progressbarMain.style.width = Length.Percent(ratio * 100f);
-
-        progressbarMain.RemoveFromClassList(HealthWaningClassName);
-        progressbarMain.RemoveFromClassList(HealthDangerClassName);
-
-        if (ratio < 0.6f)
-        {
-            progressbarMain.AddToClassList(HealthWaningClassName);
-        }
-
-        if (ratio < 0.3f)
-        {
-            progressbarMain.AddToClassList(HealthDangerClassName);
-        }
-
-        float maxHealth = uiController.GetAttributeValue(EAttributeType.maxHealth);
-        float currentHealth = uiController.GetAttributeValue(EAttributeType.currentHealth);
-        currentHealthText.text = currentHealth.ToString();
-        maxHealthText.text = maxHealth.ToString();
     }
 
     private void OnDayChanged(int day)

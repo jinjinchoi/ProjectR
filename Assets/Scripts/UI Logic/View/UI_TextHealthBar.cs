@@ -3,20 +3,20 @@ using UnityEngine.UIElements;
 
 public class UI_TextHealthBar
 {
-    private UIController_RestArea uiController;
+    private UIController_HealthBar uiController;
 
     private readonly VisualElement root;
     private VisualElement progressbarMain;
     private Label currentHealthText;
     private Label maxHealthText;
 
-    const string progressbarName = "HealthBar-Main";
+    [SerializeField] const string progressbarName = "HealthBar-Main";
     private const string HealthWaningClassName = "progressbar-lobby-main-warning";
     private const string HealthDangerClassName = "progressbar-lobby-main-danger";
     const string currentHealthTextName = "Text_CurrentHealth";
     const string maxHealthTextName = "Text_MaxHealth";
 
-    UI_TextHealthBar(UIController_RestArea uiController, VisualElement root)
+    public UI_TextHealthBar(UIController_HealthBar uiController, VisualElement root)
     {
         this.uiController = uiController;
         this.root = root;
@@ -30,6 +30,14 @@ public class UI_TextHealthBar
         progressbarMain = root.Q<VisualElement>(progressbarName);
         currentHealthText = root.Q<Label>(currentHealthTextName);
         maxHealthText = root.Q<Label>(maxHealthTextName);
+
+        float maxHealth = uiController.GetAttributeValue(EAttributeType.maxHealth);
+        float currentHealth = uiController.GetAttributeValue(EAttributeType.currentHealth);
+        currentHealthText.text = currentHealth.ToString();
+        maxHealthText.text = maxHealth.ToString();
+
+        float HealthRatio = uiController.GetHealthRatio();
+        OnHeathRatioChanged(true, HealthRatio);
     }
 
     public void Dispose()

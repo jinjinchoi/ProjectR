@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class BaseCharacterUIController
+public abstract class BaseCharacterUIController
 {
     public event Action<EAttributeType, float> OnAttributeValueChanged;
     // vital attribute 변화시 비율을 전송하는 event
