@@ -1,15 +1,23 @@
+using System;
 using UnityEngine;
-using UnityEngine.UIElements;
+
+public class BuffUIData
+{
+    public int Id;
+    public Sprite Icon;
+    public float Duration;
+}
 
 [CreateAssetMenu(menuName = "ASC/Ability/Buff")]
 public class BuffAbilityDataSO : DamageAbilityDataSO
 {
     [Header("Buff Info")]
+    public int id;
     public EAttributeType attribute;
     public float value;
     public float duration;
     public EEffectType effectType;
-    public Image buffIcon;
+    public Sprite buffIcon;
 
     public override AbilityLogicBase CreateInstance()
     {

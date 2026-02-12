@@ -10,11 +10,12 @@ public class UI_TextHealthBar
     private Label currentHealthText;
     private Label maxHealthText;
 
-    [SerializeField] const string progressbarName = "HealthBar-Main";
-    private const string HealthWaningClassName = "progressbar-lobby-main-warning";
-    private const string HealthDangerClassName = "progressbar-lobby-main-danger";
+    const string progressbarName = "HealthBar-Main";
     const string currentHealthTextName = "Text_CurrentHealth";
     const string maxHealthTextName = "Text_MaxHealth";
+
+    private const string HealthWaningClassName = "progressbar-lobby-main-warning";
+    private const string HealthDangerClassName = "progressbar-lobby-main-danger";
 
     public UI_TextHealthBar(UIController_HealthBar uiController, VisualElement root)
     {

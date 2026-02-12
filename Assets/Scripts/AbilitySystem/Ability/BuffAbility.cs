@@ -28,7 +28,7 @@ public class BuffAbility : AbilityLogicBase
 
         PoolingManager.Instance.ActivateEffect(buffData.effectType, context.Owner.Transform.position);
 
-        FAttributeModifier modifier = new ()
+        FAttributeModifier modifier = new()
         {
             attributeType = buffData.attribute,
             operation = EModifierOp.Add,
@@ -38,16 +38,26 @@ public class BuffAbility : AbilityLogicBase
         buffModHandle = context.ApplyModifier(modifier);
 
         context.StartCoroutine(BuffCo(buffData.duration, spec, context));
+        BuffUIData buffUiData = new()
+        {
+            Duration = buffData.duration,
+            Icon = buffData.buffIcon,
+            Id = buffData.id
+        };
+        context.RaiseOnBuffActivated(buffUiData);
     }
 
     private IEnumerator BuffCo(float duration, AbilitySpec spec, IAbilitySystemContext context)
     {
         yield return new WaitForSeconds(duration);
 
+        if (spec.abilityData is not BuffAbilityDataSO buffData) yield break;
+
         if (buffModHandle.HasValue)
         {
             context.AttributeSet.RemoveModifier(buffModHandle.Value);
             buffModHandle = null;
+            context.RaiseOnBuffDeactivated(buffData.id);
         }
     }
 }

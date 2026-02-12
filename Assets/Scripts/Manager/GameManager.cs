@@ -37,6 +37,7 @@ public class GameManager : MonoBehaviour
     public EventManager EventManager => eventManager;
     public DialogueManager DialogueManager => dialogueManager;
     public SaveManager SaveManager => saveManager;
+    public int CurrentDay => day;
     #endregion
 
     private void Awake()

@@ -26,7 +26,9 @@ MonoBehaviour:
   damageType: 2
   knockbackPower: {x: 0, y: 0}
   KnockbackDuration: 0.15
+  id: 0
   attribute: 3
   value: 30
   duration: 5
   effectType: 3
+  buffIcon: {fileID: 21300000, guid: c32f6a937fe368c4a9bbeca783d23390, type: 3}
