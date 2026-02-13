@@ -23,12 +23,12 @@
                 </ui:VisualElement>
             </ui:VisualElement>
             <ui:VisualElement style="flex-grow: 0; align-items: center; justify-content: center; align-self: flex-start;">
-                <ui:Button text="" class="config-button"/>
+                <ui:Button text="" name="OptionButton" class="config-button"/>
             </ui:VisualElement>
         </ui:VisualElement>
         <ui:VisualElement name="MiddleArea" style="flex-grow: 1; width: 100%; height: 40%;">
             <ui:VisualElement style="flex-grow: 0; align-items: auto; justify-content: center; align-self: auto; height: 100%;">
-                <ui:Button text="상세 정보" class="detail-button"/>
+                <ui:Button text="상세 정보" name="DetailButton" class="detail-button"/>
                 <ui:Button text="스킬 목록" class="detail-button"/>
             </ui:VisualElement>
         </ui:VisualElement>

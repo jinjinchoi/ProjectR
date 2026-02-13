@@ -9,7 +9,8 @@ public class UI_RestAreaMain : MonoBehaviour
 
     private UI_RestAreaStatView statArea;
     private UI_RestAreaStateButtons statButtons;
-    private UI_TextHealthBar healthBar;
+    private UI_TextHealthBarView healthBarView;
+    private UI_RestAreaGameButtons gameButtons;
 
     private VisualElement root;
 
@@ -29,7 +30,8 @@ public class UI_RestAreaMain : MonoBehaviour
         statButtons = new UI_RestAreaStateButtons();
         statButtons.Init(uiController, root);
 
-        healthBar = new UI_TextHealthBar(HealthBarUIController, root);
+        healthBarView = new UI_TextHealthBarView(HealthBarUIController, root);
+        gameButtons = new UI_RestAreaGameButtons(root);
     }
 
     private void OnEnable()
@@ -44,7 +46,8 @@ public class UI_RestAreaMain : MonoBehaviour
         EventHub.DialogueFinished -= OnDialogueFinished;
         GameManager.Instance.SceneChangingAsync -= HandleSceneLoadingUI;
         statArea?.Dispose();
-        healthBar?.Dispose();
+        healthBarView?.Dispose();
+        gameButtons?.Dispose();
     }
 
     private void Start()

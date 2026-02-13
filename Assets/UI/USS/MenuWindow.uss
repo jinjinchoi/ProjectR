@@ -1,0 +1,87 @@
+:root {
+}
+
+.menu-background {
+    flex-grow: 1;
+    width: 100%;
+    height: 100%;
+    background-color: rgb(162, 233, 255);
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    border-bottom-left-radius: 20px;
+    justify-content: flex-start;
+    align-items: center;
+    padding-top: 20px;
+    padding-right: 20px;
+    padding-bottom: 20px;
+    padding-left: 20px;
+    border-top-width: 8px;
+    border-right-width: 8px;
+    border-bottom-width: 8px;
+    border-left-width: 8px;
+    border-left-color: rgb(0, 93, 144);
+    border-right-color: rgb(0, 93, 144);
+    border-top-color: rgb(0, 93, 144);
+    border-bottom-color: rgb(0, 93, 144);
+}
+
+.menu-title {
+    font-size: 30px;
+    -unity-font-style: bold;
+    -unity-font-definition: url("project://database/Assets/ExternalAssets/Font/NanumGothic.otf?fileID=12800000&guid=f5dc1d4a67daccb45ad0142353b072ab&type=3#NanumGothic");
+    margin-top: 20px;
+}
+
+.menu-button {
+    width: 80%;
+    height: 25%;
+    background-color: rgb(211, 220, 253);
+    border-left-color: rgb(51, 45, 75);
+    border-right-color: rgb(51, 45, 75);
+    border-top-color: rgb(51, 45, 75);
+    border-bottom-color: rgb(51, 45, 75);
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+    border-bottom-left-radius: 15px;
+    border-top-width: 2px;
+    border-right-width: 2px;
+    border-bottom-width: 2px;
+    border-left-width: 2px;
+    -unity-font-definition: url("project://database/Assets/ExternalAssets/Font/NanumGothic.otf?fileID=12800000&guid=f5dc1d4a67daccb45ad0142353b072ab&type=3#NanumGothic");
+    -unity-font-style: bold;
+    font-size: 20px;
+    transition-property: scale;
+    transition-duration: 0.1s;
+    transition-timing-function: ease-out;
+}
+
+.menu-button:hover {
+    background-color: rgb(157, 168, 202);
+}
+
+.menu-button:active {
+    scale: 0.9 0.9 0.9;
+    transition-duration: 0.08s;
+    transition-property: scale;
+    transition-timing-function: ease-out;
+}
+
+.panel-open {
+    flex-grow: 0;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    transition-duration: 0.15s;
+    transition-timing-function: ease-in;
+    opacity: 1;
+}
+
+.panel-close {
+    transition-duration: 0.15s;
+    scale: 0.2 0.2;
+    transition-timing-function: ease-in;
+    opacity: 0;
+}

@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class UI_TextHealthBar
+public class UI_TextHealthBarView
 {
     private UIController_HealthBar uiController;
 
@@ -17,7 +17,7 @@ public class UI_TextHealthBar
     private const string HealthWaningClassName = "progressbar-lobby-main-warning";
     private const string HealthDangerClassName = "progressbar-lobby-main-danger";
 
-    public UI_TextHealthBar(UIController_HealthBar uiController, VisualElement root)
+    public UI_TextHealthBarView(UIController_HealthBar uiController, VisualElement root)
     {
         this.uiController = uiController;
         this.root = root;

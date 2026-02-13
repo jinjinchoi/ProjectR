@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d85fd49db3236042b983f3a308d1d66, type: 3}
+  m_Name: Attribute Information
+  m_EditorClassIdentifier: Assembly-CSharp::AttributeInformationSO
+  attributeInfos:
+  - attribute: 4
+    description: "\uBB3C\uB9AC \uACF5\uACA9\uC744 \uD560 \uB54C \uD53C\uD574\uB97C
+      \uC785\uD788\uB294 \uC218\uCE58\uB85C \uD798\uACFC \uBBFC\uCCA9\uC774 \uC99D\uAC00\uD558\uBA74
+      \uC0C1\uC2B9\uD569\uB2C8\uB2E4."
+  - attribute: 5
+    description: "\uB9C8\uBC95 \uACF5\uACA9\uC744 \uD560 \uB54C \uD53C\uD574\uB97C
+      \uC785\uD788\uB294 \uC218\uCE58\uB85C \uC9C0\uB2A5\uACFC \uBBFC\uCCA9\uC774
+      \uC99D\uAC00\uD558\uBA74 \uC0C1\uC2B9\uD569\uB2C8\uB2E4."
+  - attribute: 6
+    description: "\uBB3C\uB9AC \uACF5\uACA9\uC744 \uACBD\uAC10\uD558\uB294 \uC218\uCE58\uB85C
+      \uD65C\uB825\uACFC \uD798\uC774 \uC99D\uAC00\uD558\uBA74 \uC0C1\uC2B9\uD569\uB2C8\uB2E4. "
+  - attribute: 7
+    description: "\uBB3C\uB9AC \uACF5\uACA9\uC744 \uACBD\uAC10\uD558\uB294 \uC218\uCE58\uB85C
+      \uC9C0\uB2A5\uACFC \uD65C\uB825\uC774 \uC99D\uAC00\uD558\uBA74 \uC0C1\uC2B9\uD569\uB2C8\uB2E4. "
+  - attribute: 8
+    description: "\uCE58\uBA85\uD0C0 \uD53C\uD574\uB97C \uC785\uD790 \uC218 \uC788\uB294
+      \uD655\uB960\uB85C \uBBFC\uCCA9\uACFC \uD798\uC774 \uC99D\uAC00\uD558\uBA74
+      \uC0C1\uC2B9\uD569\uB2C8\uB2E4. \uCE58\uBA85\uD0C0 \uD53C\uD574\uB294 \uAE30\uC874
+      \uD53C\uD574\uC5D0\uC11C 140% \uC99D\uAC00\uD55C \uD53C\uD574\uB97C \uC785\uD799\uB2C8\uB2E4."
+  - attribute: 9
+    description: "\uCD5C\uB300 \uCCB4\uB825\uC740 \uD65C\uB825\uACFC \uD798\uC5D0
+      \uC601\uD5A5\uC744 \uBC1B\uC2B5\uB2C8\uB2E4. "
+  - attribute: 10
+    description: "\uCD5C\uB300 \uB9C8\uB825\uC740 \uC9C0\uB2A5\uACFC \uD65C\uB825\uC5D0
+      \uC601\uD5A5\uC744 \uBC1B\uC2B5\uB2C8\uB2E4. "

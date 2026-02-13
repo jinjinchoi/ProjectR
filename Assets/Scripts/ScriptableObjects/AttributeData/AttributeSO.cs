@@ -9,7 +9,7 @@ public struct AttributeInitInfo
     public float baseValue;
 }
 
-[CreateAssetMenu(fileName = "Attribute_" ,menuName = "ASC/Attribute")]
+[CreateAssetMenu(fileName = "Attribute_" ,menuName = "ASC/Attribute/Config")]
 public class AttributeSO : ScriptableObject
 {
     public List<AttributeInitInfo> Attributes;

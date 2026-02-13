@@ -1149,7 +1149,7 @@ PrefabInstance:
     - target: {fileID: 7651841742770528895, guid: 7f62c75badf4be34d839f1d79fd79c88, type: 3}
       propertyPath: 'defaultAbilities.Array.data[0]'
       value: 
-      objectReference: {fileID: 11400000, guid: 0602ec0cd85c47348933e46959df27f8, type: 2}
+      objectReference: {fileID: 11400000, guid: 09e9064ceda161048be58aed4ddcea5c, type: 2}
     - target: {fileID: 7651841742770528895, guid: 7f62c75badf4be34d839f1d79fd79c88, type: 3}
       propertyPath: 'defaultAbilities.Array.data[5]'
       value: 

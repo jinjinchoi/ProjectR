@@ -1,0 +1,48 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/USS/detailwindow.uss?fileID=7433441132597879392&amp;guid=7e02aec2a9fcb644685b6947c4e84c3b&amp;type=3#detailwindow"/>
+    <ui:VisualElement name="Panel" class="panel">
+        <ui:VisualElement name="Background" class="detail-bg" style="flex-grow: 0;">
+            <ui:VisualElement name="Top" style="flex-grow: 0; justify-content: center;">
+                <ui:Label text="상세 정보" class="detail-title"/>
+                <ui:Button text="&#10;" name="CloseButton" class="detail-close-button"/>
+            </ui:VisualElement>
+            <ui:VisualElement name="Bottom" style="flex-grow: 1; flex-direction: row; margin-top: 40px;">
+                <ui:VisualElement name="Bottom_Left" style="flex-grow: 0; width: 40%; justify-content: center;">
+                    <ui:VisualElement name="DetailTextArea_PA" style="flex-grow: 0; flex-direction: row; align-self: auto; align-items: center;">
+                        <ui:Label text="물리공격력:" class="detail-text"/>
+                        <ui:Label text="100" name="Text_PAttackPower" class="detail-text"/>
+                    </ui:VisualElement>
+                    <ui:VisualElement name="DetailTextArea_MA" style="flex-grow: 0; flex-direction: row; align-self: auto; align-items: center;">
+                        <ui:Label text="마법공격력:" class="detail-text"/>
+                        <ui:Label text="100" name="Text_MAttakcPower" class="detail-text"/>
+                    </ui:VisualElement>
+                    <ui:VisualElement name="DetailTextArea_PD" style="flex-grow: 0; flex-direction: row; align-self: auto; align-items: center;">
+                        <ui:Label text="물리방어력:" class="detail-text"/>
+                        <ui:Label text="100" name="Text_PhysicalDefence" class="detail-text"/>
+                    </ui:VisualElement>
+                    <ui:VisualElement name="DetailTextArea_MD" style="flex-grow: 0; flex-direction: row; align-self: auto; align-items: center;">
+                        <ui:Label text="마법방어력:" class="detail-text"/>
+                        <ui:Label text="100" name="Text_MagicDefence" class="detail-text"/>
+                    </ui:VisualElement>
+                    <ui:VisualElement name="DetailTextArea_CC" style="flex-grow: 0; flex-direction: row; align-self: auto; align-items: center;">
+                        <ui:Label text="치명타확률:" class="detail-text"/>
+                        <ui:Label text="100" name="Text_CriticalChance" class="detail-text"/>
+                    </ui:VisualElement>
+                    <ui:VisualElement name="DetailTextArea_MH" style="flex-grow: 0; flex-direction: row; align-self: auto; align-items: center;">
+                        <ui:Label text="최대 체력:" name="Label" enable-rich-text="false" class="detail-text"/>
+                        <ui:Label text="100" name="Text_MaxHealth" class="detail-text"/>
+                    </ui:VisualElement>
+                    <ui:VisualElement name="DetailTextArea_MM" style="flex-grow: 0; flex-direction: row; align-self: auto; align-items: center;">
+                        <ui:Label text="최대 마나:" class="detail-text"/>
+                        <ui:Label text="100" name="Text_MaxMana" class="detail-text"/>
+                    </ui:VisualElement>
+                </ui:VisualElement>
+                <ui:VisualElement name="Bottom_Right" style="flex-grow: 0; width: 60%;">
+                    <ui:VisualElement class="detail-info-box">
+                        <ui:Label text="물리공격력은 활력에 영항을 받습니다. 그러면 이제 글을 늘려보겠습니다." name="DetailInfoText" class="description-text"/>
+                    </ui:VisualElement>
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

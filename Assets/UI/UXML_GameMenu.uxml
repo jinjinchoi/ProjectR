@@ -1,0 +1,12 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/USS/MenuWindow.uss?fileID=7433441132597879392&amp;guid=3f2bc25aa3746c840b86c315fe589b49&amp;type=3#MenuWindow"/>
+    <ui:VisualElement name="Panel" class="panel-open">
+        <ui:VisualElement name="Menu" class="menu-background" style="width: 350px; height: 450px; flex-grow: 0; padding-top: 40px;">
+            <ui:Label text="메뉴" class="menu-title"/>
+            <ui:VisualElement name="ButtonArea" style="flex-grow: 1; justify-content: center; width: 100%; align-self: auto; align-items: center;">
+                <ui:Button text="게임 종료" name="QuitButton" double-click-selects-word="false" triple-click-selects-line="false" selectable="false" focusable="false" class="menu-button"/>
+                <ui:Button text="닫기" name="CloseButton" class="menu-button"/>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

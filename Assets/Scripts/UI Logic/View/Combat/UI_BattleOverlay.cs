@@ -6,7 +6,7 @@ public class UI_BattleOverlay : MonoBehaviour
 {
     private UIController_HealthBar HealthBarUIController;
     private UIController_BattleOverlay battleOverlayController;
-    private UI_TextHealthBar healthBarUI;
+    private UI_TextHealthBarView healthBarUI;
     private VisualElement root;
     private VisualElement buffArea;
     private Label dayText;
@@ -26,7 +26,7 @@ public class UI_BattleOverlay : MonoBehaviour
         buffArea = root.Q<VisualElement>("BuffArea");
         dayText = root.Q<Label>("DayText");
 
-        healthBarUI = new UI_TextHealthBar(HealthBarUIController, root);
+        healthBarUI = new UI_TextHealthBarView(HealthBarUIController, root);
     }
 
     private void Start()

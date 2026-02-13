@@ -20,4 +20,16 @@ public static class EventHub
     {
         PlayerDied?.Invoke();
     }
+
+    public static event Action GameMenuOpen;
+    public static void RaiseGameMenuOpen()
+    {
+        GameMenuOpen?.Invoke();
+    }
+
+    public static event Action DetailButtonClicked;
+    public static void RaiseDetailButtonClicked()
+    {
+        DetailButtonClicked?.Invoke();
+    }
 }

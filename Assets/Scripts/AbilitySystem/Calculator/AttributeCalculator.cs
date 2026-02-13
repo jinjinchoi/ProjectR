@@ -52,7 +52,7 @@ public class PhysicalDefensePowerCalculator : AttributeCalculatorBase
     public override IReadOnlyList<EAttributeType> Dependencies => new[]
     {
         EAttributeType.strength,
-        EAttributeType.dexterity
+        EAttributeType.vitality
     };
 
     protected override float CalculateAttribute(AttributeSet attributeSet)
@@ -85,7 +85,7 @@ public class MagicAttackPowerCalculator : AttributeCalculatorBase
 
 public class MagicDefensePowerCalculator : AttributeCalculatorBase
 {
-    public override EAttributeType TargetAttribute => EAttributeType.magicAttackPower;
+    public override EAttributeType TargetAttribute => EAttributeType.magicDefensePower;
 
     public override IReadOnlyList<EAttributeType> Dependencies => new[]
     {
