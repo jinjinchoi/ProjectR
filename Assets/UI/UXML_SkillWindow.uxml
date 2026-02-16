@@ -1,6 +1,6 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/UI/USS/skillwindow.uss?fileID=7433441132597879392&amp;guid=15e0a7c4449e584498325683decddbcc&amp;type=3#skillwindow"/>
-    <ui:VisualElement name="Panel" class="panel">
+    <ui:VisualElement name="Panel" class="panel" style="flex-grow: 1;">
         <ui:VisualElement name="Border" class="skillborder">
             <ui:VisualElement name="TitleArea" class="skill-title-area">
                 <ui:Label text="Skill" enable-rich-text="true" style="font-size: 35px; -unity-font-style: bold; -unity-font-definition: url(&quot;project://database/Assets/ExternalAssets/Font/NanumGothic.otf?fileID=12800000&amp;guid=f5dc1d4a67daccb45ad0142353b072ab&amp;type=3#NanumGothic&quot;);"/>
@@ -8,8 +8,8 @@
             <ui:VisualElement name="SkillArea" style="flex-grow: 1; padding-top: 10px; padding-right: 10px; padding-bottom: 10px; padding-left: 10px;">
                 <ui:ScrollView name="SkillScroll">
                     <ui:VisualElement name="SkillSlot" class="skill-slot">
-                        <ui:Image source="project://database/Assets/ExternalAssets/GandalfHardcore%20FREE%20Platformer%20Assets/Birch3.png?fileID=2800000&amp;guid=a37924d9e4263b546866cb9296317f8d&amp;type=3#Birch3" name="Icon" class="skill-icon"/>
-                        <ui:VisualElement name="SkillTextArea" style="flex-grow: 1; margin-left: 10px; height: 100%; align-items: stretch; justify-content: center; flex-wrap: nowrap;">
+                        <ui:Image source="project://database/Assets/ExternalAssets/GandalfHardcore%20FREE%20Platformer%20Assets/Tree4.png?fileID=2800000&amp;guid=8a0014ab65e6ce54aa4e51f5474c1312&amp;type=3#Tree4" class="skill-icon"/>
+                        <ui:VisualElement name="SkillTextArea" class="skillTextArea">
                             <ui:Label text="눈이 쌓인 나무는 또다른 매력을 보여줍니다. 겨울에만 볼 수있어 더욱 신비롭게 하지요." name="Description" class="skill-description" style="display: flex;"/>
                         </ui:VisualElement>
                         <ui:VisualElement name="AcquireBtnArea" class="acquireBtnArea">

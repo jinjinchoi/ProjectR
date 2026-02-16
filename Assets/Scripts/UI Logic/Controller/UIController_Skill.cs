@@ -12,24 +12,24 @@ public struct FAbilityUIInfo
 
 public class UIController_Skill
 {
-    BaseCharacter owner;
+    PlayerCharacter owner;
 
-    public UIController_Skill(BaseCharacter owner)
+    public UIController_Skill(PlayerCharacter owner)
     {
         this.owner = owner;
     }
 
     public FAbilityUIInfo[] GetAllAbilityUiInfo()
     {
-        if (owner == null || owner.AbilityList?.Count == 0)
+        if (owner == null || owner.UnLockableAbilities?.Count == 0)
             return null;
 
-        int count = owner.AbilityList.Count;
+        int count = owner.UnLockableAbilities.Count;
         var infoArray = new FAbilityUIInfo[count];
 
         for (int i = 0; i < count; i++)
         {
-            var data = owner.AbilityList[i];
+            var data = owner.UnLockableAbilities[i];
 
             infoArray[i] = new()
             {
@@ -41,5 +41,15 @@ public class UIController_Skill
         }
 
         return infoArray;
+    }
+
+    public void UnlockAbility(EAbilityId id)
+    {
+        owner.UnlockAbility(id);
+    }
+
+    public bool IsUnLockedAbility(EAbilityId id)
+    {
+        return owner.IsUnLockedAbility(id);
     }
 }

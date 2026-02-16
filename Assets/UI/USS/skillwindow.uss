@@ -2,7 +2,7 @@
 }
 
 .skillborder {
-    flex-grow: 1;
+    flex-grow: 0;
     background-color: rgb(255, 255, 255);
     border-top-left-radius: 40px;
     border-top-right-radius: 40px;
@@ -16,6 +16,8 @@
     border-right-width: 20px;
     border-bottom-width: 20px;
     border-left-width: 20px;
+    width: 800px;
+    height: 800px;
 }
 
 .skill-title-area {
@@ -51,6 +53,8 @@
     padding-left: 5px;
     flex-direction: row;
     align-items: center;
+    margin-bottom: 15px;
+    aspect-ratio: auto;
 }
 
 .skill-learn-button {
@@ -152,14 +156,16 @@
 
 .panel {
     flex-grow: 0;
-    transition-duration: 0.5s;
-    width: 800px;
-    height: 1000px;
+    transition-duration: 0.3s;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
 }
 
 .panel-close {
     flex-grow: 1;
-    transition-duration: 0.5s;
+    transition-duration: 0.3s;
     scale: 0.3 0.3;
     opacity: 0;
 }
@@ -169,4 +175,42 @@
     aspect-ratio: 1;
     height: 100%;
     padding-right: 0;
+}
+
+.skillTextArea {
+    flex-grow: 1;
+    margin-left: 10px;
+    height: 100%;
+    align-items: stretch;
+    justify-content: center;
+    flex-wrap: nowrap;
+}
+
+.skill-learn-button:disabled {
+    width: 100%;
+    height: 100%;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    font-size: 20px;
+    -unity-font-definition: url("project://database/Assets/ExternalAssets/Font/NanumGothic.otf?fileID=12800000&guid=f5dc1d4a67daccb45ad0142353b072ab&type=3#NanumGothic");
+    -unity-font-style: bold;
+    border-left-color: rgb(120, 120, 120);
+    border-right-color: rgb(120, 120, 120);
+    border-top-color: rgb(120, 120, 120);
+    border-bottom-color: rgb(120, 120, 120);
+    border-top-width: 1px;
+    border-right-width: 1px;
+    border-bottom-width: 1px;
+    border-left-width: 1px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    transition-duration: 0.08s;
+    transition-timing-function: ease-out;
+    scale: 1 1;
+    transition-property: scale;
+    background-color: rgb(15, 82, 14);
 }

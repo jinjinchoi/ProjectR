@@ -1,3 +1,5 @@
+
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PrimaryAttributeData
@@ -27,6 +29,7 @@ public class SaveManager
     private PrimaryAttributeData playerData;
 
     public PrimaryAttributeData PlayerData => playerData;
+    public List<EAbilityId> unlokcedAbilityIds = new();
 
     public void BackupPrimaryData(PrimaryAttributeData data)
     {

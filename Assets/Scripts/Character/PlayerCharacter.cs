@@ -1,5 +1,8 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using UnityEngine;
 
 public class PlayerCharacter : BaseCharacter
 {
@@ -10,6 +13,12 @@ public class PlayerCharacter : BaseCharacter
         EAttributeType.dexterity,
         EAttributeType.vitality
     };
+
+    [Header("Player Abilities")]
+    [SerializeField] private List<BaseAbilityDataSO> unlockableAbilities; // 습득이 필요한 ability
+
+    private HashSet<EAbilityId> unlockedAbilityIdSet = new();
+    public List<BaseAbilityDataSO> UnLockableAbilities => unlockableAbilities;
 
 
     protected override void Awake()
@@ -24,6 +33,7 @@ public class PlayerCharacter : BaseCharacter
 
         GameManager.Instance.SceneChangingAsync += SaveBeforeSceneChange;
         ApplySavedPrimaryAttribute();
+        GiveUnlockedAbility();
     }
 
     private void OnDisable()
@@ -35,6 +45,8 @@ public class PlayerCharacter : BaseCharacter
     private Task SaveBeforeSceneChange()
     {
         GameManager.Instance.SaveManager.BackupPrimaryData(MakePrimaryAttributeData());
+        GameManager.Instance.SaveManager.unlokcedAbilityIds = unlockedAbilityIdSet.ToList();
+
         return Task.CompletedTask;
     }
 
@@ -53,8 +65,6 @@ public class PlayerCharacter : BaseCharacter
     void ApplySavedPrimaryAttribute()
     {
         if (GameManager.Instance.SaveManager.PlayerData == null) return;
-
-        DebugHelper.Log("Restore Primary Attribute");
 
         foreach (var attribute in PrimaryAttributes)
         {
@@ -81,6 +91,28 @@ public class PlayerCharacter : BaseCharacter
             operation = EModifierOp.Override
         };
     }
+    private void GiveUnlockedAbility()
+    {
+        var unlickedIdList = GameManager.Instance.SaveManager.unlokcedAbilityIds;
+        unlockedAbilityIdSet = new HashSet<EAbilityId>(unlickedIdList);
+
+        foreach (BaseAbilityDataSO abilityData in unlockableAbilities)
+        {
+            if (IsUnLockedAbility(abilityData.abilityId))
+                ASC.GiveAbility(abilityData);
+        }
+    }
+
+    public bool IsUnLockedAbility(EAbilityId id)
+    {
+        return unlockedAbilityIdSet.Contains(id);
+    }
+
+    public void UnlockAbility(EAbilityId id)
+    {
+        unlockedAbilityIdSet.Add(id);
+    }
+
 
     protected override void OnDead()
     {

@@ -19,7 +19,7 @@ MonoBehaviour:
   animTag: Skill
   description: "\uC8FC\uBCC0\uC5D0 \uC788\uB294 \uBAA8\uB4E0 \uC801\uC5D0\uAC8C \uAC15\uB825\uD55C
     \uB9C8\uBC95 \uACF5\uACA9\uC744 \uAC00\uD569\uB2C8\uB2E4."
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: f8f7ad1abc554d54d882c54a39aa267b, type: 3}
   damageMultiplier: 200
   minAttackRange: 10
   attackDamageRadius: 2

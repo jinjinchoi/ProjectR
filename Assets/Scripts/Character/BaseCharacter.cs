@@ -34,7 +34,7 @@ public abstract class BaseCharacter : MonoBehaviour, IAbilityOwner, IDamageable
 
     [Header("ASC")]
     [SerializeField] private AttributeSO attributeInfoSO;
-    [SerializeField] private List<BaseAbilityDataSO> defaultAbilities; // 캐릭터에게 부여할 ability
+    [SerializeField] private List<BaseAbilityDataSO> defaultAbilities; // 캐릭터에게 기본으로 부여할 ability
 
     private Rigidbody2D rb;
     private AbilitySystemComponent abilitySystemComponent;
@@ -57,7 +57,6 @@ public abstract class BaseCharacter : MonoBehaviour, IAbilityOwner, IDamageable
     public float MoveSpeed => moveSpeed;
     public bool IsGrounded => isGrounded;
     public bool IsDead => isDead;
-    public List<BaseAbilityDataSO> AbilityList => defaultAbilities;
     #endregion
 
     protected virtual void Awake()
