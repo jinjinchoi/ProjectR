@@ -57,6 +57,7 @@ public abstract class BaseCharacter : MonoBehaviour, IAbilityOwner, IDamageable
     public float MoveSpeed => moveSpeed;
     public bool IsGrounded => isGrounded;
     public bool IsDead => isDead;
+    public List<BaseAbilityDataSO> AbilityList => defaultAbilities;
     #endregion
 
     protected virtual void Awake()

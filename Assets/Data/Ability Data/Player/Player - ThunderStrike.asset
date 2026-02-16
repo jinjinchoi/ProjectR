@@ -17,6 +17,9 @@ MonoBehaviour:
   cooldown: 5
   animBoolName: jumpSkill
   animTag: Skill
+  description: "\uC88C\uC6B0\uB85C 3\uC30D\uC758 \uBC88\uAC1C\uB97C \uB0A0\uB824
+    \uC801\uC5D0\uAC8C \uD53C\uD574\uB97C \uC785\uD788\uB294 \uB9C8\uBC95 \uACF5\uACA9\uC785\uB2C8\uB2E4."
+  icon: {fileID: 0}
   damageMultiplier: 150
   minAttackRange: 5
   attackDamageRadius: 1

@@ -25,5 +25,9 @@ public abstract class BaseAbilityDataSO : ScriptableObject
     public string animBoolName;
     public string animTag = "Skill";
 
+    [Header("UI Info")]
+    public string description;
+    public Sprite icon;
+
     public abstract AbilityLogicBase CreateInstance();
 }

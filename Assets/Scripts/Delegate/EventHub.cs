@@ -32,4 +32,10 @@ public static class EventHub
     {
         DetailButtonClicked?.Invoke();
     }
+
+    public static event Action SkillButtonClicked;
+    public static void RaiseSkillButtonClicked()
+    {
+        SkillButtonClicked?.Invoke();
+    }
 }

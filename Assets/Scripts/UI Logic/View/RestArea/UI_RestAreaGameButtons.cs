@@ -6,6 +6,7 @@ public class UI_RestAreaGameButtons
     private VisualElement root;
     private readonly Button optionButton;
     private readonly Button detailButton;
+    private readonly Button skillButton;
 
     public UI_RestAreaGameButtons(VisualElement root)
     {
@@ -16,12 +17,16 @@ public class UI_RestAreaGameButtons
 
         detailButton = root.Q<Button>("DetailButton");
         detailButton.clicked += OnDetailButtonClicked;
+
+        skillButton = root.Q<Button>("SkillButton");
+        skillButton.clicked += OnSkillButtonClicked;
     }
 
     public void Dispose()
     {
         optionButton.clicked -= OnOptionButtonClicked;
         detailButton.clicked -= OnDetailButtonClicked;
+        skillButton.clicked -= OnSkillButtonClicked;
     }
 
     void OnOptionButtonClicked()
@@ -32,5 +37,10 @@ public class UI_RestAreaGameButtons
     void OnDetailButtonClicked()
     {
         EventHub.RaiseDetailButtonClicked();
+    }
+
+    void OnSkillButtonClicked()
+    {
+        EventHub.RaiseSkillButtonClicked();
     }
 }
