@@ -14,11 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Ability_SwordAuraSO
   abilityId: 4
   abilityName: "\uAC80\uAE30 \uBC1C\uC0B0"
-  cooldown: 5
+  cooldown: 10
+  sp: 5
   animBoolName: swordAttack3
   animTag: Skill
-  description: "\uC804\uBC29\uC744 \uD5A5\uD574 \uAC80\uAE30\uB97C \uB0A0\uB9AC\uB294
-    \uC6D0\uAC70\uB9AC \uB9C8\uBC95 \uACF5\uACA9\uC785\uB2C8\uB2E4."
+  description: "\uC804\uBC29\uC744 \uD5A5\uD574 \uAC80\uAE30\uB97C \uB0A0\uB824 \uB9C8\uBC95
+    \uACF5\uACA9 \uD53C\uD574\uB97C \uC785\uD799\uB2C8\uB2E4. \uD53C\uD574\uB7C9
+    \uB9C8\uBC95 \uACF5\uACA9\uB825\uC758 100%. \uCFE8\uB2E4\uC6B4 10\uCD08."
   icon: {fileID: 21300000, guid: 387d78ee290e3f64595ae450783bf860, type: 3}
   damageMultiplier: 100
   minAttackRange: 10

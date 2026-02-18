@@ -97,12 +97,12 @@ public abstract class BaseCharacter : MonoBehaviour, IAbilityOwner, IDamageable
             abilitySystemComponent.ApplyModifier(modifier);
         }
 
-        float maxHealth = abilitySystemComponent.AttributeSet.GetAttributeValue(EAttributeType.maxHealth);
-        float maxMana = abilitySystemComponent.AttributeSet.GetAttributeValue(EAttributeType.maxMana);
+        float maxHealth = abilitySystemComponent.AttributeSet.GetAttributeValue(EAttributeType.MaxHealth);
+        float maxMana = abilitySystemComponent.AttributeSet.GetAttributeValue(EAttributeType.MaxMana);
 
         FAttributeModifier healthModifier = new()
         {
-            attributeType = EAttributeType.currentHealth,
+            attributeType = EAttributeType.CurrentHealth,
             value = maxHealth,
             policy = EModifierPolicy.Instant,
             operation = EModifierOp.Override
@@ -111,7 +111,7 @@ public abstract class BaseCharacter : MonoBehaviour, IAbilityOwner, IDamageable
 
         FAttributeModifier manaModifier = new()
         {
-            attributeType = EAttributeType.currentMana,
+            attributeType = EAttributeType.CurrentMana,
             value = maxMana,
             policy = EModifierPolicy.Instant,
             operation = EModifierOp.Override
@@ -144,7 +144,7 @@ public abstract class BaseCharacter : MonoBehaviour, IAbilityOwner, IDamageable
 
         FAttributeModifier damageModifier = new()
         {
-            attributeType = EAttributeType.incommingDamage,
+            attributeType = EAttributeType.IncommingDamage,
             value = DamageCalculator.CalculateIncomingDamage(abilitySystemComponent.AttributeSet, damageInfo),
             policy = EModifierPolicy.Instant,
             operation = EModifierOp.Add

@@ -14,11 +14,11 @@ public class PrimaryAttributeData
     {
         return attribute switch
         {
-            EAttributeType.strength => strength,
-            EAttributeType.dexterity => dexterity,
-            EAttributeType.intelligence => intelligence,
-            EAttributeType.vitality => vitality,
-            EAttributeType.currentHealth => currentHeath,
+            EAttributeType.Strength => strength,
+            EAttributeType.Dexterity => dexterity,
+            EAttributeType.Intelligence => intelligence,
+            EAttributeType.Vitality => vitality,
+            EAttributeType.CurrentHealth => currentHeath,
             _ => 0
         };
     }

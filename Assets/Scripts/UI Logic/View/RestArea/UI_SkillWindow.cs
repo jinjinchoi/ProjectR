@@ -2,41 +2,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class SkillUIWidget
-{
-    public EAbilityId Id { get; private set; }
-    public VisualElement Slot { get; private set; }
-    public Image Icon { get; private set; }
-    public VisualElement DescriptionArea { get; private set; }
-    public Label Description { get; private set; }
-    public VisualElement BtnArrea { get; private set; }
-    public Button AcquireButton { get; private set; }
-
-    public SkillUIWidget(EAbilityId id, VisualElement slot, Image icon, VisualElement descArea, Label description, VisualElement btnArea , Button acquireButton)
-    {
-        this.Id = id;
-        this.Slot = slot;
-        this.Icon = icon;
-        this.DescriptionArea = descArea;
-        this.Description = description;
-        this.BtnArrea = btnArea;
-        this.AcquireButton = acquireButton;
-    }
-}
 
 public class UI_SkillWindow : MonoBehaviour
 {
+    [SerializeField] VisualTreeAsset skillInWidgetTemplate;
+
     private VisualElement panel;
     private ScrollView skillScrollView;
-    private UIController_Skill uiController;
-    private Dictionary<EAbilityId, SkillUIWidget> skillUIMap = new();
+    private Label currentSPText;
 
-    private const string skillSlotClassName = "skill-slot";
-    private const string skillIconClassName = "skill-icon";
-    private const string skillDescriptionClassName = "skill-description";
-    private const string descAreaClassName = "skillTextArea";
-    private const string acquireButtonAreaClassName = "acquireBtnArea";
-    private const string skillAcquireButtonClassName = "skill-learn-button";
+    private UIController_Skill uiController;
+    private readonly Dictionary<EAbilityId, VisualElement> skillUIMap = new();
+
+    const string unlockButtonName = "UnlockButton";
 
     private void Awake()
     {
@@ -44,6 +22,7 @@ public class UI_SkillWindow : MonoBehaviour
         panel = root.Q<VisualElement>("Panel");
         panel.AddToClassList("panel-close");
         skillScrollView = root.Q<ScrollView>("SkillScroll");
+        currentSPText = root.Q<Label>("CurrentSP");
 
         uiController = new UIController_Skill(GetComponentInParent<PlayerCharacter>());
     }
@@ -61,86 +40,109 @@ public class UI_SkillWindow : MonoBehaviour
 
     }
 
+    private void OnSkillWindowOpenRequested()
+    {
+        panel.pickingMode = PickingMode.Position;
+        panel.RemoveFromClassList("panel-close");
+
+        UpdateCurrentSpText();
+        CreateOrUpdateSkillWidget();
+    }
+
+    // Close skill window on panel click.
     void OnPanelClicked(ClickEvent evt)
     {
         if (evt.target != panel)
             return;
-        panel.AddToClassList("panel-close");
         panel.pickingMode = PickingMode.Ignore;
+        panel.AddToClassList("panel-close");
         evt.StopPropagation();
     }
 
-    private void OnSkillWindowOpenRequested()
+    void OnUnloackButtonClicked(EAbilityId id)
+    {
+        DebugHelper.Log($"[{id}] slot is clikced");
+        uiController.UnlockAbility(id);
+        CreateOrUpdateSkillWidget();
+        UpdateCurrentSpText();
+    }
+
+    private void CreateOrUpdateSkillWidget()
     {
         FAbilityUIInfo[] infoArray = uiController.GetAllAbilityUiInfo();
-        if (infoArray == null || infoArray.Length == 0)
+        if (infoArray.Length == 0)
             return;
-        
-        panel.RemoveFromClassList("panel-close");
-        panel.pickingMode = PickingMode.Position;
 
         foreach (var info in infoArray)
         {
-            EAbilityId id = info.id;
-
-            if (skillUIMap.ContainsKey(id))
+            if (skillUIMap.ContainsKey(info.id))
             {
-                UpdateSlot(id);
+                UpdateWidget(info.id);
                 continue;
             }
 
-            Image icon = new() { image = info.icon ? info.icon.texture : null };
-            icon.AddToClassList(skillIconClassName);
-
-            Label description = new() {text = info.description };
-            description.AddToClassList(skillDescriptionClassName);
-
-            VisualElement descArea = new();
-            descArea.AddToClassList(descAreaClassName);
-            descArea.Add(description);
-
-            Button acquireBtn = new() { text = "½Àµæ" };
-            acquireBtn.AddToClassList(skillAcquireButtonClassName);
-            BindAcquireButten(acquireBtn, id);
-
-            VisualElement btnArea = new();
-            btnArea.AddToClassList(acquireButtonAreaClassName);
-            btnArea.Add(acquireBtn);
-
-            VisualElement slot = new();
-            slot.AddToClassList(skillSlotClassName);
-
-            slot.Add(icon);
-            slot.Add(descArea);
-            slot.Add(btnArea);
-
-            skillScrollView.Add(slot);
-
-            SkillUIWidget skillWidget = new (id, slot, icon, descArea, description, btnArea, acquireBtn);
-            skillUIMap.Add(id, skillWidget);
+            var elemet = CreateSkillWidget(info);
+            skillUIMap.Add(info.id, elemet);
+            skillScrollView.Add(elemet);
         }
     }
 
-    void UpdateSlot(EAbilityId id)
+    private VisualElement CreateSkillWidget(FAbilityUIInfo skillInfo)
     {
-        if (uiController.IsUnLockedAbility(id))
+        VisualElement template = skillInWidgetTemplate.CloneTree();
+
+        Image icon = template.Q<Image>("Icon");
+        Label skillName = template.Q<Label>("SkillName");
+        Label skillDesc = template.Q<Label>("Description");
+        Label sp = template.Q<Label>("SkillPoint");
+        Button unlockBtn = template.Q<Button>(unlockButtonName);
+
+        icon.image = skillInfo.icon.texture;
+        skillName.text = skillInfo.name;
+        skillDesc.text = skillInfo.description;
+        sp.text = skillInfo.sp.ToString();
+
+        var id = skillInfo.id;
+        unlockBtn.clicked += () =>
         {
-            skillUIMap.TryGetValue(id, out var widgetInfo);
-            if (widgetInfo == null) return;
+            OnUnloackButtonClicked(id);
+        };
 
-            widgetInfo.Slot.SetEnabled(false);
-            Debug.Log($"Unlicked Ability : {id}");
+        if (uiController.GetCurrentSp() < skillInfo.sp)
+            unlockBtn.SetEnabled(false);
+
+        UpdateButtonEnabled(skillInfo.id, unlockBtn);
+
+        return template;
+    }
+
+
+    void UpdateWidget(EAbilityId slotId)
+    {
+        if (!skillUIMap.TryGetValue(slotId, out VisualElement skillWidget))
+            return;
+
+        if (uiController.IsUnLockedAbility(slotId))
+        {
+            skillWidget.SetEnabled(false);
+            return;
         }
+
+        var button = skillWidget.Q<Button>(unlockButtonName);
+        UpdateButtonEnabled(slotId, button);
+
     }
 
-    void BindAcquireButten(Button button, EAbilityId id)
+    private void UpdateButtonEnabled(EAbilityId slotId, Button button)
     {
-        button.clicked += () => OnAcquireButtonClicked(id);
+        if (uiController.GetCurrentSp() < uiController.GetAbilityRequiredSp(slotId))
+            button.SetEnabled(false);
+        else
+            button.SetEnabled(true);
     }
-    
-    void OnAcquireButtonClicked(EAbilityId id)
+
+    private void UpdateCurrentSpText()
     {
-        uiController.UnlockAbility(id);
-        UpdateSlot(id);
+        currentSPText.text = uiController.GetCurrentSp().ToString();
     }
 }

@@ -1,5 +1,3 @@
-
-using System.Collections.Generic;
 using UnityEngine;
 
 public struct FAbilityUIInfo
@@ -8,6 +6,7 @@ public struct FAbilityUIInfo
     public string name;
     public string description;
     public Sprite icon;
+    public int sp;
 }
 
 public class UIController_Skill
@@ -21,9 +20,6 @@ public class UIController_Skill
 
     public FAbilityUIInfo[] GetAllAbilityUiInfo()
     {
-        if (owner == null || owner.UnLockableAbilities?.Count == 0)
-            return null;
-
         int count = owner.UnLockableAbilities.Count;
         var infoArray = new FAbilityUIInfo[count];
 
@@ -34,18 +30,35 @@ public class UIController_Skill
             infoArray[i] = new()
             {
                 id = data.abilityId,
-                name = data.name,
+                name = data.abilityName,
                 description = data.description,
                 icon = data.icon,
+                sp = data.sp,
             };
         }
 
         return infoArray;
     }
 
+    public float GetCurrentSp()
+    {
+        return owner.ASC.AttributeSet.GetAttributeValue(EAttributeType.SkillPoint);
+    }
+
+    public float GetAbilityRequiredSp(EAbilityId id)
+    {
+        if (owner.UnLockableAbilityMap.TryGetValue(id, out var data))
+        {
+            return data.sp;
+        }
+
+        return 0f;
+    }
+
     public void UnlockAbility(EAbilityId id)
     {
-        owner.UnlockAbility(id);
+        if (GetAbilityRequiredSp(id) <= GetCurrentSp())
+            owner.TryUnlockAbility(id);
     }
 
     public bool IsUnLockedAbility(EAbilityId id)

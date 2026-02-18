@@ -44,7 +44,7 @@ public class UI_RestAreaMain : MonoBehaviour
     {
         EventHub.DialogueRequested -= OnDialogueRequested;
         EventHub.DialogueFinished -= OnDialogueFinished;
-        GameManager.Instance.SceneChangingAsync -= HandleSceneLoadingUI;
+        if (GameManager.Instance) GameManager.Instance.SceneChangingAsync -= HandleSceneLoadingUI;
         statArea?.Dispose();
         healthBarView?.Dispose();
         gameButtons?.Dispose();

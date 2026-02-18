@@ -20,13 +20,14 @@ public abstract class BaseAbilityDataSO : ScriptableObject
     public EAbilityId abilityId;
     public string abilityName;
     public float cooldown;
+    public int sp;
 
     [Header("Anim Info")]
     public string animBoolName;
     public string animTag = "Skill";
 
     [Header("UI Info")]
-    public string description;
+    [TextArea (3, 10)] public string description;
     public Sprite icon;
 
     public abstract AbilityLogicBase CreateInstance();

@@ -32,8 +32,8 @@ public class UI_TextHealthBarView
         currentHealthText = root.Q<Label>(currentHealthTextName);
         maxHealthText = root.Q<Label>(maxHealthTextName);
 
-        float maxHealth = uiController.GetAttributeValue(EAttributeType.maxHealth);
-        float currentHealth = uiController.GetAttributeValue(EAttributeType.currentHealth);
+        float maxHealth = uiController.GetAttributeValue(EAttributeType.MaxHealth);
+        float currentHealth = uiController.GetAttributeValue(EAttributeType.CurrentHealth);
         currentHealthText.text = currentHealth.ToString();
         maxHealthText.text = maxHealth.ToString();
 
@@ -70,8 +70,8 @@ public class UI_TextHealthBarView
             progressbarMain.AddToClassList(HealthDangerClassName);
         }
 
-        float maxHealth = uiController.GetAttributeValue(EAttributeType.maxHealth);
-        float currentHealth = uiController.GetAttributeValue(EAttributeType.currentHealth);
+        float maxHealth = uiController.GetAttributeValue(EAttributeType.MaxHealth);
+        float currentHealth = uiController.GetAttributeValue(EAttributeType.CurrentHealth);
         currentHealthText.text = currentHealth.ToString();
         maxHealthText.text = maxHealth.ToString();
     }

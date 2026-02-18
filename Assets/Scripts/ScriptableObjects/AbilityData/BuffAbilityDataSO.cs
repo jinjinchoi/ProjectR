@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class BuffUIData
 {
-    public int Id;
+    public EAbilityId Id;
     public Sprite Icon;
     public float Duration;
 }
@@ -12,7 +12,6 @@ public class BuffUIData
 public class BuffAbilityDataSO : DamageAbilityDataSO
 {
     [Header("Buff Info")]
-    public int id;
     public EAttributeType attribute;
     public float value;
     public float duration;

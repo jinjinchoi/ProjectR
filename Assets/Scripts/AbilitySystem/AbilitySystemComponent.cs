@@ -29,10 +29,10 @@ public interface IAbilitySystemContext
     FModifierHandle? ApplyModifier(FAttributeModifier modifier);
     EAbilityId GetRandomAbilityId();
     event Action<BuffUIData> OnBuffActivated;
-    event Action<int> OnBuffDeactivated;
+    event Action<EAbilityId> OnBuffDeactivated;
 
     void RaiseOnBuffActivated(BuffUIData buffUIData);
-    void RaiseOnBuffDeactivated(int id);
+    void RaiseOnBuffDeactivated(EAbilityId id);
 }
 
 // 어빌리티가 애니메이션을 기다릴 때 콜백을 저장하는 클래스
@@ -52,7 +52,7 @@ public class AbilitySystemComponent : MonoBehaviour, IAbilitySystemContext
 {
     public event Action<EAbilityId> OnAbilityEnded;
     public event Action<BuffUIData> OnBuffActivated;
-    public event Action<int> OnBuffDeactivated;
+    public event Action<EAbilityId> OnBuffDeactivated;
 
     public IAbilityOwner Owner => owner;
     public IAttributeSet AttributeSet
@@ -73,7 +73,7 @@ public class AbilitySystemComponent : MonoBehaviour, IAbilitySystemContext
         OnBuffActivated?.Invoke(buffUIData);
     }
 
-    public void RaiseOnBuffDeactivated(int id)
+    public void RaiseOnBuffDeactivated(EAbilityId id)
     {
         OnBuffDeactivated?.Invoke(id);
     }

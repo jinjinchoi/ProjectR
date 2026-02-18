@@ -8,22 +8,24 @@ public class PlayerCharacter : BaseCharacter
 {
     private readonly EAttributeType[] PrimaryAttributes =
     {
-        EAttributeType.strength,
-        EAttributeType.intelligence,
-        EAttributeType.dexterity,
-        EAttributeType.vitality
+        EAttributeType.Strength,
+        EAttributeType.Intelligence,
+        EAttributeType.Dexterity,
+        EAttributeType.Vitality
     };
 
     [Header("Player Abilities")]
     [SerializeField] private List<BaseAbilityDataSO> unlockableAbilities; // 습득이 필요한 ability
+    private Dictionary<EAbilityId, BaseAbilityDataSO> unlockableAbilitiesMap;
 
     private HashSet<EAbilityId> unlockedAbilityIdSet = new();
     public List<BaseAbilityDataSO> UnLockableAbilities => unlockableAbilities;
-
+    public Dictionary<EAbilityId, BaseAbilityDataSO> UnLockableAbilityMap => unlockableAbilitiesMap;
 
     protected override void Awake()
     {
         base.Awake();
+        unlockableAbilitiesMap = unlockableAbilities.ToDictionary(e => e.abilityId);
     }
 
 
@@ -54,11 +56,11 @@ public class PlayerCharacter : BaseCharacter
     {
         return new()
         {
-            strength = ASC.AttributeSet.GetAttributeValue(EAttributeType.strength),
-            dexterity = ASC.AttributeSet.GetAttributeValue(EAttributeType.dexterity),
-            intelligence = ASC.AttributeSet.GetAttributeValue(EAttributeType.intelligence),
-            vitality = ASC.AttributeSet.GetAttributeValue(EAttributeType.vitality),
-            currentHeath = ASC.AttributeSet.GetAttributeValue(EAttributeType.currentHealth),
+            strength = ASC.AttributeSet.GetAttributeValue(EAttributeType.Strength),
+            dexterity = ASC.AttributeSet.GetAttributeValue(EAttributeType.Dexterity),
+            intelligence = ASC.AttributeSet.GetAttributeValue(EAttributeType.Intelligence),
+            vitality = ASC.AttributeSet.GetAttributeValue(EAttributeType.Vitality),
+            currentHeath = ASC.AttributeSet.GetAttributeValue(EAttributeType.CurrentHealth),
         };
     }
 
@@ -73,7 +75,7 @@ public class PlayerCharacter : BaseCharacter
 
         FAttributeModifier healthModifier = new()
         {
-            attributeType = EAttributeType.currentHealth,
+            attributeType = EAttributeType.CurrentHealth,
             policy = EModifierPolicy.Instant,
             operation = EModifierOp.Override,
             value = GameManager.Instance.SaveManager.PlayerData.currentHeath
@@ -108,8 +110,27 @@ public class PlayerCharacter : BaseCharacter
         return unlockedAbilityIdSet.Contains(id);
     }
 
-    public void UnlockAbility(EAbilityId id)
+    public void TryUnlockAbility(EAbilityId id)
     {
+        if (!unlockableAbilitiesMap.TryGetValue(id, out var abilityData))
+            return;
+
+        float currentSp = ASC.AttributeSet.GetAttributeValue(EAttributeType.SkillPoint);
+
+        if (currentSp < abilityData.sp)
+            return;
+
+        FAttributeModifier spModifier = new()
+        {
+            attributeType = EAttributeType.SkillPoint,
+            policy = EModifierPolicy.Instant,
+            operation = EModifierOp.Add,
+            value = -abilityData.sp
+        };
+        ASC.ApplyModifier(spModifier);
+
+        DebugHelper.Log($"[{id}] is unlocked");
+
         unlockedAbilityIdSet.Add(id);
     }
 

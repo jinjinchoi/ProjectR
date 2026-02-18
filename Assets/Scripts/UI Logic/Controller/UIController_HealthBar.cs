@@ -10,8 +10,8 @@ public class UIController_HealthBar : BaseCharacterUIController
             return 0f;
         }
 
-        float health = abilitySystem.AttributeSet.GetAttributeValue(EAttributeType.currentHealth);
-        float maxHealth = abilitySystem.AttributeSet.GetAttributeValue(EAttributeType.maxHealth);
+        float health = abilitySystem.AttributeSet.GetAttributeValue(EAttributeType.CurrentHealth);
+        float maxHealth = abilitySystem.AttributeSet.GetAttributeValue(EAttributeType.MaxHealth);
 
         return health / maxHealth;
     }

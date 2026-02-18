@@ -4,7 +4,7 @@ using UnityEngine;
 public class UIController_BattleOverlay : BaseCharacterUIController
 {
     public event Action<BuffUIData> BuffStart;
-    public event Action<int> BuffEnd;
+    public event Action<EAbilityId> BuffEnd;
 
     public override void Init(IAbilitySystemContext asc)
     {
@@ -20,7 +20,7 @@ public class UIController_BattleOverlay : BaseCharacterUIController
         BuffStart?.Invoke(data);
     }
 
-    private void OnBuffDeactivated(int id)
+    private void OnBuffDeactivated(EAbilityId id)
     {
         BuffEnd?.Invoke(id);
     }

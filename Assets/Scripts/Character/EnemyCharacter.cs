@@ -14,12 +14,12 @@ public struct FEnemySecondaryAttribute
     {
         return attributeType switch
         {
-            EAttributeType.physicalAttackPower => physicalAttackPower,
-            EAttributeType.magicAttackPower => magicAttackPower,
-            EAttributeType.physicalDefensePower => physicalDefensePower,
-            EAttributeType.magicDefensePower => magicDefensePower,
-            EAttributeType.criticalChance => criticalChance,
-            EAttributeType.maxHealth => maxHealth,
+            EAttributeType.PhysicalAttackPower => physicalAttackPower,
+            EAttributeType.MagicAttackPower => magicAttackPower,
+            EAttributeType.PhysicalDefensePower => physicalDefensePower,
+            EAttributeType.MagicDefensePower => magicDefensePower,
+            EAttributeType.CriticalChance => criticalChance,
+            EAttributeType.MaxHealth => maxHealth,
             _ => 0,
         };
     }
@@ -32,12 +32,12 @@ public class EnemyCharacter : BaseCharacter
 
     private readonly EAttributeType[] SecondaryAttributes =
     {
-        EAttributeType.physicalAttackPower,
-        EAttributeType.physicalDefensePower,
-        EAttributeType.magicAttackPower,
-        EAttributeType.magicDefensePower,
-        EAttributeType.criticalChance,
-        EAttributeType.maxHealth,
+        EAttributeType.PhysicalAttackPower,
+        EAttributeType.PhysicalDefensePower,
+        EAttributeType.MagicAttackPower,
+        EAttributeType.MagicDefensePower,
+        EAttributeType.CriticalChance,
+        EAttributeType.MaxHealth,
     };
 
 
@@ -56,10 +56,10 @@ public class EnemyCharacter : BaseCharacter
         
         FAttributeModifier healthModifier = new()
         {
-            attributeType = EAttributeType.currentHealth,
+            attributeType = EAttributeType.CurrentHealth,
             policy = EModifierPolicy.Instant,
             operation = EModifierOp.Add,
-            value = ASC.AttributeSet.GetAttributeValue(EAttributeType.maxHealth)
+            value = ASC.AttributeSet.GetAttributeValue(EAttributeType.MaxHealth)
         };
         ASC.ApplyModifier(healthModifier);
     }

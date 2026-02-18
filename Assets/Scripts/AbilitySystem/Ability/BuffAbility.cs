@@ -42,7 +42,7 @@ public class BuffAbility : AbilityLogicBase
         {
             Duration = buffData.duration,
             Icon = buffData.buffIcon,
-            Id = buffData.id
+            Id = buffData.abilityId
         };
         context.RaiseOnBuffActivated(buffUiData);
     }
@@ -57,7 +57,7 @@ public class BuffAbility : AbilityLogicBase
         {
             context.AttributeSet.RemoveModifier(buffModHandle.Value);
             buffModHandle = null;
-            context.RaiseOnBuffDeactivated(buffData.id);
+            context.RaiseOnBuffDeactivated(buffData.abilityId);
         }
     }
 }

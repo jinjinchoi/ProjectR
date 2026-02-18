@@ -28,18 +28,18 @@ public abstract class AttributeCalculatorBase : IAttributeCalculator
 public class PhysicalAttackPowerCalculator : AttributeCalculatorBase
 {
     public override EAttributeType TargetAttribute
-      => EAttributeType.physicalAttackPower;
+      => EAttributeType.PhysicalAttackPower;
 
     public override IReadOnlyList<EAttributeType> Dependencies => new[]
     {
-        EAttributeType.strength,
-        EAttributeType.dexterity
+        EAttributeType.Strength,
+        EAttributeType.Dexterity
     };
 
     protected override float CalculateAttribute(AttributeSet attributeSet)
     {
-        float str = attributeSet.GetAttributeValue(EAttributeType.strength);
-        float dex = attributeSet.GetAttributeValue(EAttributeType.dexterity);
+        float str = attributeSet.GetAttributeValue(EAttributeType.Strength);
+        float dex = attributeSet.GetAttributeValue(EAttributeType.Dexterity);
 
         return 1f + str + (0.2f * dex);
     }
@@ -47,18 +47,18 @@ public class PhysicalAttackPowerCalculator : AttributeCalculatorBase
 
 public class PhysicalDefensePowerCalculator : AttributeCalculatorBase
 {
-    public override EAttributeType TargetAttribute => EAttributeType.physicalDefensePower;
+    public override EAttributeType TargetAttribute => EAttributeType.PhysicalDefensePower;
 
     public override IReadOnlyList<EAttributeType> Dependencies => new[]
     {
-        EAttributeType.strength,
-        EAttributeType.vitality
+        EAttributeType.Strength,
+        EAttributeType.Vitality
     };
 
     protected override float CalculateAttribute(AttributeSet attributeSet)
     {
-        float str = attributeSet.GetAttributeValue(EAttributeType.strength);
-        float vit = attributeSet.GetAttributeValue(EAttributeType.vitality);
+        float str = attributeSet.GetAttributeValue(EAttributeType.Strength);
+        float vit = attributeSet.GetAttributeValue(EAttributeType.Vitality);
 
         return 5f + (0.5f * vit) + (0.2f * str);
     }
@@ -66,18 +66,18 @@ public class PhysicalDefensePowerCalculator : AttributeCalculatorBase
 
 public class MagicAttackPowerCalculator : AttributeCalculatorBase
 {
-    public override EAttributeType TargetAttribute => EAttributeType.magicAttackPower;
+    public override EAttributeType TargetAttribute => EAttributeType.MagicAttackPower;
 
     public override IReadOnlyList<EAttributeType> Dependencies => new[]
     {
-        EAttributeType.intelligence,
-        EAttributeType.dexterity
+        EAttributeType.Intelligence,
+        EAttributeType.Dexterity
     };
 
     protected override float CalculateAttribute(AttributeSet attributeSet)
     {
-        float intell = attributeSet.GetAttributeValue(EAttributeType.intelligence);
-        float dex = attributeSet.GetAttributeValue(EAttributeType.dexterity);
+        float intell = attributeSet.GetAttributeValue(EAttributeType.Intelligence);
+        float dex = attributeSet.GetAttributeValue(EAttributeType.Dexterity);
 
         return 2f + intell + (0.1f * dex);
     }
@@ -85,18 +85,18 @@ public class MagicAttackPowerCalculator : AttributeCalculatorBase
 
 public class MagicDefensePowerCalculator : AttributeCalculatorBase
 {
-    public override EAttributeType TargetAttribute => EAttributeType.magicDefensePower;
+    public override EAttributeType TargetAttribute => EAttributeType.MagicDefensePower;
 
     public override IReadOnlyList<EAttributeType> Dependencies => new[]
     {
-        EAttributeType.intelligence,
-        EAttributeType.vitality
+        EAttributeType.Intelligence,
+        EAttributeType.Vitality
     };
 
     protected override float CalculateAttribute(AttributeSet attributeSet)
     {
-        float intell = attributeSet.GetAttributeValue(EAttributeType.intelligence);
-        float vit = attributeSet.GetAttributeValue(EAttributeType.vitality);
+        float intell = attributeSet.GetAttributeValue(EAttributeType.Intelligence);
+        float vit = attributeSet.GetAttributeValue(EAttributeType.Vitality);
 
         return 5f + 0.5f * vit + 0.2f * intell;
     }
@@ -104,18 +104,18 @@ public class MagicDefensePowerCalculator : AttributeCalculatorBase
 
 public class CriticalChanceCalculator : AttributeCalculatorBase
 {
-    public override EAttributeType TargetAttribute => EAttributeType.criticalChance;
+    public override EAttributeType TargetAttribute => EAttributeType.CriticalChance;
 
     public override IReadOnlyList<EAttributeType> Dependencies => new[]
     { 
-        EAttributeType.strength,
-        EAttributeType.dexterity
+        EAttributeType.Strength,
+        EAttributeType.Dexterity
     };
 
     protected override float CalculateAttribute(AttributeSet attributeSet)
     {
-        float str = attributeSet.GetAttributeValue(EAttributeType.strength);
-        float dex = attributeSet.GetAttributeValue(EAttributeType.dexterity);
+        float str = attributeSet.GetAttributeValue(EAttributeType.Strength);
+        float dex = attributeSet.GetAttributeValue(EAttributeType.Dexterity);
 
         float cirticalChance = 5f + (0.25f * dex) + (0.05f * str);
 
@@ -125,18 +125,18 @@ public class CriticalChanceCalculator : AttributeCalculatorBase
 
 public class MaxHealthChanceCalculator : AttributeCalculatorBase
 {
-    public override EAttributeType TargetAttribute => EAttributeType.maxHealth;
+    public override EAttributeType TargetAttribute => EAttributeType.MaxHealth;
 
     public override IReadOnlyList<EAttributeType> Dependencies => new[]
     {
-        EAttributeType.strength,
-        EAttributeType.vitality
+        EAttributeType.Strength,
+        EAttributeType.Vitality
     };
 
     protected override float CalculateAttribute(AttributeSet attributeSet)
     {
-        float str = attributeSet.GetAttributeValue(EAttributeType.strength);
-        float vit = attributeSet.GetAttributeValue(EAttributeType.vitality);
+        float str = attributeSet.GetAttributeValue(EAttributeType.Strength);
+        float vit = attributeSet.GetAttributeValue(EAttributeType.Vitality);
 
         return 100f + (5f * vit) + (0.5f * str);
     }
@@ -144,18 +144,18 @@ public class MaxHealthChanceCalculator : AttributeCalculatorBase
 
 public class MaxManaChanceCalculator : AttributeCalculatorBase
 {
-    public override EAttributeType TargetAttribute => EAttributeType.maxMana;
+    public override EAttributeType TargetAttribute => EAttributeType.MaxMana;
 
     public override IReadOnlyList<EAttributeType> Dependencies => new[]
     { 
-        EAttributeType.vitality,
-        EAttributeType.intelligence
+        EAttributeType.Vitality,
+        EAttributeType.Intelligence
     };
 
     protected override float CalculateAttribute(AttributeSet attributeSet)
     {
-        float vit = attributeSet.GetAttributeValue(EAttributeType.vitality);
-        float intell = attributeSet.GetAttributeValue(EAttributeType.intelligence);
+        float vit = attributeSet.GetAttributeValue(EAttributeType.Vitality);
+        float intell = attributeSet.GetAttributeValue(EAttributeType.Intelligence);
 
         return 50f + (3f * intell) + (1f * vit);
     }

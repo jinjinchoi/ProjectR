@@ -9,15 +9,15 @@ public class DamageCalculator
 
         if (damageDataSO.damageType == EDamageType.Physical)
         {
-            damage = context.AttributeSet.GetAttributeValue(EAttributeType.physicalAttackPower);
+            damage = context.AttributeSet.GetAttributeValue(EAttributeType.PhysicalAttackPower);
         }
         if (damageDataSO.damageType == EDamageType.Magic)
         {
-            damage = context.AttributeSet.GetAttributeValue(EAttributeType.magicAttackPower);
+            damage = context.AttributeSet.GetAttributeValue(EAttributeType.MagicAttackPower);
         }
         damage *= damageDataSO.damageMultiplier / 100;
 
-        float criticalChance = context.AttributeSet.GetAttributeValue(EAttributeType.criticalChance);
+        float criticalChance = context.AttributeSet.GetAttributeValue(EAttributeType.CriticalChance);
         float random = Random.value * 100f;
         bool isCritical = random < criticalChance;
 
@@ -31,11 +31,11 @@ public class DamageCalculator
 
         if (damageInfo.DamageType == EDamageType.Physical)
         {
-            defanse = victimAS.GetAttributeValue(EAttributeType.physicalDefensePower);
+            defanse = victimAS.GetAttributeValue(EAttributeType.PhysicalDefensePower);
         }
         if (damageInfo.DamageType == EDamageType.Magic)
         {
-            defanse = victimAS.GetAttributeValue(EAttributeType.magicDefensePower);
+            defanse = victimAS.GetAttributeValue(EAttributeType.MagicDefensePower);
         }
 
         if (defanse > 0)

@@ -11,7 +11,7 @@ public class UI_BattleOverlay : MonoBehaviour
     private VisualElement buffArea;
     private Label dayText;
 
-    private Dictionary<int, Image> activeBuffIcons = new();
+    private Dictionary<EAbilityId, Image> activeBuffIcons = new();
     private const string buffIconUSSName = "buff-image";
 
     private void Awake()
@@ -60,7 +60,7 @@ public class UI_BattleOverlay : MonoBehaviour
         icon.style.display = DisplayStyle.Flex;
     }
 
-    private void RemoveBuffIcon(int id)
+    private void RemoveBuffIcon(EAbilityId id)
     {
         if (activeBuffIcons.TryGetValue(id, out var icon))
             icon.style.display = DisplayStyle.None;

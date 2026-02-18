@@ -32,24 +32,24 @@ public class UI_DetailInfo : MonoBehaviour
 
         statLabels = new Dictionary<EAttributeType, Label>
         {
-            { EAttributeType.physicalAttackPower,        root.Q<Label>("Text_PAttackPower") },
-            { EAttributeType.magicAttackPower,    root.Q<Label>("Text_MAttakcPower") },
-            { EAttributeType.physicalDefensePower, root.Q<Label>("Text_PhysicalDefence") },
-            { EAttributeType.magicDefensePower,    root.Q<Label>("Text_MagicDefence") },
-            { EAttributeType.criticalChance,  root.Q<Label>("Text_CriticalChance") },
-            { EAttributeType.maxHealth,       root.Q<Label>("Text_MaxHealth") },
-            { EAttributeType.maxMana,         root.Q<Label>("Text_MaxMana") }
+            { EAttributeType.PhysicalAttackPower,        root.Q<Label>("Text_PAttackPower") },
+            { EAttributeType.MagicAttackPower,    root.Q<Label>("Text_MAttakcPower") },
+            { EAttributeType.PhysicalDefensePower, root.Q<Label>("Text_PhysicalDefence") },
+            { EAttributeType.MagicDefensePower,    root.Q<Label>("Text_MagicDefence") },
+            { EAttributeType.CriticalChance,  root.Q<Label>("Text_CriticalChance") },
+            { EAttributeType.MaxHealth,       root.Q<Label>("Text_MaxHealth") },
+            { EAttributeType.MaxMana,         root.Q<Label>("Text_MaxMana") }
         };
 
         statAreaMap = new Dictionary<EAttributeType, VisualElement>
         {
-            { EAttributeType.physicalAttackPower,       root.Q<VisualElement>("DetailTextArea_PA") },
-            { EAttributeType.magicAttackPower,    root.Q<VisualElement>("DetailTextArea_MA") },
-            { EAttributeType.physicalDefensePower, root.Q<VisualElement>("DetailTextArea_PD") },
-            { EAttributeType.magicDefensePower,    root.Q<VisualElement>("DetailTextArea_MD") },
-            { EAttributeType.criticalChance,  root.Q<VisualElement>("DetailTextArea_CC") },
-            { EAttributeType.maxHealth,       root.Q<VisualElement>("DetailTextArea_MH") },
-            { EAttributeType.maxMana,       root.Q<VisualElement>("DetailTextArea_MM") },
+            { EAttributeType.PhysicalAttackPower,       root.Q<VisualElement>("DetailTextArea_PA") },
+            { EAttributeType.MagicAttackPower,    root.Q<VisualElement>("DetailTextArea_MA") },
+            { EAttributeType.PhysicalDefensePower, root.Q<VisualElement>("DetailTextArea_PD") },
+            { EAttributeType.MagicDefensePower,    root.Q<VisualElement>("DetailTextArea_MD") },
+            { EAttributeType.CriticalChance,  root.Q<VisualElement>("DetailTextArea_CC") },
+            { EAttributeType.MaxHealth,       root.Q<VisualElement>("DetailTextArea_MH") },
+            { EAttributeType.MaxMana,       root.Q<VisualElement>("DetailTextArea_MM") },
         };
 
         if (attributeInfoSO) attributeInfoSO.Init();

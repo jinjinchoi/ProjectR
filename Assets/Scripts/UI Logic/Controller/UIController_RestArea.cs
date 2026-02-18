@@ -1,5 +1,3 @@
-using System.Diagnostics;
-
 public class UIController_RestArea : BaseCharacterUIController
 {
     private AttributeGrowthCalculator growthCalculator;
@@ -23,8 +21,8 @@ public class UIController_RestArea : BaseCharacterUIController
     {
         if (abilitySystem == null) return 0f;
 
-        float currentHealth = abilitySystem.AttributeSet.GetAttributeValue(EAttributeType.currentHealth);
-        float maxHealth = abilitySystem.AttributeSet.GetAttributeValue(EAttributeType.maxHealth);
+        float currentHealth = abilitySystem.AttributeSet.GetAttributeValue(EAttributeType.CurrentHealth);
+        float maxHealth = abilitySystem.AttributeSet.GetAttributeValue(EAttributeType.MaxHealth);
 
         return currentHealth / maxHealth;
     }
@@ -36,7 +34,7 @@ public class UIController_RestArea : BaseCharacterUIController
 
     public float GetUpgradeCost()
     {
-        float maxHealth = abilitySystem.AttributeSet.GetAttributeValue(EAttributeType.maxHealth);
+        float maxHealth = abilitySystem.AttributeSet.GetAttributeValue(EAttributeType.MaxHealth);
         return growthCalculator.CalculateCost(maxHealth);
     }
 
@@ -44,17 +42,18 @@ public class UIController_RestArea : BaseCharacterUIController
     {
         return attribute switch
         {
-            EAttributeType.strength => growthCalculator.strPoint,
-            EAttributeType.dexterity => growthCalculator.dexPoint,
-            EAttributeType.intelligence => growthCalculator.intelliPoint,
-            EAttributeType.vitality => growthCalculator.vitalPoint,
+            EAttributeType.Strength => growthCalculator.StrPoint,
+            EAttributeType.Dexterity => growthCalculator.DexPoint,
+            EAttributeType.Intelligence => growthCalculator.IntelliPoint,
+            EAttributeType.Vitality => growthCalculator.VitalPoint,
+            EAttributeType.SkillPoint => growthCalculator.SkilPoint,
             _ => 0,
         };
     }
 
     public float GetRelaxValue()
     {
-        float maxHealth = abilitySystem.AttributeSet.GetAttributeValue(EAttributeType.maxHealth);
+        float maxHealth = abilitySystem.AttributeSet.GetAttributeValue(EAttributeType.MaxHealth);
         return growthCalculator.CalculateRelaxPoint(maxHealth);
     }
 
@@ -69,23 +68,40 @@ public class UIController_RestArea : BaseCharacterUIController
                 operation = EModifierOp.Add,
                 value = GetUpgradeValue(attribute)
             };
-
             abilitySystem.ApplyModifier(upgradeModifier);
+
 
             FAttributeModifier costModifier = new()
             {
-                attributeType = EAttributeType.incommingDamage,
+                attributeType = EAttributeType.IncommingDamage,
                 policy = EModifierPolicy.Instant,
                 operation = EModifierOp.Add,
                 value = GetUpgradeCost()
             };
-
             abilitySystem.ApplyModifier(costModifier);
+
+
+            FAttributeModifier skillPointModifier = new()
+            {
+                attributeType = EAttributeType.SkillPoint,
+                policy = EModifierPolicy.Instant,
+                operation = EModifierOp.Add,
+                value = GetUpgradeValue(EAttributeType.SkillPoint)
+            };
+            abilitySystem.ApplyModifier(skillPointModifier);
+
+            DebugHelper.Log(
+                 $"{attribute} +{upgradeModifier.value}, " +
+                 $"SP: +{skillPointModifier.value}, " +
+                 $"Cost: {costModifier.value}"
+             );
+
             PoolingManager.Instance.ActivateEffect(EEffectType.Healing, abilitySystem.Owner.Transform.position);
         }
         else
         {
             abilitySystem.Owner.Anim.SetTrigger("Hit");
+            DebugHelper.Log($"Failed to upgrade {attribute}.");
         }
 
         growthCalculator.RecalculateUpgradePoint();
@@ -96,13 +112,15 @@ public class UIController_RestArea : BaseCharacterUIController
     {
         FAttributeModifier modifier = new()
         {
-            attributeType = EAttributeType.currentHealth,
+            attributeType = EAttributeType.CurrentHealth,
             policy = EModifierPolicy.Instant,
             operation = EModifierOp.Add,
             value = GetRelaxValue()
         };
 
         abilitySystem.ApplyModifier(modifier);
+
+        DebugHelper.Log($"Health +{modifier.value}");
 
         PoolingManager.Instance.ActivateEffect(EEffectType.Healing, abilitySystem.Owner.Transform.position);
         growthCalculator.RecalculateUpgradePoint();

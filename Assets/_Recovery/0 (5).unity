@@ -493,7 +493,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99b416a110670ab4995d4b29bf3f3db2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UI_SkillWindow
-  skillInWidgetTemplate: {fileID: 9197481963319205126, guid: f7b97dca85516e742bfc0444cee4a04a, type: 3}
+  skillInWidgetTemplate: {fileID: 0}
 --- !u!114 &749949513
 MonoBehaviour:
   m_ObjectHideFlags: 0

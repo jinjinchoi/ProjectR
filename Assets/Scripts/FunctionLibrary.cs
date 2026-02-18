@@ -6,46 +6,46 @@ public static class FunctionLibrary
     {
         switch (type)
         {
-            case EAttributeType.strength:
+            case EAttributeType.Strength:
                 return "힘";
 
-            case EAttributeType.dexterity:
+            case EAttributeType.Dexterity:
                 return "민첩";
 
-            case EAttributeType.intelligence:
+            case EAttributeType.Intelligence:
                 return "지능";
 
-            case EAttributeType.vitality:
+            case EAttributeType.Vitality:
                 return "활력";
 
-            case EAttributeType.physicalAttackPower:
+            case EAttributeType.PhysicalAttackPower:
                 return "물리 공격력";
 
-            case EAttributeType.magicAttackPower:
+            case EAttributeType.MagicAttackPower:
                 return "마법 공격력";
 
-            case EAttributeType.physicalDefensePower:
+            case EAttributeType.PhysicalDefensePower:
                 return "물리 방어력";
                 
-            case EAttributeType.magicDefensePower:
+            case EAttributeType.MagicDefensePower:
                 return "마법 방어력";
                 
-            case EAttributeType.criticalChance:
+            case EAttributeType.CriticalChance:
                 return "치명타 확률";
 
-            case EAttributeType.maxHealth:
+            case EAttributeType.MaxHealth:
                 return "최대 체력";
                 
-            case EAttributeType.maxMana:
+            case EAttributeType.MaxMana:
                 return "최대 마력";
 
-            case EAttributeType.currentHealth:
+            case EAttributeType.CurrentHealth:
                 return "체력";
                 
-            case EAttributeType.currentMana:
+            case EAttributeType.CurrentMana:
                 return "마력";
                 
-            case EAttributeType.incommingDamage:
+            case EAttributeType.IncommingDamage:
                 return string.Empty;
 
             default:

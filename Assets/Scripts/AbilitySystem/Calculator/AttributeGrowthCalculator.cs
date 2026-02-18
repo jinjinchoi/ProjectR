@@ -2,17 +2,18 @@ using UnityEngine;
 
 public class AttributeGrowthCalculator
 {
-    public int strPoint { get; private set; }
-    public int intelliPoint { get; private set; }
-    public int dexPoint { get; private set; }
-    public int vitalPoint { get; private set; }
-
-    public int skilPoint { get; private set; }
+    public int StrPoint { get; private set; }
+    public int IntelliPoint { get; private set; }
+    public int DexPoint { get; private set; }
+    public int VitalPoint { get; private set; }
+    public int SkilPoint { get; private set; }
 
     private const float GuaranteedHp = 0.8f;
     private const float CostCorrection = 0.2f;
     private const int minUpgradeValue = 3;
     private const int maxUpgradeValue = 10;
+    private const int minSpValue = 1;
+    private const int maxSpValue = 3;
 
     public float CalculateCost(float maxHealth)
     {
@@ -38,16 +39,22 @@ public class AttributeGrowthCalculator
 
     public void RecalculateUpgradePoint()
     {
-        strPoint = CalculateUpgradeValue();
-        intelliPoint = CalculateUpgradeValue();
-        dexPoint = CalculateUpgradeValue();
-        vitalPoint = CalculateUpgradeValue();
+        StrPoint = CalculateUpgradeValue();
+        IntelliPoint = CalculateUpgradeValue();
+        DexPoint = CalculateUpgradeValue();
+        VitalPoint = CalculateUpgradeValue();
 
-        skilPoint = CalculateUpgradeValue();
+        SkilPoint = CalculateSkillValue();
     }
 
     private int CalculateUpgradeValue()
     {
         return Random.Range(minUpgradeValue, maxUpgradeValue);
+    }
+
+    private int CalculateSkillValue()
+    {
+        return Random.Range(minSpValue, maxSpValue);
+
     }
 }

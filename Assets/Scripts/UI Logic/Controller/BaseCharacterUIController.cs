@@ -26,18 +26,18 @@ public abstract class BaseCharacterUIController
 
         OnAttributeValueChanged?.Invoke(attribute, currentValue);
 
-        if (attribute is EAttributeType.currentHealth or EAttributeType.maxHealth)
+        if (attribute is EAttributeType.CurrentHealth or EAttributeType.MaxHealth)
         {
-            float health = abilitySystem.AttributeSet.GetAttributeValue(EAttributeType.currentHealth);
-            float maxHealth = abilitySystem.AttributeSet.GetAttributeValue(EAttributeType.maxHealth);
+            float health = abilitySystem.AttributeSet.GetAttributeValue(EAttributeType.CurrentHealth);
+            float maxHealth = abilitySystem.AttributeSet.GetAttributeValue(EAttributeType.MaxHealth);
 
             OnVitalRatioChanged?.Invoke(true, health / maxHealth);
         }
 
-        if (attribute is EAttributeType.currentMana or EAttributeType.maxMana)
+        if (attribute is EAttributeType.CurrentMana or EAttributeType.MaxMana)
         {
-            float mana = abilitySystem.AttributeSet.GetAttributeValue(EAttributeType.currentMana);
-            float maxMana = abilitySystem.AttributeSet.GetAttributeValue(EAttributeType.maxMana);
+            float mana = abilitySystem.AttributeSet.GetAttributeValue(EAttributeType.CurrentMana);
+            float maxMana = abilitySystem.AttributeSet.GetAttributeValue(EAttributeType.MaxMana);
 
             OnVitalRatioChanged?.Invoke(false, mana / maxMana);
         }

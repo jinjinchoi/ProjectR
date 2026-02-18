@@ -16,6 +16,7 @@ public class UI_RestAreaStatView
     const string vitalUpTextName = "VitalUpText";
     const string relaxTextName = "RelaxText";
     const string dayTextName = "DayText";
+    const string skillPointTextName = "SkillPoint";
     #endregion
 
 
@@ -29,6 +30,7 @@ public class UI_RestAreaStatView
     private Label vitalText;
     private Label successChanceText;
     private Label costText;
+    private Label skillPointText;
 
     private Label strUpText;
     private Label intelliUpText;
@@ -64,6 +66,7 @@ public class UI_RestAreaStatView
         vitalText = root.Q<Label>(vitalTextName);
         successChanceText = root.Q<Label>(successChanceTextName);
         costText = root.Q<Label>(costTextName);
+        skillPointText = root.Q<Label>(skillPointTextName);
 
         strUpText = root.Q<Label>(strUpTextName);
         intelliUpText = root.Q<Label>(intelliUpTextName);
@@ -82,26 +85,28 @@ public class UI_RestAreaStatView
 
     private void InitAttributeText()
     {
-        float str = uiController.GetAttributeValue(EAttributeType.strength);
-        float intelli = uiController.GetAttributeValue(EAttributeType.intelligence);
-        float dex = uiController.GetAttributeValue(EAttributeType.dexterity);
-        float vital = uiController.GetAttributeValue(EAttributeType.vitality);
-        float maxHealth = uiController.GetAttributeValue(EAttributeType.maxHealth);
-        float currentHealth = uiController.GetAttributeValue(EAttributeType.currentHealth);
+        float str = uiController.GetAttributeValue(EAttributeType.Strength);
+        float intelli = uiController.GetAttributeValue(EAttributeType.Intelligence);
+        float dex = uiController.GetAttributeValue(EAttributeType.Dexterity);
+        float vital = uiController.GetAttributeValue(EAttributeType.Vitality);
+        float maxHealth = uiController.GetAttributeValue(EAttributeType.MaxHealth);
+        float currentHealth = uiController.GetAttributeValue(EAttributeType.CurrentHealth);
+        float skillPoint = uiController.GetAttributeValue(EAttributeType.SkillPoint);
 
         strText.text = str.ToString();
         intelliText.text = intelli.ToString();
         dexText.text = dex.ToString();
         vitalText.text = vital.ToString();
+        skillPointText.text = skillPoint.ToString();
     }
     
 
     private void UpdateUpgradeValueText()
     {
-        strUpText.text = uiController.GetUpgradeValue(EAttributeType.strength).ToString();
-        intelliUpText.text = uiController.GetUpgradeValue(EAttributeType.intelligence).ToString();
-        dexUpText.text = uiController.GetUpgradeValue(EAttributeType.dexterity).ToString();
-        vitalUpText.text = uiController.GetUpgradeValue (EAttributeType.vitality).ToString();
+        strUpText.text = uiController.GetUpgradeValue(EAttributeType.Strength).ToString();
+        intelliUpText.text = uiController.GetUpgradeValue(EAttributeType.Intelligence).ToString();
+        dexUpText.text = uiController.GetUpgradeValue(EAttributeType.Dexterity).ToString();
+        vitalUpText.text = uiController.GetUpgradeValue (EAttributeType.Vitality).ToString();
 
         relaxText.text = uiController.GetRelaxValue().ToString();
     }
@@ -116,27 +121,29 @@ public class UI_RestAreaStatView
     {
         switch (attribute)
         {
-            case EAttributeType.strength:
+            case EAttributeType.Strength:
                 strText.text = value.ToString();
                 break;
 
-            case EAttributeType.dexterity:
+            case EAttributeType.Dexterity:
                 dexText.text = value.ToString();
                 break;
 
-            case EAttributeType.intelligence:
+            case EAttributeType.Intelligence:
                 intelliText.text = value.ToString();
                 break;
 
-            case EAttributeType.vitality:
+            case EAttributeType.Vitality:
                 vitalText.text = value.ToString();
+                break;
+
+            case EAttributeType.SkillPoint:
+                skillPointText.text = value.ToString();
                 break;
 
             default:
                 break;
         }
-
-        
     }
 
     private void OnDayChanged(int day)

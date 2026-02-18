@@ -43,10 +43,10 @@ public class UI_RestAreaStateButtons
     {
         if (isBound) return;
 
-        BindUpgradeButton(strButton, EAttributeType.strength);
-        BindUpgradeButton(intelliButton, EAttributeType.intelligence);
-        BindUpgradeButton(dexButton, EAttributeType.dexterity);
-        BindUpgradeButton(vitalButton, EAttributeType.vitality);
+        BindUpgradeButton(strButton, EAttributeType.Strength);
+        BindUpgradeButton(intelliButton, EAttributeType.Intelligence);
+        BindUpgradeButton(dexButton, EAttributeType.Dexterity);
+        BindUpgradeButton(vitalButton, EAttributeType.Vitality);
         relaxButton.clicked += OnRelaxButtonClicked;
 
         isBound = true;

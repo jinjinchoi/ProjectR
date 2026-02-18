@@ -57,26 +57,28 @@ public class AttributeValue
 public enum EAttributeType
 {
     // Primary Attribute
-    strength,
-    dexterity,
-    intelligence,
-    vitality,
+    Strength,
+    Dexterity,
+    Intelligence,
+    Vitality,
 
     // Secondary Attribute
-    physicalAttackPower,
-    magicAttackPower,
-    physicalDefensePower,
-    magicDefensePower,
-    criticalChance,
-    maxHealth,
-    maxMana,
+    PhysicalAttackPower,
+    MagicAttackPower,
+    PhysicalDefensePower,
+    MagicDefensePower,
+    CriticalChance,
+    MaxHealth,
+    MaxMana,
 
     // Vital Attribute
-    currentHealth,
-    currentMana,
+    CurrentHealth,
+    CurrentMana,
 
     // Meta Attribute
-    incommingDamage
+    IncommingDamage,
+
+    SkillPoint
 
 }
 
@@ -130,13 +132,13 @@ public class AttributeSet : IAttributeSet
         calculators.Clear();
         calculators = new Dictionary<EAttributeType, IAttributeCalculator>()
         {
-            { EAttributeType.physicalAttackPower, new PhysicalAttackPowerCalculator() },
-            { EAttributeType.physicalDefensePower, new PhysicalDefensePowerCalculator() },
-            { EAttributeType.magicAttackPower, new MagicAttackPowerCalculator() },
-            { EAttributeType.magicDefensePower, new MagicDefensePowerCalculator() },
-            { EAttributeType.criticalChance, new CriticalChanceCalculator() },
-            { EAttributeType.maxHealth, new MaxHealthChanceCalculator() },
-            { EAttributeType.maxMana, new MaxManaChanceCalculator() },
+            { EAttributeType.PhysicalAttackPower, new PhysicalAttackPowerCalculator() },
+            { EAttributeType.PhysicalDefensePower, new PhysicalDefensePowerCalculator() },
+            { EAttributeType.MagicAttackPower, new MagicAttackPowerCalculator() },
+            { EAttributeType.MagicDefensePower, new MagicDefensePowerCalculator() },
+            { EAttributeType.CriticalChance, new CriticalChanceCalculator() },
+            { EAttributeType.MaxHealth, new MaxHealthChanceCalculator() },
+            { EAttributeType.MaxMana, new MaxManaChanceCalculator() },
         };
 
         // dependencyMap ±¸Á¶:
@@ -239,26 +241,26 @@ public class AttributeSet : IAttributeSet
 
     private void PostAttributeChange(FAttributeModifier modifier)
     {
-        if (modifier.attributeType == EAttributeType.currentHealth)
+        if (modifier.attributeType == EAttributeType.CurrentHealth)
         {
             attributes[modifier.attributeType].baseValue
-                = Mathf.Clamp(attributes[modifier.attributeType].baseValue, 0f, GetAttributeValue(EAttributeType.maxHealth));
+                = Mathf.Clamp(attributes[modifier.attributeType].baseValue, 0f, GetAttributeValue(EAttributeType.MaxHealth));
 
-            Recalculate(EAttributeType.currentHealth);
+            Recalculate(EAttributeType.CurrentHealth);
 
             if (GetAttributeValue(modifier.attributeType) <= 0)
                 OnDaed?.Invoke();
         }
 
-        if (modifier.attributeType == EAttributeType.currentMana)
+        if (modifier.attributeType == EAttributeType.CurrentMana)
         {
             attributes[modifier.attributeType].baseValue
-                = Mathf.Clamp(attributes[modifier.attributeType].baseValue, 0f, GetAttributeValue(EAttributeType.maxMana));
+                = Mathf.Clamp(attributes[modifier.attributeType].baseValue, 0f, GetAttributeValue(EAttributeType.MaxMana));
 
-            Recalculate(EAttributeType.currentMana);
+            Recalculate(EAttributeType.CurrentMana);
         }
 
-        if (modifier.attributeType == EAttributeType.incommingDamage)
+        if (modifier.attributeType == EAttributeType.IncommingDamage)
         {
             HandleIncomingDamage(modifier);
         }
@@ -285,10 +287,10 @@ public class AttributeSet : IAttributeSet
     private void HandleIncomingDamage(FAttributeModifier modifier)
     {
         float localIncomingDamage = modifier.value;
-        SetBaseValue(EAttributeType.incommingDamage, 0);
+        SetBaseValue(EAttributeType.IncommingDamage, 0);
 
         FAttributeModifier healthMod;
-        healthMod.attributeType = EAttributeType.currentHealth;
+        healthMod.attributeType = EAttributeType.CurrentHealth;
         healthMod.value = -localIncomingDamage;
         healthMod.operation = EModifierOp.Add;
         healthMod.policy = EModifierPolicy.Instant;
