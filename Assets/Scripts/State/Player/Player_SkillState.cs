@@ -12,10 +12,9 @@ public class Player_SkillState : PlayerCombatState
 
         aiController.StopOwner();
        
-        Debug.Log($"Activate : {aiController.PendingAbilityId}");
+        Debug.Log($"{aiController.Owner.name} : {aiController.PendingAbilityId}");
         aiController.TryActivateAbilityBy(aiController.PendingAbilityId);
         aiController.PendingAbilityId = EAbilityId.None;
-
     }
 
 }

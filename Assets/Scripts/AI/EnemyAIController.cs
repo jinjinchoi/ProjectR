@@ -3,11 +3,13 @@ using UnityEngine;
 
 public class EnemyAIController : AIController
 {
-    public Enemy_IdleState idleState { get; private set; }
-    public Enemy_DeathState deathState { get; private set; }
-    public Enemy_PatrolState patrolState { get; private set; }
-    public Enemy_AttackState attackState { get; private set; }
-    public Enemy_CombatState combatState { get; private set; }
+    public Enemy_IdleState IdleState { get; private set; }
+    public Enemy_DeathState DeathState { get; private set; }
+    public Enemy_PatrolState PatrolState { get; private set; }
+    public Enemy_AttackState AttackState { get; private set; }
+    public Enemy_CombatState CombatState { get; private set; }
+    public Enemy_RetreatState RetreatState { get; private set; }
+    public Enemy_SkillState SkillState { get; private set; }
     public bool HasTarget => target != null;
 
     [Header("Combat")]
@@ -19,6 +21,7 @@ public class EnemyAIController : AIController
     [SerializeField] private string deathAnimName = "isDead";
     [SerializeField] private string patrolAnimName = "isMoving";
     [SerializeField] private string attackAnimName = "comboAttack";
+    [SerializeField] private string skillTriggerName = "skillActive";
 
     private Coroutine targetLostTimer;
 
@@ -26,18 +29,20 @@ public class EnemyAIController : AIController
     {
         base.Awake();
 
-        deathState = new Enemy_DeathState(this, stateMachine, deathAnimName);
-        idleState = new Enemy_IdleState(this, stateMachine, idleAnimName);
-        patrolState = new Enemy_PatrolState(this, stateMachine, patrolAnimName);
-        combatState = new Enemy_CombatState(this, stateMachine, patrolAnimName);
-        attackState = new Enemy_AttackState(this, stateMachine, attackAnimName);
+        DeathState = new Enemy_DeathState(this, stateMachine, deathAnimName);
+        IdleState = new Enemy_IdleState(this, stateMachine, idleAnimName);
+        PatrolState = new Enemy_PatrolState(this, stateMachine, patrolAnimName);
+        CombatState = new Enemy_CombatState(this, stateMachine, patrolAnimName);
+        AttackState = new Enemy_AttackState(this, stateMachine, attackAnimName);
+        RetreatState = new Enemy_RetreatState(this, stateMachine, patrolAnimName);
+        SkillState = new Enemy_SkillState(this, stateMachine, patrolAnimName, skillTriggerName);
     }
 
     protected override void Start()
     {
         base.Start();
 
-        stateMachine.Initialize(idleState);
+        stateMachine.Initialize(IdleState);
     }
 
     protected override void Update()
@@ -100,10 +105,22 @@ public class EnemyAIController : AIController
     {
         base.OnAbilityEnd(abilityId);
 
-        if (HasTarget)
-            stateMachine.ChangeState(combatState);
+        if (PendingAbilityId != EAbilityId.None)
+        {
+            stateMachine.ChangeState(SkillState);
+        }
+        else if (ShouldRetreat())
+        {
+            stateMachine.ChangeState(RetreatState);
+        }
+        else if (HasTarget)
+        {
+            stateMachine.ChangeState(CombatState);
+        }
         else
-            stateMachine.ChangeState(idleState);
+        {
+            stateMachine.ChangeState(IdleState);
+        }
     }
 
     private void OnHit(FDamageInfo damageInfo)

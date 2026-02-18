@@ -19,13 +19,19 @@ public class Enemy_CombatState : EnemyBaseState
 
         if (!aiController.HasTarget)
         {
-            stateMachine.ChangeState(aiController.idleState);
+            stateMachine.ChangeState(aiController.IdleState);
+            return;
+        }
+
+        if (aiController.CanEnterSkillState(aiController.PendingAbilityId))
+        {
+            stateMachine.ChangeState(aiController.SkillState);
             return;
         }
 
         if (aiController.CanEnterAttackState())
         {
-            stateMachine.ChangeState(aiController.attackState);
+            stateMachine.ChangeState(aiController.AttackState);
             return;
         }
 

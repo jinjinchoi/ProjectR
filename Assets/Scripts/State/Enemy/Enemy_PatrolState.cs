@@ -34,12 +34,12 @@ public class Enemy_PatrolState : EnemyBaseState
         accumulatedTime += Time.deltaTime;
         if (accumulatedTime > patrolTime)
         {
-            stateMachine.ChangeState(aiController.idleState);
+            stateMachine.ChangeState(aiController.IdleState);
         }
 
         if (aiController.HasTarget)
         {
-            stateMachine.ChangeState(aiController.combatState);
+            stateMachine.ChangeState(aiController.CombatState);
         }
     }
 

@@ -31,13 +31,13 @@ public class Enemy_IdleState : EnemyBaseState
 
         if (aiController.HasTarget)
         {
-            stateMachine.ChangeState(aiController.combatState);
+            stateMachine.ChangeState(aiController.CombatState);
         }
 
         accumulatedTime += Time.deltaTime;
         if (accumulatedTime > idleTime)
         {
-            stateMachine.ChangeState(aiController.patrolState);
+            stateMachine.ChangeState(aiController.PatrolState);
         }
     }
 }

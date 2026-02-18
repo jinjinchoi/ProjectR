@@ -13,11 +13,15 @@ public abstract class AIController : MonoBehaviour
     [SerializeField] protected LayerMask hostileLayerMask;
     [Range(0, 1)]
     [SerializeField] protected float skillProbability = 0.25f;
+    [Range(0, 1)]
+    [SerializeField] protected float retreatProbability = 0.4f;
+
 
     public BaseCharacter Owner => owner;
     public EAbilityId PendingAbilityId;
 
     private Coroutine skillStateDecisionCo;
+    bool activate;
 
 
     protected virtual void Awake()
@@ -44,17 +48,19 @@ public abstract class AIController : MonoBehaviour
     protected virtual void OnEnable()
     {
         owner.ASC.OnAbilityEnded += OnAbilityEnd;
+        activate = true;
     }
 
     protected virtual void OnDisable()
     {
         owner.ASC.OnAbilityEnded -= OnAbilityEnd;
         StopCoroutine(skillStateDecisionCo);
+        activate = false;
     }
 
     private IEnumerator AttackDecisionLoop()
     {
-        while (true)
+        while (activate)
         {
             if (PendingAbilityId == EAbilityId.None)
             {
@@ -72,9 +78,20 @@ public abstract class AIController : MonoBehaviour
         }
     }
 
+    protected bool ShouldRetreat()
+    {
+        return Random.value < retreatProbability;
+    }
+
     public void MovoToTarget()
     {
         owner.SetVelocity(owner.MoveSpeed * GetDirectionToTarget(), owner.Rb.linearVelocity.y);
+    }
+
+    public void Retreat()
+    {
+        int dir = -GetDirectionToTarget();
+        owner.SetVelocity(owner.MoveSpeed * dir, owner.Rb.linearVelocity.y);
     }
 
     private int GetDirectionToTarget()

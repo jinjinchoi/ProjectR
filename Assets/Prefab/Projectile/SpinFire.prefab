@@ -76,6 +76,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TimedProjectile
   speed: 5
   lifeTime: 5
+  hasDestroyAnim: 0
   canMultiHit: 0
 --- !u!58 &5220086916636267043
 CircleCollider2D:

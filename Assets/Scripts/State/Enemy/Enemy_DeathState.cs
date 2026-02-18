@@ -11,6 +11,6 @@ public class Enemy_DeathState : EnemyBaseState
         base.Update();
 
         if (!aiController.Owner.IsDead)
-            stateMachine.ChangeState(aiController.idleState);
+            stateMachine.ChangeState(aiController.IdleState);
     }
 }

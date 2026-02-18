@@ -10,8 +10,8 @@ public class EnemyBaseState : BaseState<EnemyAIController>
     {
         base.Update();
 
-        if (aiController.Owner.IsDead && stateMachine.CurrentState != aiController.deathState)
-            stateMachine.ChangeState(aiController.deathState);
+        if (aiController.Owner.IsDead && stateMachine.CurrentState != aiController.DeathState)
+            stateMachine.ChangeState(aiController.DeathState);
     }
 
 }

@@ -20,7 +20,7 @@ public class Player_MovementState : PlayerBaseState
             return;
         }
 
-        if (aiController.PendingAbilityId != EAbilityId.None && aiController.CanEnterSkillState(aiController.PendingAbilityId))
+        if (aiController.CanEnterSkillState(aiController.PendingAbilityId))
         {
             stateMachine.ChangeState(aiController.skillState);
             return;
