@@ -1067,11 +1067,12 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   attackPoint: {fileID: 0}
+  projectilePoint: {fileID: 0}
   deadLayerName: Dead
   faction: 0
   attributeInfoSO: {fileID: 11400000, guid: 7d8d4af17d14093478379ec5ae67169b, type: 2}
   defaultAbilities:
-  - {fileID: 11400000, guid: 5303c493b02f6414684ca0854bc8e756, type: 2}
+  - {fileID: 11400000, guid: 3900edc2eabc1aa4d89a601b0ca20ff7, type: 2}
   unlockableAbilities:
   - {fileID: 11400000, guid: 9662b78b2f5223548833234cc89be70d, type: 2}
   - {fileID: 11400000, guid: 0602ec0cd85c47348933e46959df27f8, type: 2}

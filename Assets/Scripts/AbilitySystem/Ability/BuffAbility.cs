@@ -14,7 +14,7 @@ public class BuffAbility : AbilityLogicBase
     {
         base.ActivateAbility(spec, context);
 
-        if (spec.abilityData is not BuffAbilityDataSO buffData)
+        if (spec.abilityData is not BuffAbilitySO buffData)
         {
             DebugHelper.LogWarning("Invalid SO type Detected");
             context.EndAbility(spec);
@@ -51,7 +51,7 @@ public class BuffAbility : AbilityLogicBase
     {
         yield return new WaitForSeconds(duration);
 
-        if (spec.abilityData is not BuffAbilityDataSO buffData) yield break;
+        if (spec.abilityData is not BuffAbilitySO buffData) yield break;
 
         if (buffModHandle.HasValue)
         {

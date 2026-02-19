@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
 public class UI_GameOver : MonoBehaviour
@@ -53,7 +54,7 @@ public class UI_GameOver : MonoBehaviour
 
     private void OnRestartButtonClicked()
     {
-
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     private void OnLoadButtonClicked()

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4df898d454525f41b277f1990deb197, type: 3}
   m_Name: Player - Genesis
   m_EditorClassIdentifier: Assembly-CSharp::Ability_GenesisSO
-  abilityId: 6
+  abilityId: 5
   abilityName: "\uC81C\uB124\uC2DC\uC2A4"
   cooldown: 15
   sp: 15

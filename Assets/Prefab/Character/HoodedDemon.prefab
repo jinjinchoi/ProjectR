@@ -69,6 +69,7 @@ Transform:
   - {fileID: 1953344300967759199}
   - {fileID: 3602851545518194730}
   - {fileID: 8937091402103708018}
+  - {fileID: 403852839695698320}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!70 &2924574011763321019
@@ -155,10 +156,13 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   attackPoint: {fileID: 8937091402103708018}
+  projectilePoint: {fileID: 403852839695698320}
   deadLayerName: Dead
   faction: 2
   attributeInfoSO: {fileID: 11400000, guid: b0105fee95f6bf0459f72c133d372261, type: 2}
-  defaultAbilities: []
+  defaultAbilities:
+  - {fileID: 11400000, guid: 0ccd6c617fe2b3c48a2f2c8139b96f4f, type: 2}
+  - {fileID: 11400000, guid: 90b0c956cd44b52409b49240e34c3456, type: 2}
   secondaryAttributeSO: {fileID: 11400000, guid: e5f1e0f4d350c0843a011bc4a37d4c84, type: 2}
   enemyId: 2
 --- !u!114 &4003654150745635486
@@ -204,8 +208,8 @@ MonoBehaviour:
   hostileLayerMask:
     serializedVersion: 2
     m_Bits: 64
-  skillProbability: 0.25
-  retreatProbability: 0.8
+  skillProbability: 0.6
+  retreatProbability: 0.5
   PendingAbilityId: 0
   detectDistance: 5
   targetDetectTime: 3
@@ -410,3 +414,34 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!1 &8427209685828891318
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 403852839695698320}
+  m_Layer: 7
+  m_Name: projectilePoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &403852839695698320
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8427209685828891318}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 1.1, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3291206701231896017}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

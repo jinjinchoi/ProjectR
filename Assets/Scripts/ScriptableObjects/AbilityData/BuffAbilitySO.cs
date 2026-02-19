@@ -9,7 +9,7 @@ public class BuffUIData
 }
 
 [CreateAssetMenu(menuName = "ASC/Ability/Buff")]
-public class BuffAbilityDataSO : DamageAbilityDataSO
+public class BuffAbilitySO : DamageAbilityDataSO
 {
     [Header("Buff Info")]
     public EAttributeType attribute;

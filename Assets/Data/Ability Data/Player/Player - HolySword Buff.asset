@@ -9,30 +9,30 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d6530e48c7c2b194ab67f0738b946f0f, type: 3}
+  m_Script: {fileID: 11500000, guid: b71f975b76cfbeb42aba4732ac6823fd, type: 3}
   m_Name: Player - HolySword Buff
   m_EditorClassIdentifier: Assembly-CSharp::BuffAbilityDataSO
-  abilityId: 5
-  abilityName: "\uCC9C\uC0C1\uC758 \uAC00\uD638"
+  abilityId: 6
+  abilityName: "\uC2E0\uC131 \uCD95\uBCF5"
   cooldown: 30
-  sp: 10
+  sp: 8
   animBoolName: jumpSkill
   animTag: Skill
-  description: "\uC2E0\uC131\uD55C \uD798\uC744 \uC0AC\uC6A9\uD558\uC5EC \uCE90\uB9AD\uD130\uB97C
-    5\uCD08\uAC04 \uB300\uD3ED \uAC15\uD654\uD558\uC5EC \uD798\uC774 30 \uC99D\uAC00\uD569\uB2C8\uB2E4."
+  description: "\uC2E0\uC131\uD55C \uCD95\uBCF5\uC744 \uBC1B\uC544 \uB2A5\uB825\uCE58\uB97C
+    \uAC15\uD654\uD569\uB2C8\uB2E4. \uD798 30\uC99D\uAC00. \uC9C0\uC18D\uC2DC\uAC04
+    8\uCD08. \uCFE8\uB2E4\uC6B4 30\uCD08."
   icon: {fileID: 21300000, guid: 07133acbe537ba04b9442106dba8bd3a, type: 3}
   damageMultiplier: 100
-  minAttackRange: 20
+  minAttackRange: 1.5
   attackDamageRadius: 1.5
   hostileTargetLayer:
     serializedVersion: 2
-    m_Bits: 128
-  damageType: 2
+    m_Bits: 0
+  damageType: 0
   knockbackPower: {x: 0, y: 0}
   KnockbackDuration: 0.15
-  id: 0
   attribute: 0
   value: 30
-  duration: 5
+  duration: 8
   effectType: 3
-  buffIcon: {fileID: 21300000, guid: c32f6a937fe368c4a9bbeca783d23390, type: 3}
+  buffIcon: {fileID: 21300000, guid: 07133acbe537ba04b9442106dba8bd3a, type: 3}

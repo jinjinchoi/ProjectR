@@ -7,9 +7,9 @@ public enum EAbilityId
     NormalAttack,
     ThunderStrike,
     ChargeAttack,
-    SwordAura,
+    Projectile,
+    AreaStrike,
     HolySwordBuff,
-    Genesis
 }
 
 

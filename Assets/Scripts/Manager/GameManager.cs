@@ -49,13 +49,12 @@ public class GameManager : MonoBehaviour
         }
 
         Instance = this;
-        DontDestroyOnLoad(gameObject);
 
-        CreateManagerClassess();
         enemyAttribtueSO.Init();
         battleEventInfoSO.Init();
+        CreateManagerClassess();
 
-        SceneManager.sceneLoaded += OnSceneLoaded;
+        DontDestroyOnLoad(gameObject);
     }
 
     private void CreateManagerClassess()
@@ -76,7 +75,12 @@ public class GameManager : MonoBehaviour
 
     }
 
-    void OnDestroy()
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDisable()
     {
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
@@ -121,7 +125,7 @@ public class GameManager : MonoBehaviour
         if (battleInfo == null)
         {
             DebugHelper.LogWarning($"Battle info is missing for ID: [{eventManager.CurrentBattleInfoId}]");
-        } // null check
+        }
 
         return battleInfo;
     }

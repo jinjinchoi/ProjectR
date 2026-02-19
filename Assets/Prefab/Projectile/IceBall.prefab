@@ -10,10 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 5722893498577378446}
   - component: {fileID: 3966886170032827300}
-  - component: {fileID: 6063867234622338489}
   - component: {fileID: 5220086916636267043}
+  - component: {fileID: 5186029392686650776}
   m_Layer: 11
-  m_Name: SpinFire
+  m_Name: IceBall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -62,22 +62,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 0
---- !u!114 &6063867234622338489
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 778409421906184241}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f891ea8637cec1341befa65c818c3caf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::TimedProjectile
-  speed: 5
-  lifeTime: 5
-  hasDestroyAnim: 0
-  canMultiHit: 0
 --- !u!58 &5220086916636267043
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -114,6 +98,21 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_Radius: 0.8
+--- !u!114 &5186029392686650776
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 778409421906184241}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 452bff24545f9334983eb064510ddd86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ImpactProjectile
+  speed: 5
+  lifeTime: 5
+  hasDestroyAnim: 1
 --- !u!1 &1925089010437552376
 GameObject:
   m_ObjectHideFlags: 0
@@ -196,7 +195,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 2967124502552339141, guid: 1e5746c80e0ec094fad2bb8b7dc1af8e, type: 3}
+  m_Sprite: {fileID: -1960111932677794457, guid: dfe9dfc7f31c7d7499517cb6d23fdf84, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -216,7 +215,7 @@ Animator:
   m_GameObject: {fileID: 1925089010437552376}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 22100000, guid: b89531d21dc425442a528d2396e8821c, type: 2}
+  m_Controller: {fileID: 22100000, guid: 1cc019706cbf9374fad3ff2547f4d54f, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

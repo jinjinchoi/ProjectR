@@ -8,7 +8,8 @@ public enum EObjectId
     None,
     SwordAura,
     Healing,
-    Thunder
+    Thunder,
+    IceBall
 }
 
 [Serializable]

@@ -10,7 +10,8 @@ public enum EEffectType
     Thunder,
     HolySword,
     HolyPury,
-    Slash
+    Slash,
+    Blood
 }
 
 [System.Serializable]

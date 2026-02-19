@@ -13,6 +13,7 @@ public abstract class ProjectileObjectBase : MonoBehaviour, IPoolableObject
     protected FAttackData attackData;
 
     private IObjectPool<GameObject> pool;
+    protected bool isDestroying;
 
     private Animator anim;
     private Rigidbody2D rb;
@@ -35,6 +36,7 @@ public abstract class ProjectileObjectBase : MonoBehaviour, IPoolableObject
         this.owner = owner;
         this.attackData = attackData;
         transform.position = pos;
+        isDestroying = false;
 
         anim.Play(PlayHash, 0, 0);
         SetVelocity(dir);
@@ -55,6 +57,9 @@ public abstract class ProjectileObjectBase : MonoBehaviour, IPoolableObject
 
     protected void PlayDestroyAnimation()
     {
+        isDestroying = true;
+        rb.linearVelocity = new Vector2(0, 0);
+
         if (hasDestroyAnim)
             anim.SetTrigger("Destroy");
         else

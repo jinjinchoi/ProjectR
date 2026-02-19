@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class SwordAuraAbility : AbilityLogicBase
+public class ProjectileAbility : AbilityLogicBase
 {
     public override bool CanActivate(AbilitySpec spec, IAbilitySystemContext context)
     {
@@ -11,7 +11,7 @@ public class SwordAuraAbility : AbilityLogicBase
     {
         base.ActivateAbility(spec, context);
 
-        if (spec.abilityData is not Ability_SwordAuraSO data)
+        if (spec.abilityData is not Ability_ProjectileSO data)
         {
             context.EndAbility(spec);
             return;
@@ -29,7 +29,7 @@ public class SwordAuraAbility : AbilityLogicBase
         });
     }
 
-    private static void SpawnProjectile(IAbilitySystemContext context, Ability_SwordAuraSO data)
+    private static void SpawnProjectile(IAbilitySystemContext context, Ability_ProjectileSO data)
     {
         GameObject go = PoolingManager.Instance.GetPooledObject(data.projectileId);
         var projectile = go.GetComponent<TimedProjectile>();
@@ -40,7 +40,7 @@ public class SwordAuraAbility : AbilityLogicBase
             damageDataSO = data,
             isKnockbackFromInstigator = true
         };
-        projectile.Init(context.Owner.AttackPoint.position, context.Owner, attackData, context.Owner.FacingDir);
+        projectile.Init(context.Owner.ProjectilePoint.position, context.Owner, attackData, context.Owner.FacingDir);
     }
 
 }

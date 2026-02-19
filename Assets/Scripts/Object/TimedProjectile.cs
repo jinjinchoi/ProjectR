@@ -9,6 +9,8 @@ public class TimedProjectile : ProjectileObjectBase
 
     private void OnTriggerEnter2D(Collider2D other)
     {
+        if (isDestroying) return;
+
         if (!other.TryGetComponent<IAbilityOwner>(out var target))
             return;
 

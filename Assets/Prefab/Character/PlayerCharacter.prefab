@@ -446,17 +446,18 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   attackPoint: {fileID: 7739427252222814885}
+  projectilePoint: {fileID: 7739427252222814885}
   deadLayerName: Dead
   faction: 1
   attributeInfoSO: {fileID: 11400000, guid: 7d8d4af17d14093478379ec5ae67169b, type: 2}
   defaultAbilities:
   - {fileID: 11400000, guid: 3900edc2eabc1aa4d89a601b0ca20ff7, type: 2}
   unlockableAbilities:
-  - {fileID: 11400000, guid: 0602ec0cd85c47348933e46959df27f8, type: 2}
-  - {fileID: 11400000, guid: 09e9064ceda161048be58aed4ddcea5c, type: 2}
-  - {fileID: 11400000, guid: 6ff6e3ff6d097e9428d49487f629371d, type: 2}
-  - {fileID: 11400000, guid: 78fdf12b0412c4048b316ba158944b0a, type: 2}
   - {fileID: 11400000, guid: 9662b78b2f5223548833234cc89be70d, type: 2}
+  - {fileID: 11400000, guid: 6ff6e3ff6d097e9428d49487f629371d, type: 2}
+  - {fileID: 11400000, guid: 09e9064ceda161048be58aed4ddcea5c, type: 2}
+  - {fileID: 11400000, guid: 78fdf12b0412c4048b316ba158944b0a, type: 2}
+  - {fileID: 11400000, guid: 0602ec0cd85c47348933e46959df27f8, type: 2}
 --- !u!114 &2270688756999833385
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -474,7 +475,8 @@ MonoBehaviour:
   hostileLayerMask:
     serializedVersion: 2
     m_Bits: 128
-  skillProbability: 0.25
+  skillProbability: 0.8
+  retreatProbability: 0
   PendingAbilityId: 0
   movementAnimName: isMoving
   fallAnimName: isFalling

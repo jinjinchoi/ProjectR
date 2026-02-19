@@ -9,21 +9,25 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 476fccd58adc3bb4a873eff127d6e9d7, type: 3}
+  m_Script: {fileID: 11500000, guid: f7ae2c95f9abbc14a896473467035283, type: 3}
   m_Name: Pang - NormalAttack
   m_EditorClassIdentifier: Assembly-CSharp::Common_NormalAttackDataSO
   abilityId: 1
-  abilityName: comboattack
+  abilityName: 
   cooldown: 0
+  sp: 0
   animBoolName: comboAttack
   animTag: Attack
+  description: 
+  icon: {fileID: 0}
   damageMultiplier: 100
-  attackDistance: 1.5
-  attackRadius: 1.5
+  minAttackRange: 1.5
+  attackDamageRadius: 1.5
   hostileTargetLayer:
     serializedVersion: 2
     m_Bits: 64
   damageType: 1
+  knockbackPower: {x: 1.2, y: 0.5}
+  KnockbackDuration: 0.15
   maxComboCount: 1
   comboCountName: comboCount
-  knockbackPower: {x: 1, y: 0.5}

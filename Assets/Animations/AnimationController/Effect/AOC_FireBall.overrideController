@@ -6,7 +6,7 @@ AnimatorOverrideController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: AOC_SpinFire
+  m_Name: AOC_FireBall
   m_Controller: {fileID: 9100000, guid: 099f35dfcf15e5a4890bacaa660bb834, type: 2}
   m_Clips:
   - m_OriginalClip: {fileID: 7400000, guid: 66e416bbcb6a77e4cb95d45ee891e0db, type: 2}

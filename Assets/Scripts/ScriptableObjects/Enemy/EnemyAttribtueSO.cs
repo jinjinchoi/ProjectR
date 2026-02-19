@@ -66,6 +66,9 @@ public class EnemyAttribtueSO : ScriptableObject
 
     public EnemyInformation GetEnemyInfo(EEnemyId id)
     {
+        if (enemyInfoMap == null || enemyInfoMap.Count == 0)
+            Init();
+
         enemyInfoMap.TryGetValue(id, out var data);
         return data;
     }

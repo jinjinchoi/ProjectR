@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class GenesisAbility : AbilityLogicBase
+public class AreaStrikeAbility : AbilityLogicBase
 {
     public override bool CanActivate(AbilitySpec spec, IAbilitySystemContext context)
     {
@@ -25,7 +25,7 @@ public class GenesisAbility : AbilityLogicBase
 
     private void PerformAttackWithEffect(AbilitySpec spec, IAbilitySystemContext context)
     {
-        if (spec.abilityData is not Ability_GenesisSO dataSO)
+        if (spec.abilityData is not Ability_AreaStrikeSO dataSO)
             return;
 
         Collider2D[] EnemiesCollider =

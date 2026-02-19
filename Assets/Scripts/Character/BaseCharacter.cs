@@ -13,6 +13,7 @@ public abstract class BaseCharacter : MonoBehaviour, IAbilityOwner, IDamageable
     public Transform Transform => transform;
     public AnimationTrigger AnimationTrigger => animationTrigger;
     public Transform AttackPoint => attackPoint;
+    public Transform ProjectilePoint => projectilePoint;
     public EFaction Faction => faction;
     public int FacingDir => facingDir;
     #endregion
@@ -28,6 +29,7 @@ public abstract class BaseCharacter : MonoBehaviour, IAbilityOwner, IDamageable
 
     [Header("Combat")]
     [SerializeField] private Transform attackPoint;
+    [SerializeField] private Transform projectilePoint;
     [SerializeField] private string deadLayerName = "Dead";
     [SerializeField] protected EFaction faction = EFaction.Neutral;
 
@@ -169,6 +171,9 @@ public abstract class BaseCharacter : MonoBehaviour, IAbilityOwner, IDamageable
             kncokback.x *= dir;
             knockbackCo = StartCoroutine(ExcuteKnockback(kncokback, damageInfo.KnockbackDuration));
         }
+
+        if (showDebug)
+            DebugHelper.Log($"[{gameObject.name}] took [{damageModifier.value}] damage from [{damageInfo.DamageSource.name}]");
     }
 
     private IEnumerator ExcuteKnockback(Vector2 knockback, float duration)

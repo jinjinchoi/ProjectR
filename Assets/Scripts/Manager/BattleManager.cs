@@ -38,7 +38,8 @@ public class BattleManager : MonoBehaviour
             {
                 Transform spawnPoint = spawnPoints[Random.Range(0, spawnPointCount)];
 
-                EnemyCharacter enemy = Instantiate(spawnInfo.Prefab, spawnPoint.transform.position, Quaternion.identity);
+                GameObject obj = Instantiate(spawnInfo.Prefab, spawnPoint.transform.position, Quaternion.identity);
+                var enemy = obj.GetComponent<EnemyCharacter>();
                 enemy.Init(spawnInfo.Level);
                 enemy.CharacterDied += OnEnemyDied;
                 spawnedEnemyCount++;

@@ -11,6 +11,7 @@ public interface IAbilityOwner
     Transform Transform { get; }
     AnimationTrigger AnimationTrigger { get; }
     Transform AttackPoint { get; }
+    Transform ProjectilePoint { get; }
     EFaction Faction { get; }
     int FacingDir { get; }
 }

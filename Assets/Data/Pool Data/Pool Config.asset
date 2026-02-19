@@ -17,3 +17,7 @@ MonoBehaviour:
     prefab: {fileID: 778409421906184241, guid: cf912520c337a6f468ec45bf2928719d, type: 3}
     defaultCapacity: 1
     maxSize: 20
+  - objectId: 4
+    prefab: {fileID: 778409421906184241, guid: c6cb4b1fa06e61d49b823b905e3c178a, type: 3}
+    defaultCapacity: 1
+    maxSize: 20

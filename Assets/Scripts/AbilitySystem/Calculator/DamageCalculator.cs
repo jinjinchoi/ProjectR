@@ -21,6 +21,8 @@ public class DamageCalculator
         float random = Random.value * 100f;
         bool isCritical = random < criticalChance;
 
+        DebugHelper.Log($"[{damageSource.name}] is attempting to deal [{damage}] damage.");
+
         return new FDamageInfo(context.Owner, damageSource, Mathf.Round(damage), damageDataSO.damageType, isCritical, damageDataSO.knockbackPower, damageDataSO.KnockbackDuration);
     }
 

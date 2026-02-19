@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f7ae2c95f9abbc14a896473467035283, type: 3}
-  m_Name: Player - NormalAttack
-  m_EditorClassIdentifier: Assembly-CSharp::Player_NormalAttackDataSO
+  m_Name: MiniDemon - NormalAttack
+  m_EditorClassIdentifier: Assembly-CSharp::Common_NormalAttackDataSO
   abilityId: 1
   abilityName: 
   cooldown: 0
@@ -20,14 +20,14 @@ MonoBehaviour:
   animTag: Attack
   description: 
   icon: {fileID: 0}
-  damageMultiplier: 30
-  minAttackRange: 1.5
+  damageMultiplier: 100
+  minAttackRange: 1.2
   attackDamageRadius: 1.5
   hostileTargetLayer:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 64
   damageType: 1
-  knockbackPower: {x: 1.5, y: 1}
+  knockbackPower: {x: 1, y: 0.5}
   KnockbackDuration: 0.15
-  maxComboCount: 3
+  maxComboCount: 1
   comboCountName: comboCount
