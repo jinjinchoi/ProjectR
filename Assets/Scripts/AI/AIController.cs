@@ -16,7 +16,6 @@ public abstract class AIController : MonoBehaviour
     [Range(0, 1)]
     [SerializeField] protected float retreatProbability = 0.4f;
 
-
     public BaseCharacter Owner => owner;
     public EAbilityId PendingAbilityId;
 
@@ -113,7 +112,7 @@ public abstract class AIController : MonoBehaviour
 
     public bool CanEnterAttackState()
     {
-        if (target == null) return false;
+        if (target == null || !owner.ASC.HasAbility(EAbilityId.NormalAttack)) return false;
 
         return Vector2.Distance(owner.transform.position, target.position) <= attackRange;
     }

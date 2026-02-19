@@ -4,7 +4,7 @@ public enum EAbilityId
 {
     None,
 
-    Common_NormalAttack,
+    NormalAttack,
     ThunderStrike,
     ChargeAttack,
     SwordAura,

@@ -1,34 +1,15 @@
 using System;
+using UnityEngine;
 
-public struct FEnemySecondaryAttribute
-{
-    public int level;
-    public float physicalAttackPower;
-    public float physicalDefensePower;
-    public float magicAttackPower;
-    public float magicDefensePower;
-    public float criticalChance;
-    public float maxHealth;
 
-    public float GetValueByType(EAttributeType attributeType)
-    {
-        return attributeType switch
-        {
-            EAttributeType.PhysicalAttackPower => physicalAttackPower,
-            EAttributeType.MagicAttackPower => magicAttackPower,
-            EAttributeType.PhysicalDefensePower => physicalDefensePower,
-            EAttributeType.MagicDefensePower => magicDefensePower,
-            EAttributeType.CriticalChance => criticalChance,
-            EAttributeType.MaxHealth => maxHealth,
-            _ => 0,
-        };
-    }
-}
 
 
 public class EnemyCharacter : BaseCharacter
 {
     public event Action<FDamageInfo> OnHit;
+
+    [SerializeField] private EnemyAttribtueSO secondaryAttributeSO;
+    [SerializeField] private EEnemyId enemyId;
 
     private readonly EAttributeType[] SecondaryAttributes =
     {
@@ -40,18 +21,29 @@ public class EnemyCharacter : BaseCharacter
         EAttributeType.MaxHealth,
     };
 
-
     protected override void Awake()
     {
         base.Awake();
+
+        if (enemyId == EEnemyId.None)
+        {
+            DebugHelper.LogWarning($"Enemy ID is not set on [{gameObject.name}]");
+        }
+
+        if (secondaryAttributeSO == null)
+        {
+            DebugHelper.LogWarning($"Secondary Attribute SO is not set on [{gameObject.name}]");
+        }
     }
 
-
-    public void Init(FEnemySecondaryAttribute attributeInfo)
+    public void Init(int level)
     {
+        EnemyInformation enemyInfo = secondaryAttributeSO.GetEnemyInfo(enemyId);
+
         foreach (var attribute in SecondaryAttributes)
         {
-            ASC.ApplyModifier(MakeSecondaryAttributeModifier(attribute, attributeInfo));
+            float attributeValue = enemyInfo.GetAttributeValue(attribute, level);
+            ASC.ApplyModifier(MakeSecondaryAttributeModifier(attribute, attributeValue));
         }
         
         FAttributeModifier healthModifier = new()
@@ -64,14 +56,15 @@ public class EnemyCharacter : BaseCharacter
         ASC.ApplyModifier(healthModifier);
     }
 
-    private FAttributeModifier MakeSecondaryAttributeModifier(EAttributeType attribute, FEnemySecondaryAttribute attributeInfo)
+
+    private FAttributeModifier MakeSecondaryAttributeModifier(EAttributeType attribute, float attributeValue)
     {
         return new FAttributeModifier()
         {
             attributeType = attribute,
             policy = EModifierPolicy.Infinite,
             operation = EModifierOp.Override,
-            value = attributeInfo.GetValueByType(attribute)
+            value = attributeValue
         };
     }
 
@@ -82,6 +75,4 @@ public class EnemyCharacter : BaseCharacter
         OnHit?.Invoke(damageInfo);
 
     }
-
-
 }

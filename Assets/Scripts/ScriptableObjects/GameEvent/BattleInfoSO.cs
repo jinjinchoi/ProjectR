@@ -6,9 +6,9 @@ using UnityEngine;
 [System.Serializable]
 public class EnemySpawnInfo
 {
-    public string enemyId;
-    public int level = 1;
-    public int count = 1;
+    public EnemyCharacter Prefab;
+    public int Level = 1;
+    public int Count = 1;
 }
 
 [System.Serializable]

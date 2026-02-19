@@ -16,6 +16,6 @@ MonoBehaviour:
   - eventId: Battle001
     sceneName: SampleScene
     enemieInfos:
-    - enemyId: Pang
-      level: 1
-      count: 1
+    - Prefab: {fileID: 8300590174209088715, guid: 9119c2f06ac50554e8db0152c91cec31, type: 3}
+      Level: 1
+      Count: 1

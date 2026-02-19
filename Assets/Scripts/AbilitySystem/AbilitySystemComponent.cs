@@ -83,9 +83,9 @@ public class AbilitySystemComponent : MonoBehaviour, IAbilitySystemContext
      * activeAbilitySpecs :실행중인 ability map
      * waitingAbilitiesByAnimEvent: anim event를 기다리고 있는 ability map
      */
-    private List<AbilitySpec> abilities = new();
-    private Dictionary<EAbilityId, AbilitySpec> activeAbilitySpecs = new();
-    private Dictionary<EAnimationEventType, List<WaitingAbilityEntry>> waitingAbilitiesByAnimEvent = new();
+    private readonly List<AbilitySpec> abilities = new(); // 최적화 위해서는 Set으로 바꿔야함.
+    private readonly Dictionary<EAbilityId, AbilitySpec> activatedAbilitySpecs = new();
+    private readonly Dictionary<EAnimationEventType, List<WaitingAbilityEntry>> waitingAbilitiesByAnimEvent = new();
 
     private AttributeSet attributeSet;
     private IAbilityOwner owner;
@@ -124,7 +124,7 @@ public class AbilitySystemComponent : MonoBehaviour, IAbilitySystemContext
             return;
         }
 
-        if (activeAbilitySpecs.ContainsKey(abilityId))
+        if (activatedAbilitySpecs.ContainsKey(abilityId))
         {
             return;
         }
@@ -133,7 +133,7 @@ public class AbilitySystemComponent : MonoBehaviour, IAbilitySystemContext
         if (spec != null && spec.ability.CanActivate(spec, this))
         {
             spec.ability.ActivateAbility(spec, this);
-            activeAbilitySpecs.Add(spec.abilityData.abilityId, spec);
+            activatedAbilitySpecs.Add(spec.abilityData.abilityId, spec);
         }
     }
     public void EndAbility(AbilitySpec spec)
@@ -143,12 +143,12 @@ public class AbilitySystemComponent : MonoBehaviour, IAbilitySystemContext
 
     private void EndAbilityBySpec(AbilitySpec spec)
     {
-        if (!activeAbilitySpecs.ContainsKey(spec.abilityData.abilityId))
+        if (!activatedAbilitySpecs.ContainsKey(spec.abilityData.abilityId))
             return;
 
         UnregisterWaitingAbility(spec);
         spec.ability.OnEndAbility(spec, this);
-        activeAbilitySpecs.Remove(spec.abilityData.abilityId);
+        activatedAbilitySpecs.Remove(spec.abilityData.abilityId);
 
         OnAbilityEnded?.Invoke(spec.abilityData.abilityId);
 
@@ -207,22 +207,17 @@ public class AbilitySystemComponent : MonoBehaviour, IAbilitySystemContext
         }
     }
 
-    private void OnAnimationTriggered(EAnimationEventType eventType)
+    public bool HasAbility(EAbilityId id)
     {
-        if (!waitingAbilitiesByAnimEvent.TryGetValue(eventType, out List<WaitingAbilityEntry> list)) return;
-
-        WaitingAbilityEntry[] snapshot = list.ToArray(); // 중간에 remove되는 상황을 방지하기 위해 스냅샷.
-        foreach (WaitingAbilityEntry entry in snapshot)
-        {
-            entry.callback?.Invoke();
-            list.Remove(entry);
-        }
-
-        if (list.Count == 0)
-            waitingAbilitiesByAnimEvent.Remove(eventType);
+        return abilities.Exists(a => a.abilityData.abilityId == id);
     }
 
-
+    /// <summary>
+    /// 랜덤한 어빌리티의 아이디를 반환해주는 함수로 단순히 랜덤 인덱스를 뽑으면 쿨다운이나 실행중일 수 있기 때문에
+    /// 셔플 후 순서대로 실행여부 확인하여 아이디 반환.
+    /// 다만 랜덤 인덱스로 뽑고 유효할때까지 while문 반복하는게 더 좋을 수 있음.
+    /// </summary>
+    /// <returns></returns>
     public EAbilityId GetRandomAbilityId()
     {
         if (abilities.Count == 0)
@@ -232,7 +227,7 @@ public class AbilitySystemComponent : MonoBehaviour, IAbilitySystemContext
         List<int> indices = new();
         for (int i = 0; i < abilities.Count; i++)
         {
-            if (abilities[i].abilityData.abilityId == EAbilityId.Common_NormalAttack)
+            if (abilities[i].abilityData.abilityId == EAbilityId.NormalAttack)
                 continue;
 
             indices.Add(i);
@@ -270,6 +265,21 @@ public class AbilitySystemComponent : MonoBehaviour, IAbilitySystemContext
         }
 
         return null;
+    }
+
+    private void OnAnimationTriggered(EAnimationEventType eventType)
+    {
+        if (!waitingAbilitiesByAnimEvent.TryGetValue(eventType, out List<WaitingAbilityEntry> list)) return;
+
+        WaitingAbilityEntry[] snapshot = list.ToArray(); // 중간에 remove되는 상황을 방지하기 위해 스냅샷.
+        foreach (WaitingAbilityEntry entry in snapshot)
+        {
+            entry.callback?.Invoke();
+            list.Remove(entry);
+        }
+
+        if (list.Count == 0)
+            waitingAbilitiesByAnimEvent.Remove(eventType);
     }
 
 

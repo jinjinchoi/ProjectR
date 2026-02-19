@@ -28,40 +28,22 @@ public class BattleManager : MonoBehaviour
 
     private void SpawnEnemy(List<EnemySpawnInfo> enemySpawnInfoList)
     {
-        EnemyAttribtueSO enemyTable = GameManager.Instance.EnemyAttribtueSO;
         int spawnPointCount = spawnPoints.Length;
 
-        foreach (var spawnInfo in enemySpawnInfoList)
+        foreach (EnemySpawnInfo spawnInfo in enemySpawnInfoList)
         {
-            EnemyInformation enemyInfo = enemyTable.GetEnemyInfo(spawnInfo.enemyId);
-            if (enemyInfo?.Prefab == null) continue;
+            if (spawnInfo?.Prefab == null) continue;
 
-            FEnemySecondaryAttribute attributeInfo = CreateEnemyAttributeInfo(enemyInfo, spawnInfo.level);
-
-            for (int i = 0; i < spawnInfo.count; i++)
+            for (int i = 0; i < spawnInfo.Count; i++)
             {
                 Transform spawnPoint = spawnPoints[Random.Range(0, spawnPointCount)];
 
-                EnemyCharacter enemy = Instantiate(enemyInfo.Prefab, spawnPoint.transform.position, Quaternion.identity);
-                enemy.Init(attributeInfo);
+                EnemyCharacter enemy = Instantiate(spawnInfo.Prefab, spawnPoint.transform.position, Quaternion.identity);
+                enemy.Init(spawnInfo.Level);
                 enemy.CharacterDied += OnEnemyDied;
                 spawnedEnemyCount++;
             }
         }
-    }
-
-    private FEnemySecondaryAttribute CreateEnemyAttributeInfo(EnemyInformation enemyInfo, int enemyLevel)
-    {
-        return new FEnemySecondaryAttribute()
-        {
-            level = enemyLevel,
-            physicalAttackPower = enemyInfo.GetPhysicalAttackPower(enemyLevel),
-            physicalDefensePower = enemyInfo.GetPhysicalDefensePower(enemyLevel),
-            magicAttackPower = enemyInfo.GetMagicAttackPower(enemyLevel),
-            magicDefensePower = enemyInfo.GetMagicDefensePower(enemyLevel),
-            criticalChance = enemyInfo.GetCriticalChance(enemyLevel),
-            maxHealth = enemyInfo.GetMaxHealth(enemyLevel)
-        };
     }
 
     private void OnEnemyDied()

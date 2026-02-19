@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f63087626e57cda45857ad1eb698ac68, type: 3}
-  m_Name: Attribute_Pang
+  m_Name: Attribute_MiniDemon
   m_EditorClassIdentifier: Assembly-CSharp::EnemyAttribtueSO
   enemyInfoList:
-  - enemyId: 1
+  - enemyId: 2
     physicalAttackPowerCurve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
         time: 1
-        value: 40
+        value: 20
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -28,7 +28,7 @@ MonoBehaviour:
         outWeight: 0
       - serializedVersion: 3
         time: 10
-        value: 80
+        value: 60
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -43,7 +43,7 @@ MonoBehaviour:
       m_Curve:
       - serializedVersion: 3
         time: 1
-        value: 5
+        value: 0
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -52,7 +52,7 @@ MonoBehaviour:
         outWeight: 0
       - serializedVersion: 3
         time: 15
-        value: 15
+        value: 5
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -67,7 +67,7 @@ MonoBehaviour:
       m_Curve:
       - serializedVersion: 3
         time: 1
-        value: 12
+        value: 20
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -76,7 +76,7 @@ MonoBehaviour:
         outWeight: 0
       - serializedVersion: 3
         time: 10
-        value: 30
+        value: 60
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -91,7 +91,7 @@ MonoBehaviour:
       m_Curve:
       - serializedVersion: 3
         time: 1
-        value: 5
+        value: 10
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -100,7 +100,7 @@ MonoBehaviour:
         outWeight: 0
       - serializedVersion: 3
         time: 20
-        value: 10
+        value: 20
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -139,7 +139,7 @@ MonoBehaviour:
       m_Curve:
       - serializedVersion: 3
         time: 1
-        value: 450
+        value: 350
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -148,7 +148,7 @@ MonoBehaviour:
         outWeight: 0
       - serializedVersion: 3
         time: 10
-        value: 1800
+        value: 1200
         inSlope: 0
         outSlope: 0
         tangentMode: 0

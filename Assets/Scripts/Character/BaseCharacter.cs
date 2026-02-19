@@ -79,9 +79,9 @@ public abstract class BaseCharacter : MonoBehaviour, IAbilityOwner, IDamageable
 
     void ApplyDefualtAttribute()
     {
-        if (attributeInfoSO == null || defaultAbilities == null)
+        if (attributeInfoSO == null)
         {
-            DebugHelper.LogWarning($"Attribute info or Abilities info is not Set to {gameObject.name}");
+            DebugHelper.LogWarning($"attributeInfoSO is not set on [{gameObject.name}]");
             return;
         }
 
@@ -121,6 +121,12 @@ public abstract class BaseCharacter : MonoBehaviour, IAbilityOwner, IDamageable
 
     void GiveDefaultAbility()
     {
+        if (defaultAbilities.Count == 0)
+        {
+            DebugHelper.LogWarning($"defaultAbilities is not set on [{gameObject.name}]");
+            return;
+        }
+
         foreach (BaseAbilityDataSO attributeInfoSO in defaultAbilities)
         {
             abilitySystemComponent.GiveAbility(attributeInfoSO);
