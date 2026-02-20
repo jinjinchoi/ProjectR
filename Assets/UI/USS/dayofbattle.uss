@@ -1,0 +1,78 @@
+:root {
+}
+
+.panel {
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.59);
+}
+
+.start-text {
+    font-size: 90px;
+    -unity-font-definition: url("project://database/Assets/ExternalAssets/Font/NanumGothic.otf?fileID=12800000&guid=f5dc1d4a67daccb45ad0142353b072ab&type=3#NanumGothic");
+    -unity-font-style: bold-and-italic;
+    -unity-text-align: upper-center;
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    border-left-color: rgba(229, 36, 36, 0);
+    border-right-color: rgba(229, 36, 36, 0);
+    border-top-color: rgba(229, 36, 36, 0);
+    border-bottom-color: rgba(229, 36, 36, 0);
+    -unity-text-outline-width: 2px;
+    -unity-text-outline-color: rgb(255, 255, 255);
+    text-shadow: 0 0 30px rgb(243, 209, 49);
+    translate: 0 0;
+    transition-duration: 0.25s;
+    transition-timing-function: ease-in-out;
+    opacity: 1;
+}
+
+.start-text-hide {
+    font-size: 90px;
+    -unity-font-definition: url("project://database/Assets/ExternalAssets/Font/NanumGothic.otf?fileID=12800000&guid=f5dc1d4a67daccb45ad0142353b072ab&type=3#NanumGothic");
+    -unity-font-style: bold-and-italic;
+    -unity-text-align: upper-center;
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    border-left-color: rgba(229, 36, 36, 0);
+    border-right-color: rgba(229, 36, 36, 0);
+    border-top-color: rgba(229, 36, 36, 0);
+    border-bottom-color: rgba(229, 36, 36, 0);
+    -unity-text-outline-width: 2px;
+    -unity-text-outline-color: rgb(255, 255, 255);
+    text-shadow: 0 0 30px rgb(243, 209, 49);
+    translate: 300px 0;
+    transition-duration: 0s;
+    transition-timing-function: ease;
+    opacity: 0;
+}
+
+.click-text {
+    font-size: 32px;
+    -unity-font-definition: url("project://database/Assets/ExternalAssets/Font/NanumGothic.otf?fileID=12800000&guid=f5dc1d4a67daccb45ad0142353b072ab&type=3#NanumGothic");
+    -unity-font-style: bold;
+    -unity-text-align: upper-center;
+    color: rgb(255, 255, 255);
+    text-shadow: 0 0 5px rgb(198, 202, 0);
+    -unity-text-outline-width: 1px;
+    -unity-text-outline-color: rgb(0, 0, 0);
+    transition-duration: 0.5s;
+    transition-timing-function: ease;
+    opacity: 1;
+}
+
+.click-text-hide {
+    font-size: 32px;
+    -unity-font-definition: url("project://database/Assets/ExternalAssets/Font/NanumGothic.otf?fileID=12800000&guid=f5dc1d4a67daccb45ad0142353b072ab&type=3#NanumGothic");
+    -unity-font-style: bold;
+    -unity-text-align: upper-center;
+    color: rgb(255, 255, 255);
+    text-shadow: 0 0 5px rgb(198, 202, 0);
+    -unity-text-outline-width: 1px;
+    -unity-text-outline-color: rgb(0, 0, 0);
+    opacity: 0;
+}

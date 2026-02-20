@@ -16,11 +16,18 @@ public abstract class AIController : MonoBehaviour
     [Range(0, 1)]
     [SerializeField] protected float retreatProbability = 0.4f;
 
-    public BaseCharacter Owner => owner;
-    public EAbilityId PendingAbilityId;
+    [Header("Movement")]
+    [SerializeField] private LayerMask wallLayer;
+    [SerializeField] private float wallDetectionDistance = 0.5f;
+    private RaycastHit2D[] wallHitResults = new RaycastHit2D[1];
 
     private Coroutine skillStateDecisionCo;
-    bool activate;
+    private bool activate;
+    protected bool isWallDetected;
+
+    public BaseCharacter Owner => owner;
+    public EAbilityId PendingAbilityId { get; private set; }
+    public bool IsWallDetected => isWallDetected;
 
 
     protected virtual void Awake()
@@ -37,6 +44,7 @@ public abstract class AIController : MonoBehaviour
     protected virtual void Update()
     {
         stateMachine.UpdateActiveState();
+        CheckWallAhead();
     }
 
     protected virtual void FixedUpdate()
@@ -55,6 +63,15 @@ public abstract class AIController : MonoBehaviour
         owner.ASC.OnAbilityEnded -= OnAbilityEnd;
         StopCoroutine(skillStateDecisionCo);
         activate = false;
+    }
+
+    private void CheckWallAhead()
+    {
+        Vector2 dir = owner.FacingDir == 1 ? Vector2.right : Vector2.left;
+        Vector2 origin = (Vector2)transform.position + dir * 0.1f;
+
+        int count = Physics2D.RaycastNonAlloc(origin, dir, wallHitResults, wallDetectionDistance, wallLayer);
+        isWallDetected = count > 0;
     }
 
     private IEnumerator AttackDecisionLoop()
@@ -93,6 +110,11 @@ public abstract class AIController : MonoBehaviour
         owner.SetVelocity(owner.MoveSpeed * dir, owner.Rb.linearVelocity.y);
     }
 
+    public void MoveInDirection(int dir)
+    {
+        owner.SetVelocity(owner.MoveSpeed * dir, owner.Rb.linearVelocity.y);
+    }
+
     private int GetDirectionToTarget()
     {
         if (target == null) return 0;
@@ -123,6 +145,11 @@ public abstract class AIController : MonoBehaviour
         int dir = GetDirectionToTarget();
         owner.HandleFlip(dir);
         owner.ASC.TryActivateAbilityById(abilityId);
+    }
+
+    public void ResetPendingAbilityId()
+    {
+        PendingAbilityId = EAbilityId.None;
     }
 
     public bool CanEnterSkillState(EAbilityId abilityId)

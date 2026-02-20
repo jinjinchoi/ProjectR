@@ -477,7 +477,10 @@ MonoBehaviour:
     m_Bits: 128
   skillProbability: 0.8
   retreatProbability: 0
-  PendingAbilityId: 0
+  wallLayer:
+    serializedVersion: 2
+    m_Bits: 8192
+  wallDetectionDistance: 0.5
   movementAnimName: isMoving
   fallAnimName: isFalling
   deathAnimName: isDead

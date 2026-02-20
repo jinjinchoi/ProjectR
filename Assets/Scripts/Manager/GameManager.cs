@@ -22,7 +22,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] private ScenarioEventSO scenarioEventSO;
     [SerializeField] private NormalEventSO normalEventSO;
     [SerializeField] private BattleInfoSO battleEventInfoSO;
-    [SerializeField] private EnemyAttribtueSO enemyAttribtueSO; // 로직 바꿔야 함.
     [Header("Dialogue System")]
     [SerializeField] private NormalDialogueSO normalDialogueSO;
     [SerializeField] private ChoiceDialogueSO choiceDialogueSO;
@@ -32,7 +31,6 @@ public class GameManager : MonoBehaviour
     public NormalDialogueSO NormalDialogueSO => normalDialogueSO;
     public ChoiceDialogueSO ChoiceDialogueSO => choiceDialogueSO;
     public RewardDialogueSO RewardDialogueSO => rewardDialogueSO;
-    public EnemyAttribtueSO EnemyAttribtueSO => enemyAttribtueSO;
     public BattleInfoSO BattleInfoSO => battleEventInfoSO;
     public EventManager EventManager => eventManager;
     public DialogueManager DialogueManager => dialogueManager;
@@ -50,7 +48,6 @@ public class GameManager : MonoBehaviour
 
         Instance = this;
 
-        enemyAttribtueSO.Init();
         battleEventInfoSO.Init();
         CreateManagerClassess();
 

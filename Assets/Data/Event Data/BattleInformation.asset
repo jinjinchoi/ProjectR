@@ -16,6 +16,6 @@ MonoBehaviour:
   - eventId: Battle001
     sceneName: SampleScene
     enemieInfos:
-    - Prefab: {fileID: 1850949304411411149, guid: 9119c2f06ac50554e8db0152c91cec31, type: 3}
+    - Prefab: {fileID: 5844434200682348600, guid: 740a9a8cd2f087c40a6934b611ac5ae5, type: 3}
       Level: 1
       Count: 1

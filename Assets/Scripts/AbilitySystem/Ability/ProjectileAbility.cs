@@ -32,7 +32,7 @@ public class ProjectileAbility : AbilityLogicBase
     private static void SpawnProjectile(IAbilitySystemContext context, Ability_ProjectileSO data)
     {
         GameObject go = PoolingManager.Instance.GetPooledObject(data.projectileId);
-        var projectile = go.GetComponent<TimedProjectile>();
+        var projectile = go.GetComponent<ProjectileObjectBase>();
 
         FAttackData attackData = new()
         {

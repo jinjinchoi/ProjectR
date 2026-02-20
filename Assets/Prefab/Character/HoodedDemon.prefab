@@ -210,7 +210,10 @@ MonoBehaviour:
     m_Bits: 64
   skillProbability: 0.6
   retreatProbability: 0.5
-  PendingAbilityId: 0
+  wallLayer:
+    serializedVersion: 2
+    m_Bits: 8192
+  wallDetectionDistance: 0.5
   detectDistance: 5
   targetDetectTime: 3
   idleAnimName: idle
@@ -366,8 +369,8 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 1994808399
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: -7950320164446702114, guid: 74f51ca90db942140b850f841e84ea91, type: 3}

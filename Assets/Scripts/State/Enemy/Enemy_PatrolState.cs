@@ -35,12 +35,21 @@ public class Enemy_PatrolState : EnemyBaseState
         if (accumulatedTime > patrolTime)
         {
             stateMachine.ChangeState(aiController.IdleState);
+            return;
         }
 
         if (aiController.HasTarget)
         {
             stateMachine.ChangeState(aiController.CombatState);
+            return;
         }
+
+        if (aiController.IsWallDetected)
+        {
+            stateMachine.ChangeState(aiController.IdleState);
+            return;
+        }
+
     }
 
 }

@@ -5,14 +5,16 @@ using UnityEngine;
 
 public class EventManager
 {
+    public event Action OnBattleStarting;
     public string CurrentBattleInfoId { get; private set; }
 
     private Dictionary<int, ScenarioEventInfo> scenarioEventByDay;
     private List<NormalEventInfo> normalEvents;
-    private HashSet<string> triggeredEventSet = new();
+    private readonly HashSet<string> triggeredEventSet = new();
 
     private int lastNormalEventDay = 1;
     private bool canTriggerNormalEvent = true;
+    private string pendingBattleSceneName;
 
     public void Init(List<ScenarioEventInfo> scenarioEvent, List<NormalEventInfo> normalEvent)
     {
@@ -68,10 +70,22 @@ public class EventManager
 
         if (scenerioEvent.type == EScenarioEventType.Battle)
         {
+            OnBattleStarting?.Invoke();
+
             CurrentBattleInfoId = scenerioEvent.battleInfoId;
-            string battleSceneName = GameManager.Instance.GetBattleSceneNameBy(CurrentBattleInfoId);
-            _ = GameManager.Instance.LoadSceneAsync(battleSceneName);
+            pendingBattleSceneName = GameManager.Instance.GetBattleSceneNameBy(CurrentBattleInfoId);
         }
+    }
+
+    public void BattleStart()
+    {
+        if (string.IsNullOrEmpty(pendingBattleSceneName))
+        {
+            DebugHelper.LogWarning("pendingBattleSceneName is null or empty");
+            return;
+        }
+
+        _ = GameManager.Instance.LoadSceneAsync(pendingBattleSceneName);
     }
 
     public bool CanTriggerNormalEvent(int day)

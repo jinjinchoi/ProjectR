@@ -18,8 +18,8 @@ public class Enemy_SkillState : EnemyBaseState
         aiController.Owner.Anim.SetBool(animBoolName, false);
         aiController.Owner.Anim.SetTrigger(animTriggerName);
 
-        Debug.Log($"{aiController.Owner.name} : {aiController.PendingAbilityId}");
+        DebugHelper.Log($"Ability Trigger [{aiController.Owner.name}] -> [{aiController.PendingAbilityId}]");
         aiController.TryActivateAbilityBy(aiController.PendingAbilityId);
-        aiController.PendingAbilityId = EAbilityId.None;
+        aiController.ResetPendingAbilityId();
     }
 }
