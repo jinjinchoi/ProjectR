@@ -1,13 +1,14 @@
 using UnityEngine;
+using UnityEngine.Rendering;
 
 
 public class PlayerAIController : AIController
 {
-    public Player_MovementState movementState { get; private set; }
-    public Player_FallState fallState { get; private set; }
-    public Player_DeathState deathState { get; private set; }
-    public Player_AttackState attackState { get; private set; }
-    public Player_SkillState skillState { get; private set; }
+    public Player_MovementState MovementState { get; private set; }
+    public Player_FallState FallState { get; private set; }
+    public Player_DeathState DeathState { get; private set; }
+    public Player_AttackState AttackState { get; private set; }
+    public Player_SkillState SkillState { get; private set; }
 
     [Header("Anim")]
     [SerializeField] private string movementAnimName = "isMoving";
@@ -20,18 +21,18 @@ public class PlayerAIController : AIController
     {
         base.Awake();
 
-        movementState = new Player_MovementState(this, stateMachine, movementAnimName);
-        fallState = new Player_FallState(this, stateMachine, fallAnimName);
-        deathState = new Player_DeathState(this, stateMachine, deathAnimName);
-        attackState = new Player_AttackState(this, stateMachine, movementAnimName, attackTriggerName);
-        skillState = new Player_SkillState(this, stateMachine, movementAnimName, skillTriggerName);
+        MovementState = new Player_MovementState(this, stateMachine, movementAnimName);
+        FallState = new Player_FallState(this, stateMachine, fallAnimName);
+        DeathState = new Player_DeathState(this, stateMachine, deathAnimName);
+        AttackState = new Player_AttackState(this, stateMachine, movementAnimName, attackTriggerName);
+        SkillState = new Player_SkillState(this, stateMachine, movementAnimName, skillTriggerName);
     }
 
     protected override void Start()
     {
         base.Start();
 
-        stateMachine.Initialize(movementState);
+        stateMachine.Initialize(MovementState);
     }
 
     protected override void Update()
@@ -80,19 +81,25 @@ public class PlayerAIController : AIController
     {
         base.OnAbilityEnd(abilityId);
 
+        if (owner.IsDead && stateMachine.CurrentState != DeathState)
+        {
+            stateMachine.ChangeState(DeathState);
+            return;
+        }
+
         target = FindClosestTargetWithinBox();
 
         if (PendingAbilityId != EAbilityId.None)
         {
-            stateMachine.ChangeState(skillState);
+            stateMachine.ChangeState(SkillState);
         }
         else if (CanEnterAttackState())
         {
-            stateMachine.ChangeState(attackState);
+            stateMachine.ChangeState(AttackState);
         }
         else
         {
-            stateMachine.ChangeState(movementState);
+            stateMachine.ChangeState(MovementState);
         }
     }
 

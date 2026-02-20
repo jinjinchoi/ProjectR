@@ -1,0 +1,9 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/USS/winscreen.uss?fileID=7433441132597879392&amp;guid=89c0398c7e95e274fac99f8dab691663&amp;type=3#winscreen"/>
+    <ui:VisualElement name="Panel" class="panel">
+        <ui:VisualElement name="TextArea" style="flex-grow: 0; width: 60%; height: 50%;">
+            <ui:Label text="승리!" name="TitleText" class="title-text"/>
+            <ui:Label text="아무 키나 누르면 휴식 지역으로 이동합니다." name="GuideText" class="guide-text"/>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

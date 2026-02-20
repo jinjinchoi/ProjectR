@@ -44,10 +44,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d77c1813dd4c654d80f6e88a2ade906, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
+  restAreaSceneName: RestArea
   scenarioEventSO: {fileID: 11400000, guid: a8bf4c7dbd6574d4ba70a7b2b28697ed, type: 2}
   normalEventSO: {fileID: 11400000, guid: 156494203916a8745872e9bb3318617d, type: 2}
   battleEventInfoSO: {fileID: 11400000, guid: 12ece2f27ce21234681999ed657ac5d6, type: 2}
-  enemyAttribtueSO: {fileID: 11400000, guid: 216427000ffe2a24785fb0c10da9329c, type: 2}
   normalDialogueSO: {fileID: 11400000, guid: 793adf9b3059e0b4abf56b58acd93c34, type: 2}
   choiceDialogueSO: {fileID: 11400000, guid: 128bd08bbeb158643bcc594ce0326c71, type: 2}
   rewardDialogueSO: {fileID: 11400000, guid: 5338d12e31eed9f4faa9d082af0db461, type: 2}

@@ -1,10 +1,12 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class BattleManager : MonoBehaviour
 {
+    public static event Action BattleWon; // 게임 매니저에 알려서 승리 이후 로직 담당하게 하는게 좋을 수도 있음.
+
     [SerializeField] private Transform[] spawnPoints;
-    [SerializeField] private string restAreaSceneName = "RestArea";
 
     private int spawnedEnemyCount;
 
@@ -36,7 +38,7 @@ public class BattleManager : MonoBehaviour
 
             for (int i = 0; i < spawnInfo.Count; i++)
             {
-                Transform spawnPoint = spawnPoints[Random.Range(0, spawnPointCount)];
+                Transform spawnPoint = spawnPoints[UnityEngine.Random.Range(0, spawnPointCount)];
 
                 GameObject obj = Instantiate(spawnInfo.Prefab, spawnPoint.transform.position, Quaternion.identity);
                 var enemy = obj.GetComponent<EnemyCharacter>();
@@ -52,7 +54,7 @@ public class BattleManager : MonoBehaviour
         spawnedEnemyCount--;
         if (spawnedEnemyCount == 0)
         {
-            _ = GameManager.Instance.LoadSceneAsync(restAreaSceneName);
+            BattleWon?.Invoke();
         }
     }
 

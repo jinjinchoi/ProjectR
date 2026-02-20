@@ -53,6 +53,7 @@ public class UI_RestAreaMain : MonoBehaviour
     private void Start()
     {
         GameManager.Instance.SceneChangingAsync += HandleSceneLoadingUI;
+        GameManager.Instance.EventManager.OnBattleStarting += HandleBattleStarting;
     }
 
     private Task HandleSceneLoadingUI()
@@ -72,5 +73,10 @@ public class UI_RestAreaMain : MonoBehaviour
     private void OnDialogueFinished()
     {
         root.style.display = DisplayStyle.Flex;
+    }
+
+    private void HandleBattleStarting()
+    {
+        root.style.display = DisplayStyle.None;
     }
 }

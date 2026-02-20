@@ -12,7 +12,7 @@ public class Player_FallState : PlayerBaseState
 
         if (aiController.Owner.IsGrounded)
         {
-            stateMachine.ChangeState(aiController.movementState);
+            stateMachine.ChangeState(aiController.MovementState);
         }
     }
 }

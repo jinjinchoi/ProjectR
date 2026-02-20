@@ -11,6 +11,6 @@ public class Player_DeathState : PlayerBaseState
         base.Update();
 
         if (!aiController.Owner.IsDead)
-            stateMachine.ChangeState(aiController.movementState);
+            stateMachine.ChangeState(aiController.MovementState);
     }
 }

@@ -29,6 +29,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   damageType: 2
-  knockbackPower: {x: 3, y: 0.5}
-  KnockbackDuration: 0.2
+  knockbackPower: {x: 3, y: 1}
+  KnockbackDuration: 0.25
   projectileId: 1

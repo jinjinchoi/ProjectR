@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class EnemyAIController : AIController
 {
@@ -104,6 +105,12 @@ public class EnemyAIController : AIController
     protected override void OnAbilityEnd(EAbilityId abilityId)
     {
         base.OnAbilityEnd(abilityId);
+
+        if (owner.IsDead && stateMachine.CurrentState != DeathState)
+        {
+            stateMachine.ChangeState(DeathState);
+            return;
+        }
 
         if (PendingAbilityId != EAbilityId.None)
         {

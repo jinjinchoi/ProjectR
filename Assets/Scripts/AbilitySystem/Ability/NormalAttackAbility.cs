@@ -6,7 +6,6 @@ public class NormalAttackAbility : AbilityLogicBase
     private Coroutine comboTimerCo;
     private int comboCount = 1;
     
-
     public NormalAttackAbility()
     {
     }
@@ -70,7 +69,7 @@ public class NormalAttackAbility : AbilityLogicBase
 
     private IEnumerator ComboReset()
     {
-        yield return new WaitForSeconds(0.75f);
+        yield return new WaitForSeconds(0.5f);
         comboCount = 1;
     }
 

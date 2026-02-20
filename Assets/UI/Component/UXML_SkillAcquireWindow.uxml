@@ -2,14 +2,14 @@
     <Style src="project://database/Assets/UI/USS/skillSlot.uss?fileID=7433441132597879392&amp;guid=9136df3921f25d842b58d343eefa22a8&amp;type=3#skillSlot"/>
     <ui:VisualElement name="Border" class="bg" style="flex-grow: 1;">
         <ui:VisualElement name="Left" style="flex-grow: 0; aspect-ratio: 1; height: 100%; justify-content: center; align-items: center; width: auto; flex-shrink: 0;">
-            <ui:Image name="Icon" source="project://database/Assets/ExternalAssets/UI/fc767.png?fileID=2800000&amp;guid=f8f7ad1abc554d54d882c54a39aa267b&amp;type=3#fc767" class="skill-icon" style="background-color: rgb(255, 255, 255);"/>
+            <ui:Image name="Icon" source="" class="skill-icon" style="background-color: rgb(255, 255, 255);"/>
         </ui:VisualElement>
         <ui:VisualElement name="Middle" style="flex-grow: 0; height: 100%; width: 100%; flex-shrink: 1;">
             <ui:VisualElement name="TitleArea" style="flex-grow: 0; height: auto; border-bottom-width: 2px; border-left-color: rgb(180, 180, 180); border-right-color: rgb(180, 180, 180); border-top-color: rgb(180, 180, 180); border-bottom-color: rgb(180, 180, 180);">
-                <ui:Label text="신성 폭발" name="SkillName" class="skill-title"/>
+                <ui:Label text="스킬 이름" name="SkillName" class="skill-title"/>
             </ui:VisualElement>
             <ui:VisualElement name="DescriptionArea" style="flex-grow: 1; width: 100%; flex-wrap: wrap; align-items: flex-start; flex-shrink: 1;">
-                <ui:Label text="주변의 모든 적에게 강력한 마법 공격을 가합니다. 피해량 마법 공격력의 150%. 쿨다운 15초." name="Description" class="sklil-description"/>
+                <ui:Label text="스킬 설명." name="Description" class="sklil-description"/>
             </ui:VisualElement>
         </ui:VisualElement>
         <ui:VisualElement name="Right" style="flex-grow: 0; aspect-ratio: 1; height: 100%; flex-shrink: 0; padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px;">

@@ -16,19 +16,19 @@ public class Player_MovementState : PlayerBaseState
 
         if (!aiController.Owner.IsGrounded)
         {
-            stateMachine.ChangeState(aiController.fallState);
+            stateMachine.ChangeState(aiController.FallState);
             return;
         }
 
         if (aiController.CanEnterSkillState(aiController.PendingAbilityId))
         {
-            stateMachine.ChangeState(aiController.skillState);
+            stateMachine.ChangeState(aiController.SkillState);
             return;
         }
 
         if (aiController.CanEnterAttackState())
         {
-            stateMachine.ChangeState(aiController.attackState);
+            stateMachine.ChangeState(aiController.AttackState);
             return;
         }
 

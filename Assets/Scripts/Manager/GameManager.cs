@@ -17,6 +17,8 @@ public class GameManager : MonoBehaviour
     private int day = 0;
     private bool isLoading = false;
 
+    [SerializeField] private string restAreaSceneName = "RestArea";
+
     #region Scriptable Object
     [Header("Event System")]
     [SerializeField] private ScenarioEventSO scenarioEventSO;
@@ -149,6 +151,13 @@ public class GameManager : MonoBehaviour
 
         await SceneManager.LoadSceneAsync(sceneName);
     }
+
+    public void TravelToRestArea()
+    {
+        _ = LoadSceneAsync(restAreaSceneName);
+
+    }
+
 
     public string GetBattleSceneNameBy(string battleId)
     {

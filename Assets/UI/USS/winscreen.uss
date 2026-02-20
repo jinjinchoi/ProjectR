@@ -1,0 +1,50 @@
+:root {
+}
+
+.panel {
+    flex-grow: 1;
+    background-color: rgba(255, 255, 255, 0.39);
+    align-items: center;
+    justify-content: center;
+}
+
+.title-text {
+    font-size: 80px;
+    -unity-font-definition: url("project://database/Assets/ExternalAssets/Font/NanumGothicExtraBold.otf?fileID=12800000&guid=6500ad230e47f5d4a8dc471fe8fa07c6&type=3#NanumGothicExtraBold");
+    -unity-font-style: normal;
+    -unity-text-align: upper-center;
+    -unity-text-outline-width: 3px;
+    -unity-text-outline-color: rgb(255, 255, 255);
+    text-shadow: 0 3px 10px rgb(0, 0, 0);
+    color: rgb(0, 132, 243);
+    transition-duration: 0.5s;
+    transition-timing-function: ease;
+    transition-property: scale;
+}
+
+.title-text-big {
+    scale: 5 5;
+    transition-duration: 0.25s;
+}
+
+.guide-text {
+    font-size: 30px;
+    -unity-font-definition: url("project://database/Assets/ExternalAssets/Font/NanumGothic.otf?fileID=12800000&guid=f5dc1d4a67daccb45ad0142353b072ab&type=3#NanumGothic");
+    -unity-font-style: bold;
+    -unity-text-align: upper-center;
+    -unity-text-outline-width: 0;
+    -unity-text-outline-color: rgb(255, 255, 255);
+    text-shadow: 0 0 10px rgb(255, 255, 255);
+    transition-duration: 1s;
+}
+
+.guide-text-hide {
+    font-size: 30px;
+    -unity-font-definition: url("project://database/Assets/ExternalAssets/Font/NanumGothic.otf?fileID=12800000&guid=f5dc1d4a67daccb45ad0142353b072ab&type=3#NanumGothic");
+    -unity-font-style: bold;
+    -unity-text-align: upper-center;
+    -unity-text-outline-width: 0;
+    -unity-text-outline-color: rgb(255, 255, 255);
+    text-shadow: 0 0 10px rgb(255, 255, 255);
+    opacity: 0;
+}

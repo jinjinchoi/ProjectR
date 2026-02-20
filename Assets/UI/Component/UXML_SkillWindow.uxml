@@ -1,5 +1,4 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <ui:Template name="UXML_SkillAcquireWindow" src="project://database/Assets/UI/Component/UXML_SkillAcquireWindow.uxml?fileID=9197481963319205126&amp;guid=f7b97dca85516e742bfc0444cee4a04a&amp;type=3#UXML_SkillAcquireWindow"/>
     <Style src="project://database/Assets/UI/USS/skillwindow.uss?fileID=7433441132597879392&amp;guid=15e0a7c4449e584498325683decddbcc&amp;type=3#skillwindow"/>
     <Style src="project://database/Assets/UI/USS/skillSlot.uss?fileID=7433441132597879392&amp;guid=9136df3921f25d842b58d343eefa22a8&amp;type=3#skillSlot"/>
     <ui:VisualElement name="Panel" class="panel" style="flex-grow: 1;">
@@ -8,13 +7,11 @@
                 <ui:Label text="Skill" enable-rich-text="true" style="font-size: 35px; -unity-font-style: bold; -unity-font-definition: url(&quot;project://database/Assets/ExternalAssets/Font/NanumGothic.otf?fileID=12800000&amp;guid=f5dc1d4a67daccb45ad0142353b072ab&amp;type=3#NanumGothic&quot;);"/>
                 <ui:VisualElement name="CurrentSPArea" class="currentSP-area">
                     <ui:Label text="현재 SP:" class="currentSP-text"/>
-                    <ui:Label text="999" name="CurrentSP" class="currentSP-text"/>
+                    <ui:Label text="0" name="CurrentSP" class="currentSP-text"/>
                 </ui:VisualElement>
             </ui:VisualElement>
             <ui:VisualElement name="SkillArea" style="flex-grow: 1; padding-top: 10px; padding-right: 10px; padding-bottom: 10px; padding-left: 10px;">
-                <ui:ScrollView name="SkillScroll">
-                    <ui:Instance template="UXML_SkillAcquireWindow"/>
-                </ui:ScrollView>
+                <ui:ScrollView name="SkillScroll"/>
             </ui:VisualElement>
         </ui:VisualElement>
     </ui:VisualElement>

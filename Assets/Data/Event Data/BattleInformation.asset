@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BattleInfoSO
   battleInfoList:
   - eventId: Battle001
-    sceneName: SampleScene
+    sceneName: BattleScene
     enemieInfos:
     - Prefab: {fileID: 5844434200682348600, guid: 740a9a8cd2f087c40a6934b611ac5ae5, type: 3}
       Level: 1
