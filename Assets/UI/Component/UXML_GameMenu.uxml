@@ -5,6 +5,7 @@
             <ui:Label text="메뉴" class="menu-title"/>
             <ui:VisualElement name="ButtonArea" style="flex-grow: 1; justify-content: center; width: 100%; align-self: auto; align-items: center;">
                 <ui:Button text="게임 종료" name="QuitButton" double-click-selects-word="false" triple-click-selects-line="false" selectable="false" focusable="false" class="menu-button"/>
+                <ui:Button text="저장하기" name="SaveButton" double-click-selects-word="false" triple-click-selects-line="false" selectable="false" focusable="false" class="menu-button"/>
                 <ui:Button text="닫기" name="CloseButton" class="menu-button"/>
             </ui:VisualElement>
         </ui:VisualElement>

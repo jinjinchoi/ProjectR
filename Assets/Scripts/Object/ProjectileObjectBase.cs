@@ -50,7 +50,7 @@ public abstract class ProjectileObjectBase : MonoBehaviour, IPoolableObject
         sr.flipX = dir < 0;
     }
 
-    public void OnLifeTimeExpired()
+    public virtual void OnLifeTimeExpired()
     {
         PlayDestroyAnimation();
     }

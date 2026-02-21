@@ -3,7 +3,9 @@ using UnityEngine;
 
 public class TimedProjectile : ProjectileObjectBase
 {
+    // 한번 피해 입힌 대상을 다시 피해 입힐 수 있는지 설정하는 변수.
     [SerializeField] private bool canMultiHit = false;
+    [SerializeField] private EEffectType hitEffect;
 
     private readonly HashSet<IAbilityOwner> hitTargets = new();
 
@@ -27,6 +29,11 @@ public class TimedProjectile : ProjectileObjectBase
             FDamageInfo damageInfo = DamageCalculator.CalculateOutgoingDamage(attackData.context, attackData.damageDataSO, transform);
             damageable.TakeDamage(damageInfo);
         }
+
+        Vector2 contactPoint = other.ClosestPoint(transform.position);
+        if (hitEffect != EEffectType.None)
+            PoolingManager.Instance.ActivateEffect(hitEffect, contactPoint);
+
     }
 
     private void OnTriggerExit2D(Collider2D collision)
@@ -36,5 +43,12 @@ public class TimedProjectile : ProjectileObjectBase
 
         if (!hitTargets.Contains(target) && canMultiHit)
             hitTargets.Remove(target);
+    }
+
+    public override void OnLifeTimeExpired()
+    {
+        base.OnLifeTimeExpired();
+
+        hitTargets.Clear();
     }
 }
