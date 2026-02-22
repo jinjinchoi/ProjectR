@@ -12,12 +12,17 @@ public class GameManager : MonoBehaviour
 
     private EventManager eventManager;
     private DialogueManager dialogueManager;
+    private RuntimeGameState runtimeGameState;
     private SaveManager saveManager;
 
     private int day = 0;
+    private int tomorrow = 1;
     private bool isLoading = false;
 
     [SerializeField] private string restAreaSceneName = "RestArea";
+    [SerializeField] private string mainMenuSceneName = "MainMenu";
+    [SerializeField] private string saveFileName = "SaveFile";
+
 
     #region Scriptable Object
     [Header("Event System")]
@@ -36,6 +41,7 @@ public class GameManager : MonoBehaviour
     public BattleInfoSO BattleInfoSO => battleEventInfoSO;
     public EventManager EventManager => eventManager;
     public DialogueManager DialogueManager => dialogueManager;
+    public RuntimeGameState RuntimeGameState => runtimeGameState;
     public SaveManager SaveManager => saveManager;
     public int CurrentDay => day;
     #endregion
@@ -70,26 +76,24 @@ public class GameManager : MonoBehaviour
             dialogueManager.Init();
         }
 
-        saveManager ??= new SaveManager();
+        runtimeGameState ??= new RuntimeGameState();
+        saveManager ??= new SaveManager(saveFileName);
 
     }
 
     private void OnEnable()
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
+        eventManager.EventFinished += OnEventFinished;
     }
 
     private void OnDisable()
     {
+        if (Instance != this)
+            return;
+
         SceneManager.sceneLoaded -= OnSceneLoaded;
-    }
-
-    public void ResetManager()
-    {
-        day = 0;
-
-        saveManager?.Reset();
-        eventManager?.Reset();
+        eventManager.EventFinished -= OnEventFinished;
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
@@ -97,9 +101,51 @@ public class GameManager : MonoBehaviour
         isLoading = false;
     }
 
+    public void ResetManager()
+    {
+        day = 0;
+
+        runtimeGameState?.Reset();
+        eventManager?.Reset();
+    }
+
+    public void SaveGame()
+    {
+        SaveData data = new()
+        {
+            Day = day,
+            GrowthData = runtimeGameState.CurrentGrowthData,
+            PrimaryAttributeData = runtimeGameState.PlayerData,
+            UnlokcedAbilityIds = runtimeGameState.UnlokcedAbilityIds
+        };
+
+        SaveManager.SaveDataToDisk(data);
+    }
+
+    public void LoadGame()
+    {
+        SaveData data = SaveManager.LoadDataFromDisk();
+        if (data == null)
+        {
+            Debug.LogWarning("No save data found");
+            return;
+        }
+
+        tomorrow = data.Day;
+        runtimeGameState.UpdatePlayerData(data.PrimaryAttributeData, data.UnlokcedAbilityIds);
+        runtimeGameState.LoadGrowthData(data.GrowthData);
+        TravelToRestArea();
+    }
+
+    public void NewGame()
+    {
+        day = 0;
+        TravelToRestArea();
+    }
+
     public void ProcessDay()
     {
-        day++;
+        day = tomorrow;
         DayChanged?.Invoke(day);
 
         if (day == scenarioEventSO.lastDay)
@@ -115,6 +161,15 @@ public class GameManager : MonoBehaviour
         {
             eventManager.ExecuteNormalEvent(day);
         }
+        else
+        {
+            OnEventFinished();
+        }
+    }
+
+    public void OnEventFinished()
+    {
+        tomorrow++;
     }
 
     public BattleEventInfo GetCurrentEventEnemyInfo()
@@ -158,6 +213,11 @@ public class GameManager : MonoBehaviour
 
     }
 
+    public void TravelToMainMenu()
+    {
+        ResetManager();
+        SceneManager.LoadSceneAsync(mainMenuSceneName);
+    }
 
     public string GetBattleSceneNameBy(string battleId)
     {

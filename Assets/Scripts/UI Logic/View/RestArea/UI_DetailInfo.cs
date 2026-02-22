@@ -23,6 +23,7 @@ public class UI_DetailInfo : MonoBehaviour
         var root = GetComponent<UIDocument>().rootVisualElement;
         panel = root.Q<VisualElement>("Panel");
         panel.AddToClassList("panel-close");
+        panel.pickingMode = PickingMode.Ignore;
 
         descriptionText = root.Q<Label>("DetailInfoText");
         descriptionText.text = string.Empty;

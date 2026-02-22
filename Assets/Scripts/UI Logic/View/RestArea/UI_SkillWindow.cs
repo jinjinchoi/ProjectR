@@ -21,6 +21,8 @@ public class UI_SkillWindow : MonoBehaviour
         var root = GetComponent<UIDocument>().rootVisualElement;
         panel = root.Q<VisualElement>("Panel");
         panel.AddToClassList("panel-close");
+        panel.pickingMode = PickingMode.Ignore;
+
         skillScrollView = root.Q<ScrollView>("SkillScroll");
         currentSPText = root.Q<Label>("CurrentSP");
 

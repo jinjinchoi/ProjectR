@@ -6,6 +6,8 @@ using UnityEngine;
 public class EventManager
 {
     public event Action OnBattleStarting;
+    public event Action EventFinished;
+
     public string CurrentBattleInfoId { get; private set; }
 
     private Dictionary<int, ScenarioEventInfo> scenarioEventByDay;
@@ -59,13 +61,13 @@ public class EventManager
         if (scenerioEvent == null)
         {
             DebugHelper.LogWarning("scenerio event not exist");
+            EventFinished?.Invoke();
             return;
         }
 
         if (scenerioEvent.type == EScenarioEventType.Dialogue)
         {
             EventHub.RaiseDialogueRequested(scenerioEvent.dialogueId);
-            return;
         }
 
         if (scenerioEvent.type == EScenarioEventType.Battle)
@@ -75,6 +77,8 @@ public class EventManager
             CurrentBattleInfoId = scenerioEvent.battleInfoId;
             pendingBattleSceneName = GameManager.Instance.GetBattleSceneNameBy(CurrentBattleInfoId);
         }
+
+        EventFinished?.Invoke();
     }
 
     public void BattleStart()
@@ -110,6 +114,7 @@ public class EventManager
         {
             DebugHelper.Log("Available event does not exist.");
             canTriggerNormalEvent = false;
+            EventFinished?.Invoke();
             return;
         }
 
@@ -119,6 +124,8 @@ public class EventManager
             triggeredEventSet.Add(normalEvent.eventId);
         }
         lastNormalEventDay = day;
+        EventFinished?.Invoke();
+
     }
 
     private NormalEventInfo GetRandomNormalEvent()

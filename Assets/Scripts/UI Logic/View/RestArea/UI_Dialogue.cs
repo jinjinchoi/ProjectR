@@ -26,6 +26,7 @@ public class UI_Dialogue : MonoBehaviour
         root = GetComponent<UIDocument>().rootVisualElement;
         root.style.display = DisplayStyle.None;
 
+
         panel = root.Q<VisualElement>("Panel");
         panel.RegisterCallback<MouseDownEvent>(OnPanelMouseClicked);
 

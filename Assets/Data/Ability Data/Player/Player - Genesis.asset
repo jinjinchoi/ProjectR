@@ -29,7 +29,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   damageType: 2
-  knockbackPower: {x: 4, y: 1.5}
-  KnockbackDuration: 0.3
+  knockbackPower: {x: 4, y: 2}
+  KnockbackDuration: 0.35
   effectType: 4
   detectRange: {x: 50, y: 50}

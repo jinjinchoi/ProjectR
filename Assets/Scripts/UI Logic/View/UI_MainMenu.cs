@@ -9,9 +9,6 @@ public class UI_MainMenu : MonoBehaviour
     private Button loadButton;
     private Button exitButton;
 
-    [SerializeField] private string newGameSceneName;
-
-
     private void Awake()
     {
         var root = GetComponent<UIDocument>().rootVisualElement;
@@ -30,17 +27,20 @@ public class UI_MainMenu : MonoBehaviour
     private void Start()
     {
         uiController = new UIController_MainMenu();
-
+        if (!uiController.IsSaveDataExisted())
+        {
+            loadButton.SetEnabled(false);
+        }
     }
 
     private void OnNewGameButtonClicked()
     {
-        uiController.LoadScene(newGameSceneName);
+        GameManager.Instance.NewGame();
     }
 
     private void OnLoadButtonClicked()
     {
-
+        GameManager.Instance.LoadGame();
     }
 
     private void OnExitButtonClicked()

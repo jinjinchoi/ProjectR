@@ -1,14 +1,14 @@
+using System;
+
 public class UIController_RestArea : BaseCharacterUIController
 {
-    private AttributeGrowthCalculator growthCalculator;
+    public event Action UpgradeValueChanged;
 
     public override void Init(IAbilitySystemContext asc)
     {
         base.Init(asc);
-
-        growthCalculator = new AttributeGrowthCalculator();
-        growthCalculator.RecalculateUpgradePoint();
     }
+
 
     public float GetAttributeValue(EAttributeType attributeType)
     {
@@ -29,37 +29,35 @@ public class UIController_RestArea : BaseCharacterUIController
 
     public float GetSuccessChance()
     {
-        return growthCalculator.CalculateSuccessChance(GetHealthPercent()) * 100f;
+        return GameManager.Instance.RuntimeGameState.CurrentGrowthData.SuccessChance * 100f;
     }
 
     public float GetUpgradeCost()
     {
-        float maxHealth = abilitySystem.AttributeSet.GetAttributeValue(EAttributeType.MaxHealth);
-        return growthCalculator.CalculateCost(maxHealth);
+        return GameManager.Instance.RuntimeGameState.CurrentGrowthData.Cost;
     }
 
     public int GetUpgradeValue(EAttributeType attribute)
     {
         return attribute switch
         {
-            EAttributeType.Strength => growthCalculator.StrPoint,
-            EAttributeType.Dexterity => growthCalculator.DexPoint,
-            EAttributeType.Intelligence => growthCalculator.IntelliPoint,
-            EAttributeType.Vitality => growthCalculator.VitalPoint,
-            EAttributeType.SkillPoint => growthCalculator.SkilPoint,
+            EAttributeType.Strength => GameManager.Instance.RuntimeGameState.CurrentGrowthData.StrPoint,
+            EAttributeType.Dexterity => GameManager.Instance.RuntimeGameState.CurrentGrowthData.DexPoint,
+            EAttributeType.Intelligence => GameManager.Instance.RuntimeGameState.CurrentGrowthData.IntelliPoint,
+            EAttributeType.Vitality => GameManager.Instance.RuntimeGameState.CurrentGrowthData.VitalPoint,
+            EAttributeType.SkillPoint => GameManager.Instance.RuntimeGameState.CurrentGrowthData.SkillPoint,
             _ => 0,
         };
     }
 
     public float GetRelaxValue()
     {
-        float maxHealth = abilitySystem.AttributeSet.GetAttributeValue(EAttributeType.MaxHealth);
-        return growthCalculator.CalculateRelaxPoint(maxHealth);
+        return GameManager.Instance.RuntimeGameState.CurrentGrowthData.RelexPoint;
     }
 
     public void UpgaradeAttribute(EAttributeType attribute)
     {
-        if (growthCalculator.IsSuccessUpgrade(GetHealthPercent()))
+        if (GameManager.Instance.RuntimeGameState.GrowthCalculator.IsSuccessUpgrade(GetHealthPercent()))
         {
             FAttributeModifier upgradeModifier = new()
             {
@@ -104,8 +102,7 @@ public class UIController_RestArea : BaseCharacterUIController
             DebugHelper.Log($"Failed to upgrade {attribute}.");
         }
 
-        growthCalculator.RecalculateUpgradePoint();
-        GameManager.Instance.ProcessDay();
+        ProcessDayAfterUpgrade();
     }
 
     public void Relax()
@@ -121,10 +118,18 @@ public class UIController_RestArea : BaseCharacterUIController
         abilitySystem.ApplyModifier(modifier);
 
         DebugHelper.Log($"Health +{modifier.value}");
-
         PoolingManager.Instance.ActivateEffect(EEffectType.Healing, abilitySystem.Owner.Transform.position);
-        growthCalculator.RecalculateUpgradePoint();
-        GameManager.Instance.ProcessDay();
+
+        ProcessDayAfterUpgrade();
     }
 
+    private void ProcessDayAfterUpgrade()
+    {
+        float currentHealth = abilitySystem.AttributeSet.GetAttributeValue(EAttributeType.CurrentHealth);
+        float maxHealth = abilitySystem.AttributeSet.GetAttributeValue(EAttributeType.MaxHealth);
+        GameManager.Instance.RuntimeGameState.GenerateGrowthData(currentHealth, maxHealth);
+
+        UpgradeValueChanged?.Invoke();
+        GameManager.Instance.ProcessDay();
+    }
 }

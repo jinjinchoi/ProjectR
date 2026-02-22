@@ -4,8 +4,6 @@ using UnityEngine.UIElements;
 
 public class UI_GameOver : MonoBehaviour
 {
-    UIController_GameOver uiController;
-
     VisualElement panel;
     Button restartButton;
     Button loadButton;
@@ -13,8 +11,6 @@ public class UI_GameOver : MonoBehaviour
 
     private void Awake()
     {
-        uiController = new UIController_GameOver();
-
         var root = GetComponent<UIDocument>().rootVisualElement;
         root.style.display = DisplayStyle.None;
 
@@ -64,7 +60,7 @@ public class UI_GameOver : MonoBehaviour
 
     private void OnQuiteButtonClicked()
     {
-
+        GameManager.Instance.TravelToMainMenu();
     }
 
 }

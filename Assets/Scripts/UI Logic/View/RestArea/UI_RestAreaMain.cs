@@ -14,7 +14,7 @@ public class UI_RestAreaMain : MonoBehaviour
 
     private VisualElement root;
 
-    private void Awake()
+    private void Start()
     {
         uiController = new UIController_RestArea();
         uiController.Init(GetComponentInParent<IAbilitySystemContext>());
@@ -32,6 +32,9 @@ public class UI_RestAreaMain : MonoBehaviour
 
         healthBarView = new UI_TextHealthBarView(HealthBarUIController, root);
         gameButtons = new UI_RestAreaGameButtons(root);
+
+        GameManager.Instance.SceneChangingAsync += HandleSceneLoadingUI;
+        GameManager.Instance.EventManager.OnBattleStarting += HandleBattleStarting;
     }
 
     private void OnEnable()
@@ -44,16 +47,12 @@ public class UI_RestAreaMain : MonoBehaviour
     {
         EventHub.DialogueRequested -= OnDialogueRequested;
         EventHub.DialogueFinished -= OnDialogueFinished;
-        if (GameManager.Instance) GameManager.Instance.SceneChangingAsync -= HandleSceneLoadingUI;
+        GameManager.Instance.SceneChangingAsync -= HandleSceneLoadingUI;
+        GameManager.Instance.EventManager.OnBattleStarting -= HandleBattleStarting;
+
         statArea?.Dispose();
         healthBarView?.Dispose();
         gameButtons?.Dispose();
-    }
-
-    private void Start()
-    {
-        GameManager.Instance.SceneChangingAsync += HandleSceneLoadingUI;
-        GameManager.Instance.EventManager.OnBattleStarting += HandleBattleStarting;
     }
 
     private Task HandleSceneLoadingUI()

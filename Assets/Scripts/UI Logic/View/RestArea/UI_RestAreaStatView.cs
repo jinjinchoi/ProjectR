@@ -51,12 +51,6 @@ public class UI_RestAreaStatView
         UpdateUpgradeValueText();
         UpdateCostAndChanceText();
     }
-
-    public void Dispose()
-    {
-        uiController.OnAttributeValueChanged -= OnAttributeValueChanged;
-        GameManager.Instance.DayChanged -= OnDayChanged;
-    }
     
     private void InitUIComponents()
     {
@@ -80,8 +74,17 @@ public class UI_RestAreaStatView
     private void RegisterCallbacks()
     {
         uiController.OnAttributeValueChanged += OnAttributeValueChanged;
+        uiController.UpgradeValueChanged += OnUpgradeValueChanged;
         GameManager.Instance.DayChanged += OnDayChanged;
     }
+
+    public void Dispose()
+    {
+        uiController.OnAttributeValueChanged -= OnAttributeValueChanged;
+        uiController.UpgradeValueChanged -= OnUpgradeValueChanged;
+        GameManager.Instance.DayChanged -= OnDayChanged;
+    }
+
 
     private void InitAttributeText()
     {
@@ -149,7 +152,10 @@ public class UI_RestAreaStatView
     private void OnDayChanged(int day)
     {
         dayText.text = day.ToString();
+    }
 
+    private void OnUpgradeValueChanged()
+    {
         UpdateCostAndChanceText();
         UpdateUpgradeValueText();
     }

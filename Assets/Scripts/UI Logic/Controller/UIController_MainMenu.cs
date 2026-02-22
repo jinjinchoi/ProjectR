@@ -2,13 +2,8 @@ using UnityEngine.SceneManagement;
 
 public class UIController_MainMenu
 {
-    public void Init()
+    public bool IsSaveDataExisted()
     {
-        GameManager.Instance.ResetManager();
-    }
-
-    public void LoadScene(string sceneName)
-    {
-        SceneManager.LoadScene(sceneName);
+        return GameManager.Instance.SaveManager.HasSaveFile();
     }
 }

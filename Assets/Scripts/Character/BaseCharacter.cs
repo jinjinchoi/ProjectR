@@ -70,7 +70,6 @@ public abstract class BaseCharacter : MonoBehaviour, IAbilityOwner, IDamageable
         anim = GetComponentInChildren<Animator>();
         damageDealer = GetComponentInChildren<DamageDealer>();
 
-
         originalLayerMask = gameObject.layer;
 
         abilitySystemComponent = GetComponent<AbilitySystemComponent>();

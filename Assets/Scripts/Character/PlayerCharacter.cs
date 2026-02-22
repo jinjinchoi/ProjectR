@@ -26,8 +26,15 @@ public class PlayerCharacter : BaseCharacter
     {
         base.Awake();
         unlockableAbilitiesMap = unlockableAbilities.ToDictionary(e => e.abilityId);
-    }
 
+        if (GameManager.Instance.RuntimeGameState.CurrentGrowthData == null)
+        {
+            float health = ASC.AttributeSet.GetAttributeValue(EAttributeType.MaxHealth);
+            float maxHealth = ASC.AttributeSet.GetAttributeValue(EAttributeType.MaxHealth);
+
+            GameManager.Instance.RuntimeGameState.GenerateGrowthData(health, maxHealth);
+        }
+    }
 
     protected override void Start()
     {
@@ -46,10 +53,14 @@ public class PlayerCharacter : BaseCharacter
 
     private Task SaveBeforeSceneChange()
     {
-        GameManager.Instance.SaveManager.BackupPrimaryData(MakePrimaryAttributeData());
-        GameManager.Instance.SaveManager.unlokcedAbilityIds = unlockedAbilityIdSet.ToList();
+        GameManager.Instance.RuntimeGameState.UpdatePlayerData(MakePrimaryAttributeData(), unlockedAbilityIdSet.ToList());
 
         return Task.CompletedTask;
+    }
+
+    public void SaveDataToRuntimeGameState()
+    {
+        GameManager.Instance.RuntimeGameState.UpdatePlayerData(MakePrimaryAttributeData(), unlockedAbilityIdSet.ToList());
     }
 
     private PrimaryAttributeData MakePrimaryAttributeData()
@@ -64,13 +75,13 @@ public class PlayerCharacter : BaseCharacter
         };
     }
 
-    void ApplySavedPrimaryAttribute()
+    private void ApplySavedPrimaryAttribute()
     {
-        if (GameManager.Instance.SaveManager.PlayerData == null) return;
+        if (GameManager.Instance.RuntimeGameState.PlayerData == null) return;
 
         foreach (var attribute in PrimaryAttributes)
         {
-            ASC.ApplyModifier(MakePrimaryModifier(attribute, GameManager.Instance.SaveManager.PlayerData));
+            ASC.ApplyModifier(MakePrimaryModifier(attribute, GameManager.Instance.RuntimeGameState.PlayerData));
         }
 
         FAttributeModifier healthModifier = new()
@@ -78,7 +89,7 @@ public class PlayerCharacter : BaseCharacter
             attributeType = EAttributeType.CurrentHealth,
             policy = EModifierPolicy.Instant,
             operation = EModifierOp.Override,
-            value = GameManager.Instance.SaveManager.PlayerData.currentHeath
+            value = GameManager.Instance.RuntimeGameState.PlayerData.currentHeath
         };
         ASC.ApplyModifier(healthModifier);
     }
@@ -95,7 +106,7 @@ public class PlayerCharacter : BaseCharacter
     }
     private void GiveUnlockedAbility()
     {
-        var unlickedIdList = GameManager.Instance.SaveManager.unlokcedAbilityIds;
+        var unlickedIdList = GameManager.Instance.RuntimeGameState.UnlokcedAbilityIds;
         unlockedAbilityIdSet = new HashSet<EAbilityId>(unlickedIdList);
 
         foreach (BaseAbilityDataSO abilityData in unlockableAbilities)
