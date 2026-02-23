@@ -86,6 +86,8 @@ public class UI_SkillWindow : MonoBehaviour
             var elemet = CreateSkillWidget(info);
             skillUIMap.Add(info.id, elemet);
             skillScrollView.Add(elemet);
+
+            UpdateWidget(info.id);
         }
     }
 

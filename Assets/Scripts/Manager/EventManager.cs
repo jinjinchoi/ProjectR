@@ -9,10 +9,11 @@ public class EventManager
     public event Action EventFinished;
 
     public string CurrentBattleInfoId { get; private set; }
+    public HashSet<string> TriggeredEventSet => triggeredEventSet;
 
     private Dictionary<int, ScenarioEventInfo> scenarioEventByDay;
     private List<NormalEventInfo> normalEvents;
-    private readonly HashSet<string> triggeredEventSet = new();
+    private HashSet<string> triggeredEventSet = new();
 
     private int lastNormalEventDay = 1;
     private bool canTriggerNormalEvent = true;
@@ -38,6 +39,11 @@ public class EventManager
         canTriggerNormalEvent = true;
         triggeredEventSet.Clear();
         CurrentBattleInfoId = string.Empty;
+    }
+
+    public void RestoreTriggeredEvent(HashSet<string> triggeredEvent)
+    {
+        triggeredEventSet = triggeredEvent;
     }
 
     public bool IsScenarioExist(int day)

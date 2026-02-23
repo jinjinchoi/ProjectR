@@ -104,6 +104,7 @@ public class GameManager : MonoBehaviour
     public void ResetManager()
     {
         day = 0;
+        tomorrow = 1;
 
         runtimeGameState?.Reset();
         eventManager?.Reset();
@@ -116,7 +117,8 @@ public class GameManager : MonoBehaviour
             Day = day,
             GrowthData = runtimeGameState.CurrentGrowthData,
             PrimaryAttributeData = runtimeGameState.PlayerData,
-            UnlokcedAbilityIds = runtimeGameState.UnlokcedAbilityIds
+            UnlokcedAbilityIds = runtimeGameState.UnlokcedAbilityIds,
+            TriggeredEvent = eventManager.TriggeredEventSet.ToList()
         };
 
         SaveManager.SaveDataToDisk(data);
@@ -134,6 +136,7 @@ public class GameManager : MonoBehaviour
         tomorrow = data.Day;
         runtimeGameState.UpdatePlayerData(data.PrimaryAttributeData, data.UnlokcedAbilityIds);
         runtimeGameState.LoadGrowthData(data.GrowthData);
+        eventManager.RestoreTriggeredEvent(data.TriggeredEvent.ToHashSet());
         TravelToRestArea();
     }
 

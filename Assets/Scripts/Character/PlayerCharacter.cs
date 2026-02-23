@@ -106,8 +106,7 @@ public class PlayerCharacter : BaseCharacter
     }
     private void GiveUnlockedAbility()
     {
-        var unlickedIdList = GameManager.Instance.RuntimeGameState.UnlokcedAbilityIds;
-        unlockedAbilityIdSet = new HashSet<EAbilityId>(unlickedIdList);
+        unlockedAbilityIdSet = GameManager.Instance.RuntimeGameState.UnlokcedAbilityIds.ToHashSet();
 
         foreach (BaseAbilityDataSO abilityData in unlockableAbilities)
         {

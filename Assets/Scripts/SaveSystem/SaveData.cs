@@ -9,4 +9,5 @@ public class SaveData
     public AttributeGrowthData GrowthData;
     public List<EAbilityId> UnlokcedAbilityIds;
     public int Day;
+    public List<string> TriggeredEvent;
 }
