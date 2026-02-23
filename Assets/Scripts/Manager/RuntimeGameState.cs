@@ -11,6 +11,7 @@ public class PrimaryAttributeData
     public float intelligence;
     public float vitality;
     public float currentHeath;
+    public float skillPoint;
 
     public float GetValueByType(EAttributeType attribute)
     {
@@ -21,6 +22,7 @@ public class PrimaryAttributeData
             EAttributeType.Intelligence => intelligence,
             EAttributeType.Vitality => vitality,
             EAttributeType.CurrentHealth => currentHeath,
+            EAttributeType.SkillPoint => skillPoint,
             _ => 0
         };
     }

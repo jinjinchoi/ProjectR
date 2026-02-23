@@ -19,3 +19,27 @@ MonoBehaviour:
     - Prefab: {fileID: 5844434200682348600, guid: 740a9a8cd2f087c40a6934b611ac5ae5, type: 3}
       Level: 1
       Count: 1
+  - eventId: Battle002
+    sceneName: BattleScene
+    enemieInfos:
+    - Prefab: {fileID: 5844434200682348600, guid: 740a9a8cd2f087c40a6934b611ac5ae5, type: 3}
+      Level: 1
+      Count: 2
+    - Prefab: {fileID: 5844434200682348600, guid: 740a9a8cd2f087c40a6934b611ac5ae5, type: 3}
+      Level: 2
+      Count: 1
+  - eventId: Battle003
+    sceneName: BattleScene
+    enemieInfos:
+    - Prefab: {fileID: 1850949304411411149, guid: 9119c2f06ac50554e8db0152c91cec31, type: 3}
+      Level: 2
+      Count: 1
+    - Prefab: {fileID: 5844434200682348600, guid: 740a9a8cd2f087c40a6934b611ac5ae5, type: 3}
+      Level: 3
+      Count: 1
+  - eventId: Battle004
+    sceneName: BattleScene
+    enemieInfos:
+    - Prefab: {fileID: 1850949304411411149, guid: 9119c2f06ac50554e8db0152c91cec31, type: 3}
+      Level: 3
+      Count: 1

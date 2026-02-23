@@ -475,7 +475,7 @@ MonoBehaviour:
   hostileLayerMask:
     serializedVersion: 2
     m_Bits: 128
-  skillProbability: 0.8
+  skillProbability: 0.9
   retreatProbability: 0
   wallLayer:
     serializedVersion: 2

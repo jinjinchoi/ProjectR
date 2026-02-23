@@ -105,7 +105,7 @@ public class EventManager
         int gap = day - lastNormalEventDay;
 
         // 하루당 확률 증가량
-        float increasePerDay = 0.05f; // 하루당 +5%
+        float increasePerDay = 0.04f; // 하루당 +4%
         float chance = gap * increasePerDay;
 
         // 최대 확률 제한
@@ -113,6 +113,7 @@ public class EventManager
 
         return UnityEngine.Random.value < chance;
     }
+
     public void ExecuteNormalEvent(int day)
     {
         NormalEventInfo normalEvent = GetRandomNormalEvent();

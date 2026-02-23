@@ -28,6 +28,11 @@ public class UI_DayOfBattle : MonoBehaviour
         GameManager.Instance.EventManager.OnBattleStarting += OnBattleStarting;
     }
 
+    private void OnDisable()
+    {
+        GameManager.Instance.EventManager.OnBattleStarting -= OnBattleStarting;
+    }
+
     void OnBattleStarting()
     {
         root.style.display = DisplayStyle.Flex;

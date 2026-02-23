@@ -13,11 +13,55 @@ MonoBehaviour:
   m_Name: RewardDialogue
   m_EditorClassIdentifier: Assembly-CSharp::RewardDialogueSO
   rewardNodeInfo:
-  - nodeId: Reward001
+  - nodeId: Loss001
     attribute: 0
     reward: -5
-    nextNodeId: Reward002
-  - nodeId: Reward002
+    nextNodeId: Loss002
+  - nodeId: Loss002
+    attribute: 3
+    reward: -3
+    nextNodeId: End
+  - nodeId: Stable001
+    attribute: 11
+    reward: 50
+    nextNodeId: Stable002
+  - nodeId: Stable002
     attribute: 1
+    reward: -8
+    nextNodeId: End
+  - nodeId: Reward001
+    attribute: 2
     reward: 5
+    nextNodeId: End
+  - nodeId: Reward010
+    attribute: 0
+    reward: 15
+    nextNodeId: Reward011
+  - nodeId: Reward011
+    attribute: 3
+    reward: 10
+    nextNodeId: End
+  - nodeId: Reward020
+    attribute: 2
+    reward: 7
+    nextNodeId: Reward021
+  - nodeId: Reward021
+    attribute: 11
+    reward: 77
+    nextNodeId: End
+  - nodeId: SelectReword01
+    attribute: 0
+    reward: 15
+    nextNodeId: SelectReword02
+  - nodeId: SelectReword02
+    attribute: 3
+    reward: 10
+    nextNodeId: Selected010
+  - nodeId: SelectReword10
+    attribute: 2
+    reward: 30
+    nextNodeId: Selected010
+  - nodeId: SelectReword20
+    attribute: 11
+    reward: 20
     nextNodeId: End

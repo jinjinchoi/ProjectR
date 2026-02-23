@@ -59,6 +59,6 @@ public class UI_WinOverlay : MonoBehaviour
     void TravelToRestArea()
     {
         panel.SetEnabled(false);
-        GameManager.Instance.TravelToRestArea();
+        GameManager.Instance.TravelToRestAreaWithSave();
     }
 }

@@ -241,6 +241,7 @@ public class AttributeSet : IAttributeSet
 
     private void PostAttributeChange(FAttributeModifier modifier)
     {
+
         if (modifier.attributeType == EAttributeType.CurrentHealth)
         {
             attributes[modifier.attributeType].baseValue

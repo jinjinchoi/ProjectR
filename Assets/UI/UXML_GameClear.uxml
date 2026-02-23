@@ -1,0 +1,9 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/USS/clear.uss?fileID=7433441132597879392&amp;guid=5b398aa1eb417b444a2536c0b45126d6&amp;type=3#clear"/>
+    <ui:VisualElement name="Panel" class="panel">
+        <ui:VisualElement name="MidArea" style="flex-grow: 0; width: 1000px; height: 600px;">
+            <ui:Label text="Game Clear!!!" name="Title" class="clear-title"/>
+            <ui:Label text="모든 목표를 달성하셨습니다!." name="Description" class="clear-desc"/>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

@@ -14,5 +14,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::NormalEventSO
   NormalEvent:
   - eventId: NormalEvent001
+    dialogueId: Happy001
+    isOnce: 1
+  - eventId: NormalEvent002
+    dialogueId: Happy010
+    isOnce: 1
+  - eventId: NormalEvent003
+    dialogueId: Happy020
+    isOnce: 0
+  - eventId: NormalEvent004
     dialogueId: Upset001
+    isOnce: 1
+  - eventId: NormalEvent005
+    dialogueId: Neutral001
+    isOnce: 0
+  - eventId: NormalEvent006
+    dialogueId: Select001
     isOnce: 1

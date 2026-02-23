@@ -4,11 +4,21 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+public enum EGameStartMode
+{
+    None,
+    NewGame,          // 완전 새 시작
+    LoadGame,         // 세이브 데이터 로드
+    SceneTransition   // 다른 씬에서 넘어옴
+}
+
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
     public event Action<int> DayChanged;
     public event Func<Task> SceneChangingAsync;
+    public event Action GameClear;
+
 
     private EventManager eventManager;
     private DialogueManager dialogueManager;
@@ -18,6 +28,7 @@ public class GameManager : MonoBehaviour
     private int day = 0;
     private int tomorrow = 1;
     private bool isLoading = false;
+    private EGameStartMode startMode;
 
     [SerializeField] private string restAreaSceneName = "RestArea";
     [SerializeField] private string mainMenuSceneName = "MainMenu";
@@ -124,6 +135,13 @@ public class GameManager : MonoBehaviour
         SaveManager.SaveDataToDisk(data);
     }
 
+    public void NewGame()
+    {
+        day = 0;
+        startMode = EGameStartMode.NewGame;
+        TravelToRestArea();
+    }
+
     public void LoadGame()
     {
         SaveData data = SaveManager.LoadDataFromDisk();
@@ -134,16 +152,31 @@ public class GameManager : MonoBehaviour
         }
 
         tomorrow = data.Day;
+        startMode = EGameStartMode.LoadGame;
+
         runtimeGameState.UpdatePlayerData(data.PrimaryAttributeData, data.UnlokcedAbilityIds);
         runtimeGameState.LoadGrowthData(data.GrowthData);
         eventManager.RestoreTriggeredEvent(data.TriggeredEvent.ToHashSet());
         TravelToRestArea();
     }
 
-    public void NewGame()
+    public void OnLoadingFinished()
     {
-        day = 0;
-        TravelToRestArea();
+        switch (startMode)
+        {
+            case EGameStartMode.NewGame:
+            case EGameStartMode.SceneTransition:
+                ProcessDay();
+                break;
+
+            case EGameStartMode.LoadGame:
+                day = tomorrow;
+                DayChanged?.Invoke(day);
+                tomorrow++;
+                break;
+        }
+
+        startMode = EGameStartMode.None;
     }
 
     public void ProcessDay()
@@ -153,8 +186,7 @@ public class GameManager : MonoBehaviour
 
         if (day == scenarioEventSO.lastDay)
         {
-            // game end
-
+            GameClear?.Invoke();
         }
         else if (eventManager.IsScenarioExist(day))
         {
@@ -210,9 +242,15 @@ public class GameManager : MonoBehaviour
         await SceneManager.LoadSceneAsync(sceneName);
     }
 
+    public void TravelToRestAreaWithSave()
+    {
+        startMode = EGameStartMode.SceneTransition;
+        _ = LoadSceneAsync(restAreaSceneName);
+    }
+
     public void TravelToRestArea()
     {
-        _ = LoadSceneAsync(restAreaSceneName);
+        SceneManager.LoadSceneAsync(restAreaSceneName);
 
     }
 

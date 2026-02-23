@@ -34,21 +34,23 @@ public class UI_RestAreaMain : MonoBehaviour
         gameButtons = new UI_RestAreaGameButtons(root);
 
         GameManager.Instance.SceneChangingAsync += HandleSceneLoadingUI;
-        GameManager.Instance.EventManager.OnBattleStarting += HandleBattleStarting;
+        GameManager.Instance.EventManager.OnBattleStarting += HideOverlay;
+        GameManager.Instance.GameClear += HideOverlay;
     }
 
     private void OnEnable()
     {
         EventHub.DialogueRequested += OnDialogueRequested;
-        EventHub.DialogueFinished += OnDialogueFinished;
+        EventHub.DialogueFinished += ShowOverlay;
     }
 
     private void OnDisable()
     {
         EventHub.DialogueRequested -= OnDialogueRequested;
-        EventHub.DialogueFinished -= OnDialogueFinished;
+        EventHub.DialogueFinished -= ShowOverlay;
         GameManager.Instance.SceneChangingAsync -= HandleSceneLoadingUI;
-        GameManager.Instance.EventManager.OnBattleStarting -= HandleBattleStarting;
+        GameManager.Instance.EventManager.OnBattleStarting -= HideOverlay;
+        GameManager.Instance.GameClear -= HideOverlay;
 
         statArea?.Dispose();
         healthBarView?.Dispose();
@@ -69,12 +71,12 @@ public class UI_RestAreaMain : MonoBehaviour
             root.style.display = DisplayStyle.None;
     }
 
-    private void OnDialogueFinished()
+    private void ShowOverlay()
     {
         root.style.display = DisplayStyle.Flex;
     }
 
-    private void HandleBattleStarting()
+    private void HideOverlay()
     {
         root.style.display = DisplayStyle.None;
     }

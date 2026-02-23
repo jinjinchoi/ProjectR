@@ -10,9 +10,9 @@ public enum EScenarioEventType
 [System.Serializable]
 public class ScenarioEventInfo
 {
+    public string eventId;
     public int day;
     public EScenarioEventType type;
-    public string eventId;
     public string dialogueId;
     public string battleInfoId;
     //reward

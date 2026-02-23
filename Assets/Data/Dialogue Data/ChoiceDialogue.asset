@@ -15,9 +15,24 @@ MonoBehaviour:
   choiceDialogueInfo:
   - groupId: ChoiceGroup001
     dialogueId: Choice001
-    choiceText: "\uD798\uC744 \uAC00\uC9C0\uACE0 \uC2F6\uC5B4"
+    choiceText: "\uC544\uBB34\uB798\uB3C4 \uC2DD\uB7C9\uC774 \uC911\uC694\uD558\uC9C0!"
     nextNodeId: Selected001
   - groupId: ChoiceGroup001
     dialogueId: Choice002
-    choiceText: "\uBAA8\uB4E0 \uAC83\uC744 \uB354 \uAC15\uD558\uAC8C \uB9CC\uB4E4\uC790"
+    choiceText: "\uBB50\uB2C8\uBB50\uB2C8\uD574\uB3C4 \uBA38\uB2C8\uAC00 \uCD5C\uACE0
+      \uC544\uB2C8\uACA0\uC5B4?"
     nextNodeId: Selected002
+  - groupId: ChoiceGroup002
+    dialogueId: Choice003
+    choiceText: "\uC774\uC131\uC774\uC57C \uB9D0\uB85C \uC778\uAC04\uC758 \uC9C4\uC815\uD55C
+      \uD798\uC774\uB2E4."
+    nextNodeId: SelectReword01
+  - groupId: ChoiceGroup002
+    dialogueId: Choice004
+    choiceText: "\uAC10\uC131\uC774 \uC5C6\uC73C\uBA74 \uADF8\uAC83\uC5D0 \uBB34\uC2A8
+      \uC758\uBBF8\uAC00 \uC788\uC9C0?"
+    nextNodeId: SelectReword10
+  - groupId: ChoiceGroup002
+    dialogueId: Choice005
+    choiceText: "\uC218\uC0C1\uD55C \uC0AC\uB78C\uC774\uB2E4. \uADF8\uB0E5 \uBB34\uC2DC\uD558\uC790."
+    nextNodeId: SelectReword20

@@ -13,14 +13,39 @@ MonoBehaviour:
   m_Name: ScenarioEvent
   m_EditorClassIdentifier: Assembly-CSharp::ScenarioEventSO
   scenarioEvent:
-  - day: 1
+  - eventId: DialogueScenario001
+    day: 1
     type: 0
-    eventId: ScenarioEvent001
     dialogueId: Normal001
     battleInfoId: 
-  - day: 10
+  - eventId: DialogueScenario002
+    day: 9
+    type: 0
+    dialogueId: ScenarioDialogue002-01
+    battleInfoId: 
+  - eventId: BattleScenario001
+    day: 10
     type: 1
-    eventId: ScenarioEvent002
     dialogueId: 
     battleInfoId: Battle001
-  lastDay: 30
+  - eventId: BattleScenario002
+    day: 20
+    type: 1
+    dialogueId: 
+    battleInfoId: Battle002
+  - eventId: BattleScenario003
+    day: 30
+    type: 1
+    dialogueId: 
+    battleInfoId: Battle003
+  - eventId: DialogueScenario003
+    day: 38
+    type: 0
+    dialogueId: ScenarioDialogue003-01
+    battleInfoId: 
+  - eventId: DialogueScenario003
+    day: 39
+    type: 1
+    dialogueId: 
+    battleInfoId: Battle004
+  lastDay: 40

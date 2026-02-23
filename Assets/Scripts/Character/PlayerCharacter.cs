@@ -41,7 +41,7 @@ public class PlayerCharacter : BaseCharacter
         base.Start();
 
         GameManager.Instance.SceneChangingAsync += SaveBeforeSceneChange;
-        ApplySavedPrimaryAttribute();
+        ApplySavedAttribute();
         GiveUnlockedAbility();
     }
 
@@ -72,10 +72,11 @@ public class PlayerCharacter : BaseCharacter
             intelligence = ASC.AttributeSet.GetAttributeValue(EAttributeType.Intelligence),
             vitality = ASC.AttributeSet.GetAttributeValue(EAttributeType.Vitality),
             currentHeath = ASC.AttributeSet.GetAttributeValue(EAttributeType.CurrentHealth),
+            skillPoint = ASC.AttributeSet.GetAttributeValue(EAttributeType.SkillPoint)
         };
     }
 
-    private void ApplySavedPrimaryAttribute()
+    private void ApplySavedAttribute()
     {
         if (GameManager.Instance.RuntimeGameState.PlayerData == null) return;
 
@@ -92,6 +93,15 @@ public class PlayerCharacter : BaseCharacter
             value = GameManager.Instance.RuntimeGameState.PlayerData.currentHeath
         };
         ASC.ApplyModifier(healthModifier);
+
+        FAttributeModifier spModifier = new()
+        {
+            attributeType = EAttributeType.SkillPoint,
+            policy = EModifierPolicy.Instant,
+            operation = EModifierOp.Override,
+            value = GameManager.Instance.RuntimeGameState.PlayerData.skillPoint
+        };
+        ASC.ApplyModifier(spModifier);
     }
 
     private FAttributeModifier MakePrimaryModifier(EAttributeType attribute, PrimaryAttributeData data)

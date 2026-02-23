@@ -48,7 +48,7 @@ public class UI_Loading : MonoBehaviour
         var root = GetComponent<UIDocument>().rootVisualElement;
         root.style.display = DisplayStyle.None;
 
-        GameManager.Instance.ProcessDay();
+        GameManager.Instance.OnLoadingFinished();
     }
 
 

@@ -22,6 +22,10 @@ public class UI_GameOver : MonoBehaviour
         quiteButton = root.Q<Button>("QuiteButton");
     }
 
+    private void Start()
+    {
+        loadButton.SetEnabled(GameManager.Instance.SaveManager.HasSaveFile());
+    }
 
     private void OnEnable()
     {
@@ -55,7 +59,7 @@ public class UI_GameOver : MonoBehaviour
 
     private void OnLoadButtonClicked()
     {
-
+        GameManager.Instance.LoadGame();
     }
 
     private void OnQuiteButtonClicked()
