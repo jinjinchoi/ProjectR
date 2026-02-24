@@ -204,7 +204,7 @@ public class AbilitySystemComponent : MonoBehaviour, IAbilitySystemContext
         }
         else
         {
-            return attributeSet.ApplyActiveModifier(modifier);
+            return attributeSet.ApplyOngoingModifier(modifier);
         }
     }
 

@@ -3,7 +3,7 @@ using UnityEngine;
 
 public interface IAttributeCalculator
 {
-    float GetAttributeValue(AttributeSet attributeSet, EAttributeType type);
+    float GetAttributeValue(AttributeSet attributeSet);
     public abstract EAttributeType TargetAttribute { get; }
     public abstract IReadOnlyList<EAttributeType> Dependencies { get; }
 }
@@ -19,7 +19,7 @@ public abstract class AttributeCalculatorBase : IAttributeCalculator
 
     protected abstract float CalculateAttribute(AttributeSet attributeSet);
 
-    public float GetAttributeValue(AttributeSet attributeSet, EAttributeType type)
+    public float GetAttributeValue(AttributeSet attributeSet)
     {
         return CalculateAttribute(attributeSet);
     }

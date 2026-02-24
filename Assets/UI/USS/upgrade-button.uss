@@ -160,7 +160,7 @@
     align-items: center;
     justify-content: center;
     -unity-font-definition: url("project://database/Assets/ExternalAssets/Font/NanumGothic.otf?fileID=12800000&guid=f5dc1d4a67daccb45ad0142353b072ab&type=3#NanumGothic");
-    font-size: 22px;
+    font-size: 26px;
     -unity-font-style: bold;
     color: rgb(138, 203, 255);
     text-shadow: 0 0 0 rgba(0, 0, 0, 0);

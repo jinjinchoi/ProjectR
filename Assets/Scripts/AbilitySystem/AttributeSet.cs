@@ -228,13 +228,13 @@ public class AttributeSet : IAttributeSet
                 if (visitState[dependentAttribute] == 0)
                 {
                     // 재귀함수로 검사 시작
-                    if (HasCycleDFS(attribute, graph, visitState))
+                    if (HasCycleDFS(dependentAttribute, graph, visitState))
                         return true; // 자식 노드들 중 (순환)true가 반환되면 부모에도 전파
                 }
             }
         }
 
-        // 모든 자식 노드 확인 후 검사 완료 표시. 공통 부모를 가질 수 있기 때문에 별도의 표시 통해 재검사 방지.
+        // 모든 자식 노드 확인 후 검사 완료 표시. 공통된 자식을 가질 수 있기 때문에 별도의 표시 통해 재검사 방지.
         visitState[attribute] = 2;
         return false;
     }
@@ -285,6 +285,14 @@ public class AttributeSet : IAttributeSet
         }
     }
 
+    private void CalculateDependentAttribute(EAttributeType type)
+    {
+        if (calculators.TryGetValue(type, out IAttributeCalculator calculator))
+        {
+            attributes[type].baseValue = calculator.GetAttributeValue(this);
+        }
+    }
+
     private void HandleIncomingDamage(FAttributeModifier modifier)
     {
         float localIncomingDamage = modifier.value;
@@ -306,7 +314,7 @@ public class AttributeSet : IAttributeSet
         PostAttributeChange(modifier);
     }
 
-    public FModifierHandle ApplyActiveModifier(FAttributeModifier modifier)
+    public FModifierHandle ApplyOngoingModifier(FAttributeModifier modifier)
     {
         var handle = AddToModifierList(modifier);
 
@@ -400,17 +408,9 @@ public class AttributeSet : IAttributeSet
         return modifiers[type];
     }
 
-    private void CalculateDependentAttribute(EAttributeType type)
-    {
-        if (calculators.TryGetValue(type, out IAttributeCalculator calculator))
-        {
-            attributes[type].baseValue = calculator.GetAttributeValue(this, type);
-        }
-    }
 
     private void Recalculate(EAttributeType type)
     {
-
         float baseValue = attributes[type].baseValue;
 
         float add = 0f;
