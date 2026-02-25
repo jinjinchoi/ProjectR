@@ -1246,7 +1246,7 @@ public EAbilityId GetRandomAbilityId()
     }
 
     return EAbilityId.None;
-    }
+}
 ```
 셔플 알고리즘을 사용한 이유는 단순히 Random 알고리즘을 사용할 경우 쿨다운이 돌고 있는 어빌리티를 반환받을 수도 있으며 while문을 사용하더라도 모든 어빌리티를 순회하였는지 확인하기 번거롭기 때문에 모든 어빌리티를 셔플한 뒤 차례대로 검사하는 방식을 썼습니다.
 
