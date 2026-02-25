@@ -137,6 +137,7 @@ public class AbilitySystemComponent : MonoBehaviour, IAbilitySystemContext
             activatedAbilitySpecs.Add(spec.abilityData.abilityId, spec);
         }
     }
+
     public void EndAbility(AbilitySpec spec)
     {
         EndAbilityBySpec(spec);

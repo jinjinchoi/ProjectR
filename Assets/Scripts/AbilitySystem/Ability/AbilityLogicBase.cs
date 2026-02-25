@@ -20,16 +20,17 @@ public abstract class AbilityLogicBase
 
     public abstract bool CanActivate(AbilitySpec spec, IAbilitySystemContext context);
 
-
     public virtual void ActivateAbility(AbilitySpec spec, IAbilitySystemContext context)
     {
         isActivated = true;
     }
+
     public virtual void OnEndAbility(AbilitySpec spec, IAbilitySystemContext context)
     {
         isActivated = false;
         spec.lastActivatedTime = Time.time;
     }
+
     public virtual void CancelAbility(AbilitySpec spec, IAbilitySystemContext context)
     {
         OnEndAbility(spec, context);
