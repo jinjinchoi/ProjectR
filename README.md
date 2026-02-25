@@ -210,7 +210,7 @@ public abstract class AttributeCalculatorBase : IAttributeCalculator
     // 현재 계산기가 담당하고 있는 attribute
     public abstract EAttributeType TargetAttribute { get; }
 
-    // 계산기가 담당하는 attribute를 올리기 위해 필요한 attribute를 저장하는 list
+    // 계산기가 의존하고 있는 attribute를 저장하는 list
     public abstract IReadOnlyList<EAttributeType> Dependencies { get; }
 
     protected abstract float CalculateAttribute(AttributeSet attributeSet);
@@ -259,23 +259,11 @@ public void InitAttributeCalcualtor()
     {
         { EAttributeType.PhysicalAttackPower, new PhysicalAttackPowerCalculator() },
         { EAttributeType.PhysicalDefensePower, new PhysicalDefensePowerCalculator() },
-        { EAttributeType.MagicAttackPower, new MagicAttackPowerCalculator() },
-        { EAttributeType.MagicDefensePower, new MagicDefensePowerCalculator() },
-        { EAttributeType.CriticalChance, new CriticalChanceCalculator() },
-        { EAttributeType.MaxHealth, new MaxHealthChanceCalculator() },
-        { EAttributeType.MaxMana, new MaxManaChanceCalculator() },
+        // ... (나머지 attribute 생략)
     };
 
   // ... (dependency 설정 부분 생략)
 }
-
-  private void CalculateDependentAttribute(EAttributeType type)
-  {
-      if (calculators.TryGetValue(type, out IAttributeCalculator calculator))
-      {
-          attributes[type].baseValue = calculator.GetAttributeValue(this);
-      }
-  }
 ```
 이후 각각 계산기 클래스들은 map에 타입 별로 저장되어 attribute 변화시 각각의 타입에 맞는 계산기 클래스를 사용하여 값이 계산됩니다.
 
