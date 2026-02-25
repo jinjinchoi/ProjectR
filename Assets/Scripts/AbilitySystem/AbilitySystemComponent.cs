@@ -217,7 +217,6 @@ public class AbilitySystemComponent : MonoBehaviour, IAbilitySystemContext
     /// <summary>
     /// 랜덤한 어빌리티의 아이디를 반환해주는 함수로 단순히 랜덤 인덱스를 뽑으면 쿨다운이나 실행중일 수 있기 때문에
     /// 셔플 후 순서대로 실행여부 확인하여 아이디 반환.
-    /// 다만 랜덤 인덱스로 뽑고 유효할때까지 while문 반복하는게 더 좋을 수 있음.
     /// </summary>
     /// <returns></returns>
     public EAbilityId GetRandomAbilityId()

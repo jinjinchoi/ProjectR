@@ -1303,3 +1303,88 @@ AIC는 일정 시간 간격으로 발동 가능한 어빌리티를 저장하고 
 
 오브젝트 풀링은 Unity Engine에서 제공해주는 API를 사용하여 구현하였습니다.
 
+#### 01) Pool Manager
+```c#
+public class PoolingManager : MonoBehaviour
+{
+    public static PoolingManager Instance { get; private set; }
+
+    private EffectPool effectPool;
+    private Dictionary<EObjectId, ObjectPoolHandle> poolHandles = new();
+
+    // ... (생략)
+}
+```
+
+풀링 매니저 클래스에서는 오브젝트 풀 클래스를 관리합니다.
+
+오브젝트 풀이 두 종류가 있는데 첫번째는 최초에 만든 pool이고 두번째는 오브젝트별로 pool을 구분하기 위해 좀 더 정석적으로 제작한 풀입니다.
+
+#### 02) Effect Pool
+최초 오브젝트 풀링 기능을 만들때 이펙트를 위해 pool을 만들었고 이때 이펙트의 경우 애니메이션 재생이기 때문에 오브젝트를 여러개 만들 필요 없이 애니메이션만 바꿔서 재생하면 되지 않을까라는 생각으로 기능을 구현하기 시작하였습니다.
+
+```c#
+public void Play(AnimationClip clip)
+{
+    overrideController["BaseEffect_Active"] = clip;
+    animator.Play(PlayHash, 0, 0);
+    Invoke(nameof(ReturnToPool), clip.length);
+}
+```
+pool에서 오브젝트를 꺼내와 Play 함수를 실행시키면 애니메이션을 바꿔끼워 재생시켜 다른 이펙트 연출이 가능하게 제작하였습니다.
+
+#### 03) 정석 Object Pooling
+Effect Pool을 사용하면 프리팹을 추가할 필요없이 애니메이션만 제작하면 간편하게 사용할 수 있다는 장점이 있었습니다. 하지만 이렇게 하니 문제가 프로젝타일같이 오브젝트마다 다른 설정을 해야하는 경우 굉장히 세팅이 힘들어진다는 점이었습니다.
+
+이를 개선하고자 오브젝트별 풀을 따로두도록 구현을 하였습니다.
+
+```c#
+public class ObjectPoolConfig
+{
+    public EObjectId objectId;
+    public GameObject prefab;
+    public int defaultCapacity = 5;
+    public int maxSize = 50;
+}
+
+[CreateAssetMenu(menuName = "Pooling/PoolConfig")]
+public class PoolConfigSO : ScriptableObject
+{
+    public List<ObjectPoolConfig> PoolInfoList;
+}
+```
+`ScriptableObject`을 통해 프리팹과 아이디를 설정하고 아이디를 통해 풀 오브젝트를 가져올 수 있게 구현하였습니다.
+
+```c#
+private void CreateObjectPool()
+{
+    if (poolConfigs == null)
+    {
+        DebugHelper.LogWarning("poolConfigs is null");
+        return;
+    }
+
+    foreach (var config in poolConfigs.PoolInfoList)
+    {
+        if (poolHandles.ContainsKey(config.objectId)) continue;
+
+        ObjectPoolHandle pool = new(config);
+        poolHandles.Add(config.objectId, pool);
+    }
+}
+```
+`PoolConfigSO`를 바탕으로 pool을 생성하는 로직입니다.
+
+---
+
+## 05. 문제 해결 및 방법
+
+
+---
+
+## 06. 고찰 및 회고
+유니티 프로젝트를 만들면서 언리얼 프로그래밍을 배우며 얻은 지식을 활용하고자 하였고 그렇기에 유사 GAS를 제작하게 되었습니다. 이를 통해 왜 엔진에서 기능들을 그런식으로 구현했는지 알 수 있었고 많은 학습을 할 수 있었습니다.
+
+언리얼 엔진의 GAS를 제작한 프로그래머들은 정말 뛰어난 프로그래머들이고 그 프로그래머들이 로직을 작성할때 어떤 생각과 이유로 작성했는지를 조금이나마 깨달을 수 있었고 이는 저의 프로그래밍 실력을 늘리는데도 정말 많은 도움을 주었습니다.
+
+단순히 엔진의 기능을 잘 사용하는 것이 아닌 왜 그런 그렇게 만들었는지를 아는 것이 게임엔진을 사용하는데 더욱 중요하다고 생각하였으며 앞으로 발전하기 위해 많은 공부를 해야겠다는 생각을 하였습니다.

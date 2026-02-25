@@ -4,8 +4,8 @@ using UnityEngine;
 public class PoolingManager : MonoBehaviour
 {
     public static PoolingManager Instance { get; private set; }
-    private EffectPool effectPool;
 
+    private EffectPool effectPool;
     private Dictionary<EObjectId, ObjectPoolHandle> poolHandles = new();
 
     [SerializeField] private PoolConfigSO poolConfigs;
