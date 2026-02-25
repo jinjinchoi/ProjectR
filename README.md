@@ -23,12 +23,12 @@
   - **주요기능 요약**
     - **Gameplay Ability System**: 캐릭터의 능력치를 저장하는 Attribute Set 클래스와 캐릭터의 스킬을 저장하는 Ability Component를 구현.
     - **캐릭터 강화**: Attribute를 올려 강화가 가능하며 이때 영구적 상승과 일시적 상승을 구분하여 버프나 아이템 장착 등에 대응이 가능하도록 구현.
-    - **Event**: 날짜에 다른 정규 이벤트와 날짜와 상관없는 랜덤 이벤트를 구현하여 전투에 들어가거나 캐릭터 능력치에 영향을 끼치도록 구현.
+    - **Event**: 정규 이벤트와 랜덤 이벤트를 구현하여 전투나 스탯 강화등 다양한 상황 연출.
     - **Dialgoue System**: 노드 기반의 다이얼로그 시스템 구현.
     - **Save and Load**: 날짜 및 능력치와 습득한 스킬을 저장 및 로드 가능하게 구현.
-    - **FSM**: Finite State Machine을 통해 캐릭터의 이동과 전투 등을 구현.
+    - **FSM**: Finite State Machine을 통해 캐릭터의 상태 변경.
     - **Object Pooling**: 자주 사용하는 이펙트나 발사체는 풀링을 사용하여 최적화.
-
+    - **MVC 패턴**: UI가 직접 모델에 접근하는 것이 아닌 컨트롤러를 이용.
 ---
 
 ## 04. 핵심 기능 및 구현 내용
@@ -647,4 +647,282 @@ protected bool IsCooldownReady(AbilitySpec spec)
 ```
 이후 ablility를 실행할 때 spec에 있는 쿨다운과 실행 후 경과 시점을 비교하여 쿨다운을 계산하게 됩니다.
 
-#### 07) 대미지 부여
+#### 07-1) 대미지 부여
+```c#
+public struct FDamageInfo
+{
+    public IAbilityOwner Instigator; // 대미지 유발자
+    public Transform DamageSource; // Instigator의 transform
+    public float OriginalDamage; // 기본 대미지
+    public EDamageType DamageType; // 대미지 타입(물리, 마법)
+    public bool IsCritical; // 크리티컬 여부
+    public Vector2 KnockbackPower; // 넉백 파워
+    public float KnockbackDuration; // 넉백 지속 시간
+}
+```
+위의 구조체는 대미지를 입힐 때 대미지 정보를 저장하는 구조체입니다. 해당 구조체는 직접 만드는 것이 아닌 대미지 계산 클래스를 사용하여 만들어집니다.
+
+```c#
+public class DamageCalculator
+{
+    // 대미지를 입힐때 얼마나 대미지를 입힐지 구하는 함수
+    static public FDamageInfo CalculateOutgoingDamage(IAbilitySystemContext context, DamageAbilityDataSO damageDataSO, Transform damageSource)
+    {
+        float damage = 0;
+
+        if (damageDataSO.damageType == EDamageType.Physical)
+        {
+            damage = context.AttributeSet.GetAttributeValue(EAttributeType.PhysicalAttackPower);
+        }
+        if (damageDataSO.damageType == EDamageType.Magic)
+        {
+            damage = context.AttributeSet.GetAttributeValue(EAttributeType.MagicAttackPower);
+        }
+        damage *= damageDataSO.damageMultiplier / 100;
+
+        float criticalChance = context.AttributeSet.GetAttributeValue(EAttributeType.CriticalChance);
+        float random = Random.value * 100f;
+        bool isCritical = random < criticalChance;
+
+        DebugHelper.Log($"[{damageSource.name}] is attempting to deal [{damage}] damage.");
+
+        return new FDamageInfo(context.Owner, damageSource, Mathf.Round(damage), damageDataSO.damageType, isCritical, damageDataSO.knockbackPower, damageDataSO.KnockbackDuration);
+    }
+
+     static public float CalculateIncomingDamage(IAttributeSet victimAS, FDamageInfo damageInfo)
+     {
+        // ... (생략)
+     }
+}
+```
+어빌리티의 정보가 담긴 SO 클래스와 ASC를 넘기면 Attribute Set에서 attribute 정보를 가져와 실제로 입힐 대미지를 계산합니다.
+
+```c#
+// 대미지 입히는 예시
+FDamageInfo damageInfo = DamageCalculator.CalculateOutgoingDamage(context, attackData, context.Owner.Transform);
+
+foreach (var hit in hits)
+{
+    if (hit.TryGetComponent<IDamageable>(out var damageable))
+    {
+        damageable.TakeDamage(damageInfo);
+    }
+}
+```
+구조체를 만들었으면 인터페이스를 사용하여 구조체를 전송합니다.
+
+#### 07-2) 대미지 적용.
+```c#
+public virtual void TakeDamage(FDamageInfo damageInfo)
+{
+    if (!abilitySystemComponent || isDead) return;
+
+    // modifier를 통해 대미지 적용
+    FAttributeModifier damageModifier = new()
+    {
+        attributeType = EAttributeType.IncommingDamage,
+        value = DamageCalculator.CalculateIncomingDamage(abilitySystemComponent.AttributeSet, damageInfo),
+        policy = EModifierPolicy.Instant,
+        operation = EModifierOp.Add
+    };
+
+    // 타격 이펙트 재생
+    if (vfxComponent) vfxComponent.PlayOnDamageVfx();
+    abilitySystemComponent.ApplyModifier(damageModifier);
+
+    // 넉백이 있을 경우 적용
+    if (damageInfo.KnockbackPower != Vector2.zero)
+    {
+        if (knockbackCo != null)
+            StopCoroutine(knockbackCo);
+
+        // instigator와의 위치를 계산하여 넉백 방향 결정.
+        int dir = transform.position.x > damageInfo.DamageSource.position.x ? 1 : -1;
+        Vector2 kncokback = damageInfo.KnockbackPower;
+        kncokback.x *= dir;
+        knockbackCo = StartCoroutine(ExcuteKnockback(kncokback, damageInfo.KnockbackDuration));
+    }
+
+    if (showDebug)
+        DebugHelper.Log($"[{gameObject.name}] took [{damageModifier.value}] damage from [{damageInfo.DamageSource.name}]");
+}
+```
+대미지를 입는 함수로 대미지 역시 modifier를 통해 적용됩니다.
+
+```c#
+value = DamageCalculator.CalculateIncomingDamage(abilitySystemComponent.AttributeSet, damageInfo),
+```
+해당 구문이 얼마큼의 대미지를 입을지 구하는 구문으로 피해량 역시 방어력과 같은 attribute의 영향을 받기 때문에 대미지를 따로 계산하게 됩니다.
+
+```c#
+static public float CalculateIncomingDamage(IAttributeSet victimAS, FDamageInfo damageInfo)
+{
+    float defanse = 0;
+
+    if (damageInfo.DamageType == EDamageType.Physical)
+    {
+        defanse = victimAS.GetAttributeValue(EAttributeType.PhysicalDefensePower);
+    }
+    if (damageInfo.DamageType == EDamageType.Magic)
+    {
+        defanse = victimAS.GetAttributeValue(EAttributeType.MagicDefensePower);
+    }
+
+    if (defanse > 0)
+        defanse /= 100;
+
+    float damage = damageInfo.OriginalDamage * (1 - defanse);
+
+    if (damageInfo.IsCritical) damage *= 1.4f;
+
+    return Mathf.Round(damage);
+}
+```
+위의 함수는 방어력을 가져와 실제 피해량을 구하는 함수입니다.
+
+### 02. 캐릭터 강화
+모바일 게임 우마무스메의 육성 시스템을 참조하여 육성 시스템을 구현하였습니다.
+
+#### 01) Attribute 강화
+```c#
+[Serializable]
+public class AttributeGrowthData
+{
+    public int StrPoint;
+    public int IntelliPoint;
+    public int DexPoint;
+    public int VitalPoint;
+    public int SkillPoint;
+
+    public float RelexPoint;
+    public float Cost;
+    public float SuccessChance = 1;
+
+    public int GetUpgradeValueByType(EAttributeType type)
+    {
+        return type switch
+        {
+            EAttributeType.Strength => StrPoint,
+            EAttributeType.Intelligence => IntelliPoint,
+            EAttributeType.Dexterity => DexPoint,
+            EAttributeType.Vitality => VitalPoint,
+            EAttributeType.SkillPoint => SkillPoint,
+            _ => 0
+        };
+    }
+}
+```
+위의 클래스는 attribute의 강화 수치를 저장하는 클래스입니다. `AttributeGrowthData`는 `RuntimeGameState` 클래스에 저장되어 UI에 값을 보여주고 실제 강화를 진행할때 사용됩니다.
+
+**Serializable** 필드를 사용한 이유는 세이브 후 로드를 할때 랜덤값이 변경되면 안되기 때문에 데이터를 저장하기 위하여 설정하였습니다.
+
+
+```c#
+// UI Controller 클래스에서 업그레이드 포인트를 보여주고 업그레이드를 적용하는 함수들
+
+public int GetUpgradeValue(EAttributeType attribute)
+{
+    return attribute switch
+    {
+        EAttributeType.Strength => GameManager.Instance.RuntimeGameState.CurrentGrowthData.StrPoint,
+        EAttributeType.Dexterity => GameManager.Instance.RuntimeGameState.CurrentGrowthData.DexPoint,
+        EAttributeType.Intelligence => GameManager.Instance.RuntimeGameState.CurrentGrowthData.IntelliPoint,
+        EAttributeType.Vitality => GameManager.Instance.RuntimeGameState.CurrentGrowthData.VitalPoint,
+        EAttributeType.SkillPoint => GameManager.Instance.RuntimeGameState.CurrentGrowthData.SkillPoint,
+        _ => 0,
+    };
+}
+
+public void UpgaradeAttribute(EAttributeType attribute)
+{
+    if (GameManager.Instance.RuntimeGameState.GrowthCalculator.IsSuccessUpgrade(GetHealthPercent()))
+    {
+        FAttributeModifier upgradeModifier = new()
+        {
+            attributeType = attribute,
+            policy = EModifierPolicy.Instant,
+            operation = EModifierOp.Add,
+            value = GetUpgradeValue(attribute)
+        };
+        abilitySystem.ApplyModifier(upgradeModifier);
+
+        // ... (cost나 skill point등 올려주는 부분 생략)
+
+        // 다음날로 진행
+        ProcessDayAfterUpgrade();
+    }
+}
+```
+플레이어가 UI 버튼을 눌러 업그레이드 요청을 하면 저장되어있는 값을 가져와 스탯을 올려주게 됩니다. 그후 업그레이드 값은 재설정하여 날짜마다 다른 값을 설정하게 됩니다.
+
+#### 02) Ability 습득
+attribute를 강화하면 랜덤하게 스킬 포인트가 오르게 됩니다. 이를 통해 스킬을 습득할 수 있게 됩니다.
+
+```c#
+// 플레이어 캐릭터 클래스에 있는 어빌리티 관련 변수들
+
+// 해제(unlock)한 어빌리티의 아이디를 저장하는 Set
+ private HashSet<EAbilityId> unlockedAbilityIdSet = new();
+
+ // 해제해야하는 어빌리티를 저장하는 List
+ public List<BaseAbilityDataSO> UnLockableAbilities => unlockableAbilities;
+ // 위의 리스트를 map으로 저장하여 효율적으로 탐색 가능하게
+ public Dictionary<EAbilityId, BaseAbilityDataSO> UnLockableAbilityMap => unlockableAbilitiesMap;
+```
+플레이어 캐릭터 클래스에는 위와 같이 해제해야 사용할 수 있는 ability 목록이 있고 이를 UI에 보여주게 됩니다.
+
+```c#
+private void CreateOrUpdateSkillWidget()
+{
+    // 스킬 UI에 필요한 정보(스킬명, 설명 등)
+    FAbilityUIInfo[] infoArray = uiController.GetAllAbilityUiInfo();
+    if (infoArray.Length == 0)
+        return;
+
+    foreach (var info in infoArray)
+    {
+        if (skillUIMap.ContainsKey(info.id))
+        {
+            UpdateWidget(info.id);
+            continue;
+        }
+
+        var elemet = CreateSkillWidget(info);
+        skillUIMap.Add(info.id, elemet);
+        skillScrollView.Add(elemet);
+
+        UpdateWidget(info.id);
+    }
+}
+```
+UI는 컨트롤러로부터 UI에 필요한 정보가 담긴 배열을 가져와 순회한 뒤 화면에 보여줍니다.
+
+```c#
+// 컨트롤러에서 ability 습득 요청을 하는 함수
+public void UnlockAbility(EAbilityId id)
+{
+    if (GetAbilityRequiredSp(id) <= GetCurrentSp())
+        owner.TryUnlockAbility(id);
+}
+```
+스킬 포인트가 충분한지 확인하고 ability를 해제 요청합니다. 
+
+```c#
+// Player Character Class
+public void TryUnlockAbility(EAbilityId id)
+{
+    // ... (유효성 체크 부분 생략)
+
+    unlockedAbilityIdSet.Add(id);
+}
+```
+캐릭터 클래스는 다시 한번 유효성을 확인하고 modifier를 통해 스킬포인트를 소모한 뒤 `unlockedAbilityIdSet`에 해제한 어빌리티의 아이디를 저장합니다.
+
+```c#
+foreach (BaseAbilityDataSO abilityData in unlockableAbilities)
+{
+    if (IsUnLockedAbility(abilityData.abilityId))
+        ASC.GiveAbility(abilityData);
+}
+```
+그 후 해제 여부를 확인하여 id를 비교한 후 어빌리티를 부여하게 됩니다.
