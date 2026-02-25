@@ -8,7 +8,6 @@ public class NormalEventInfo
     public string eventId;
     public string dialogueId;
     public bool isOnce = true;
-    // ...reward
 }
 
 [CreateAssetMenu(fileName = "NormalEvent", menuName = "GameEvent/Normal")]

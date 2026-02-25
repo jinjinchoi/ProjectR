@@ -647,7 +647,7 @@ protected bool IsCooldownReady(AbilitySpec spec)
 ```
 이후 ablility를 실행할 때 spec에 있는 쿨다운과 실행 후 경과 시점을 비교하여 쿨다운을 계산하게 됩니다.
 
-#### 07-1) 대미지 부여
+#### 07) 대미지 부여
 ```c#
 public struct FDamageInfo
 {
@@ -711,7 +711,7 @@ foreach (var hit in hits)
 ```
 구조체를 만들었으면 인터페이스를 사용하여 구조체를 전송합니다.
 
-#### 07-2) 대미지 적용.
+#### 08) 대미지 적용.
 ```c#
 public virtual void TakeDamage(FDamageInfo damageInfo)
 {
@@ -926,3 +926,380 @@ foreach (BaseAbilityDataSO abilityData in unlockableAbilities)
 }
 ```
 그 후 해제 여부를 확인하여 id를 비교한 후 어빌리티를 부여하게 됩니다.
+
+### 03. Event
+날짜가 진행됨에 따라 발생하는 정규이벤트와 랜덤한 확률로 발생하는 일반이벤트를 구현하였습니다.
+
+#### 01) 시나리오 이벤트
+```c#
+[System.Serializable]
+public class ScenarioEventInfo
+{
+    public string eventId;
+    public int day;
+    public EScenarioEventType type; // dialogue or battle
+    public string dialogueId;
+    public string battleInfoId;
+    //reward
+}
+
+[CreateAssetMenu(fileName = "ScenarioEvent", menuName = "GameEvent/Scenario")]
+public class ScenarioEventSO : ScriptableObject
+{
+    public List<ScenarioEventInfo> scenarioEvent;
+    public int lastDay = 30;
+}
+```
+시나리오 이벤트는 정규 이벤트를 뜻하며 특정 날짜마다 이벤트를 발생 시킵니다.
+
+이벤트는 다이얼로그 또는 배틀로 이루어져있으며 다이얼로그 이벤트는 단순 대화만 배틀 이벤트는 배틀씬으로 이동하여 전투를 치루게 됩니다.
+
+#### 02) 노멀 이벤트
+```c#
+[System.Serializable]
+public class NormalEventInfo
+{
+    public string eventId;
+    public string dialogueId;
+    public bool isOnce = true;
+}
+
+[CreateAssetMenu(fileName = "NormalEvent", menuName = "GameEvent/Normal")]
+public class NormalEventSO : ScriptableObject
+{
+    public List<NormalEventInfo> NormalEvent;
+
+}
+```
+노멀 이벤트는 단순히 대화만 나오는 이벤트로 이때 리워드 다이얼로그를 통해 보상을 얻게 됩니다. 자세한 부분은 다이얼로그 파트에서 서술하도록 하겠습니다.
+
+#### 03) 배틀 이벤트
+```c#
+[System.Serializable]
+public class EnemySpawnInfo
+{
+    public GameObject Prefab;
+    public int Level = 1;
+    public int Count = 1;
+}
+
+[System.Serializable]
+public class BattleEventInfo
+{
+    public string eventId;
+    public string sceneName;
+    public List<EnemySpawnInfo> enemieInfos;
+}
+
+
+[CreateAssetMenu(fileName = "BattleInformation", menuName = "GameEvent/Battle")]
+public class BattleInfoSO : ScriptableObject
+{
+    public List<BattleEventInfo> battleInfoList;
+
+    private Dictionary<string, BattleEventInfo> battleInfoMap;
+
+    public void Init()
+    {
+        battleInfoMap = battleInfoList.ToDictionary(e => e.eventId);
+    }
+
+    public BattleEventInfo GetBattleInfo(string id)
+    {
+        if (string.IsNullOrEmpty(id))
+        {
+            DebugHelper.LogWarning("GetBattleInfo called with null or empty id");
+            return null;
+        }
+
+        battleInfoMap.TryGetValue(id, out var data);
+        return data;
+    }
+}
+```
+시나리오 이벤트가 배틀 이벤트일 경우 배틀을 위한 씬으로 이동한 후 배틀을 진행합니다.
+
+이때 몬스터의 정보를 설정하는 SO가 **BattleInfoSO**입니다.
+
+이곳에서는 id를 통해 배틀 정보를 가져오는데 이 정보에는 몬스터의 종류와 수, 레벨이 설정되어 있습니다.
+
+#### 04) 이벤트 매니저
+이벤트 매니저는 게임매니저로부터 현재 날짜를 받으면 실행 가능한 이벤트를 탐색하고 이를 실행시키는 역할을 하는 클래스입니다.
+
+```c#
+public void ProcessDay()
+{
+    day = tomorrow;
+    DayChanged?.Invoke(day);
+
+    if (day == scenarioEventSO.lastDay)
+    {
+        GameClear?.Invoke();
+    }
+    else if (eventManager.IsScenarioExist(day))
+    {
+        eventManager.ExecuteScenarioEvent(day);
+    }
+    else if (eventManager.CanTriggerNormalEvent(day))
+    {
+        eventManager.ExecuteNormalEvent(day);
+    }
+    else
+    {
+        OnEventFinished();
+    }
+}
+```
+위의 함수는 `Game Manager`클래스에서 이벤트를 실행하는 로직으로 실제 로직의 구현은 event manager가 담당하고 게임매니저는 그저 실행만 요청하는 형태로 구현하여 역할을 분리하였습니다.
+
+### 04. Dialogue System
+노드 기반의 다이얼로그 시스템을 구현하여 다양한 대화들을 이어지게 하였습니다.
+
+다이얼로그 매니저는 이 노드들을 관리하며 UI 컨트롤러는 다이얼로그 매니저에 접근하여 대화 정보를 가져와 UI에 보여주게 됩니다.
+
+#### 01) 노드 생성
+다이얼로그는 ScriptableObject를 통해 작성되며 이를 바탕으로 노드들이 만들어지게 됩니다.
+
+각각의 노드는 개별 클래스이며 이 안에 다이얼로그 정보를 담고 있습니다.
+
+```c#
+private void CreateTextNode()
+{
+    if (GameManager.Instance.NormalDialogueSO == null)
+    {
+        Debug.LogWarning("NormalDialogue Not Set");
+        return;
+    }
+
+    List<NormalDialogueInfo> dialogueInfo = GameManager.Instance.NormalDialogueSO.dialogueInfo;
+    foreach (var info in dialogueInfo)
+    {
+        DialogueTextNode textNode = new()
+        {
+            dialogueType = EDialogueType.Text,
+            nodeId = info.dialogueId,
+            nextNodeId = info.nextDialogueId,
+            text = info.text,
+            speakerName = info.speakerName
+        };
+
+        nodeMap.Add(info.dialogueId, textNode);
+    }
+}
+```
+노드를 생성하는 로직 중 일부로 SO 클래스로부터 정보를 가져와 노드를 만들게 됩니다.
+
+#### 02) 노드 연결
+각각의 노드는 다음 노드를 뜻하는 `nextNodeId` 변수가 존재합니다.
+
+```c#
+// UI controller 클래스에 존재하는 노드를 다루는 함수
+private void HandleNormalDialogue()
+{
+    // 매니저 클래스로부터 노드를 가져옴
+    DialogueTextNode node = GameManager.Instance.DialogueManager.GetDialogueNodeBy<DialogueTextNode>(nodeId);
+    if (node == null) return;
+
+    // 다이얼로그 정보를 저장
+    FNormalDialogueInfo dialogueInfo = new()
+    {
+        speakerName = node.speakerName,
+        text = node.text
+    };
+
+    // UI는 해당 event를 구독하여 다이얼로그를 화면에 표시
+    TextDialogueRequested?.Invoke(dialogueInfo);
+    nodeId = node.nextNodeId;
+}
+```
+UI 컨트롤러는 이 변수를 설정하고 다이얼로그를 요청할때마다 id를 확인하여 올바른 노드를 가져옵니다.
+
+#### 03) 노드의 종류
+노드는 기본적인 대화 노드 보상이 있는 리워드 노드, 선택지 노드로 구성되어있습니다.
+
+```c#
+public struct FChoiceInfo
+{
+    public string dialogueId;
+    public string text;
+    public string nextNodeId;
+}
+
+public class DialogueChoiceNode : DialogueNodeBase
+{
+    public string groupId;
+    public List<FChoiceInfo> choices = new();
+}
+```
+이중 선택지 노드는 그룹 아이디로 연결되어 있어 동일한 그룹 아이디를 가진 노드들끼리 묶고 화면에 보여줍니다.
+
+```c#
+public class DialogueRewardNode : DialogueNodeBase
+{
+    public EAttributeType attribute;
+    public int reward;
+    public string nextNodeId;
+}
+```
+리워드 노드는 보상 정보가 담겨 있어 이를 캐릭터에게 부여하는 방식으로 구현하였습니다.
+
+### 05. Save & Load
+캐릭터의 능력치와 진행된 일자, 스킬, 한번 본 이벤트, 능력치 강화 수치. 이렇게 5가지 요소를 저장할 수 있도록 구현하였습니다.
+
+#### 01) RuntimeGameState
+**RuntimeGameState**는 현재 게임의 실시간 정보를 담고 있는 클래스입니다. Game Manger에 소속되어 있는데 Game Manager는 `DontDestroyOnLoad` 설정이 되어 있어 Scene을 이동해도 데이터를 보관할 수 있게 하였습니다.
+
+```c#
+public class RuntimeGameState
+{
+    private PrimaryAttributeData playerData;
+    private List<EAbilityId> unlokcedAbilityIds = new();
+
+    private AttributeGrowthData currentGrowthData;
+    private readonly AttributeGrowthCalculator growthCalculator;
+
+    // ... (매서드 생략)
+}
+```
+해당 클래스는 최초에는 Scene을 옮길 때 임시로 데이터를 저장하는 목적으로 제작되었지만 추후 세이브 로드시에도 사용할 수 있도록 구조를 확장하였습니다.
+
+캐릭터의 실시간 정보가 이렇게 담겨 있기 때문에 해당 정보를 그대로 가져와 저장할 수 있게 됩니다.
+
+#### 02) Save
+```c#
+// 게임 매니저에서 세이브 매니저에 세이브를 요청하는 함수
+public void SaveGame()
+{
+    SaveData data = new()
+    {
+        Day = day, // 현재 날짜
+        GrowthData = runtimeGameState.CurrentGrowthData, // attribute 성장치
+        PrimaryAttributeData = runtimeGameState.PlayerData, // 1차 attribute
+        UnlokcedAbilityIds = runtimeGameState.UnlokcedAbilityIds, // 습득한 ability
+        TriggeredEvent = eventManager.TriggeredEventSet.ToList() // 한번 본 이벤트
+    };
+
+    SaveManager.SaveDataToDisk(data);
+}
+```
+플레이어가 세이브 요청을 하면 정보들을 가져와 Json 파일로 저장하게 됩니다.
+
+습득한 ability 정보든 한번 본 이벤트 정보든 전부 enum으로 만든 id로 이루어져 있기에 별도의 과정없이 직렬화가 가능해집니다..
+
+#### 03) Load
+Load는 Json 파일로부터 값을 읽어와 복원 작업을 시작합니다.
+
+```c#
+public void LoadGame()
+{
+    SaveData data = SaveManager.LoadDataFromDisk();
+    if (data == null)
+    {
+        Debug.LogWarning("No save data found");
+        return;
+    }
+
+    tomorrow = data.Day;
+    startMode = EGameStartMode.LoadGame;
+
+    runtimeGameState.UpdatePlayerData(data.PrimaryAttributeData, data.UnlokcedAbilityIds);
+    runtimeGameState.LoadGrowthData(data.GrowthData);
+    eventManager.RestoreTriggeredEvent(data.TriggeredEvent.ToHashSet());
+    TravelToRestArea();
+}
+```
+`RuntimeGameState`에 캐릭터 정보를 저장하면 캐릭터 클래스는 이곳에서 정보를 가져와 설정하게 됩니다.
+
+### 06. AI
+배틀 이벤트가 발생하면 배틀씬으로 이동하고 전투를 진행합니다. 전투는 플레이어와 에너미 모두 AI 로직을 이용한 자동 전투로 진행합니다.
+
+#### 01) Fininte State Machine
+state를 구현하여 해당 state에 맞는 애니메이션을 재생하고 움직임이나 스킬들을 발동합니다.
+
+#### 02) AI Controller
+FSM이 캐릭터들의 로직을 실행하는 클래스라면 AIC는 어떤 행동을 할지 정하는 클래스입니다.
+
+#### 03) Enemy AI
+![enemy 로직 순서도](/GuideImg/Enemy%20AI.drawio.png)
+
+에너미는 AI 로직을 간략화한 모식도입니다. 물론 단순히 위의 로직대로만 움직이는 것이 아닌 벽을 감지한다던가 후퇴동작이나 어떤 공격을 할지 결정하는 로직도 존재하여 좀 더 생동감이 느껴지도록 AI를 구현하였습니다.
+
+#### 04) 랜덤 Ability 발동
+**Fisher–Yates Shuffle Algorithm**  
+랜덤으로 어빌리티를 발동하기 위하여 피셔-예이츠 셔플 알고리즘을 사용하여 랜덤 어빌리티를 발동할 수 있게 하였습니다.
+
+```c#
+public EAbilityId GetRandomAbilityId()
+{
+    // abilities : 발동 가능한 어빌리티 목록
+    if (abilities.Count == 0)
+        return EAbilityId.None;
+
+    // 인덱스 리스트 생성
+    List<int> indices = new();
+    for (int i = 0; i < abilities.Count; i++)
+    {
+        // 평타 어빌리티 제외
+        if (abilities[i].abilityData.abilityId == EAbilityId.NormalAttack)
+            continue;
+
+        indices.Add(i);
+    }
+
+    // Fisher–Yates Shuffle Algorithm (무작위 순열 생성 알고리즘)
+    // 배열의 마지막 요소로부터 시작  // 배열의 첫번째 요소에 도착할 때까지 반복
+    for (int i = indices.Count - 1; i > 0; i--)
+    {
+        // 0부터 현재 인덱스(i) 사이에서 무작위 정수 j를 선택
+        int j = UnityEngine.Random.Range(0, i + 1);
+        // i와 j의 위치를 서로 변경
+        (indices[i], indices[j]) = (indices[j], indices[i]);
+    }
+
+    // 순서대로 어빌리티 확인해서 발동가능한 어빌리티 반환
+    foreach (int index in indices)
+    {
+        var spec = abilities[index];
+        if (spec.ability.CanActivate(spec, this))
+        {
+            return spec.abilityData.abilityId;
+        }
+    }
+
+    return EAbilityId.None;
+    }
+```
+셔플 알고리즘을 사용한 이유는 단순히 Random 알고리즘을 사용할 경우 쿨다운이 돌고 있는 어빌리티를 반환받을 수도 있으며 while문을 사용하더라도 모든 어빌리티를 순회하였는지 확인하기 번거롭기 때문에 아예 모든 어빌리티를 셔플한 뒤 차례대로 검사하는 방식을 썼습니다.
+
+이때 셔플은 실제 배열을 셔플하는 것이 아닌 인덱스만 셔플하여 최적화를 이루었습니다.
+
+```c#
+private IEnumerator AttackDecisionLoop()
+{
+    while (activate)
+    {
+        if (PendingAbilityId == EAbilityId.None)
+        {
+            DecideAttackType();
+        }
+        yield return new WaitForSeconds(2f);
+    }
+}
+
+private void DecideAttackType()
+{
+    if (Random.value <= skillProbability)
+    {
+        PendingAbilityId = owner.ASC.GetRandomAbilityId();
+    }
+}
+```
+AIC는 일정 시간 간격으로 발동 가능한 어빌리티를 저장하고 State는 이를 확인하여 ability를 발동시킵니다.
+
+### 07. Object Pooling
+이펙트나 발사체(projectile) 같은 오브젝트들은 자주 반복 사용하기 때문에 풀링을 사용하여 최적화를 하였습니다.
+
+에너미의 경우도 풀링을 할 수 있지만 본 프로젝트는 4명 이상의 에너미를 소환할 계획이 없기 때문에 오히려 풀링을 사용하는 것이 더 비효율적이라 판단하여 적용하지 않았습니다.
+
+오브젝트 풀링은 Unity Engine에서 제공해주는 API를 사용하여 구현하였습니다.
+
