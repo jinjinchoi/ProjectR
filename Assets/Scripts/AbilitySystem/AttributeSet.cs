@@ -128,18 +128,25 @@ public class AttributeSet : IAttributeSet
 
     public void InitAttributeCalcualtor()
     {
-        // 전략 저장
-        calculators.Clear();
-        calculators = new Dictionary<EAttributeType, IAttributeCalculator>()
+        calculators = new Dictionary<EAttributeType, IAttributeCalculator>();
+
+        // 계산기 생성
+        List<IAttributeCalculator> calculatorList = new()
         {
-            { EAttributeType.PhysicalAttackPower, new PhysicalAttackPowerCalculator() },
-            { EAttributeType.PhysicalDefensePower, new PhysicalDefensePowerCalculator() },
-            { EAttributeType.MagicAttackPower, new MagicAttackPowerCalculator() },
-            { EAttributeType.MagicDefensePower, new MagicDefensePowerCalculator() },
-            { EAttributeType.CriticalChance, new CriticalChanceCalculator() },
-            { EAttributeType.MaxHealth, new MaxHealthChanceCalculator() },
-            { EAttributeType.MaxMana, new MaxManaChanceCalculator() },
+            new PhysicalAttackPowerCalculator(),
+            new PhysicalDefensePowerCalculator(),
+            new MagicAttackPowerCalculator(),
+            new MagicDefensePowerCalculator(),
+            new CriticalChanceCalculator(),
+            new MaxHealthChanceCalculator(),
+            new MaxManaChanceCalculator()
         };
+
+        // 전략 저장
+        foreach (var calculator in calculatorList)
+        {
+            calculators.Add(calculator.TargetAttribute, calculator);
+        }
 
         // dependencyMap 구조:
         // key   = 어떤 속성이 변경되었는가 (Primary)
@@ -153,7 +160,7 @@ public class AttributeSet : IAttributeSet
         
         foreach (var calculator in calculators)
         {
-            // calculator.Key   = TargetAttribute
+            // calculator.Key   = 2차 attribute
             // calculator.Value = 해당 Attribute의 Calculator
             foreach (EAttributeType dependency in calculator.Value.Dependencies)
             {
@@ -207,7 +214,8 @@ public class AttributeSet : IAttributeSet
     }
 
     // DFS 검사를 통해 그래프에 존재하는 attribute의 자식 노드들을 전부 검사.
-    private bool HasCycleDFS(EAttributeType attribute, Dictionary<EAttributeType, List<EAttributeType>> graph, Dictionary<EAttributeType, int> visitState)
+    private bool HasCycleDFS(EAttributeType attribute, 
+        Dictionary<EAttributeType, List<EAttributeType>> graph, Dictionary<EAttributeType, int> visitState)
     {
         // 현재 검사중인 attribute 표시
         visitState[attribute] = 1;
