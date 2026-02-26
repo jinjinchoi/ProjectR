@@ -316,7 +316,10 @@ foreach (var calculator in calculators)
 // attribute set 클래스에 존재하는 의존성 저장하는 map
 private readonly Dictionary<EAttributeType /*primary attribute*/, HashSet<EAttributeType> /* dependent attributes */> dependencyMap = new();
 ```
-`dependencyMap`은 attribute별로 의존하고 있는 다른 attribute를 저장하는 map입니다.
+위의 코드는 `dependencyMap`을 생성하는 코드입니다.
+계산기에 설정된 `Dependencies` 배열을 dependencyMap의 Key로 설정하고, 계산기가 담당하고 있는 attribute를 value로 설정하여 map을 생성합니다.
+
+이렇게 map을 구성하고 실제 1차 attribute가 변하면 이 map을 순회하여 2차 attribute도 설정합니다.
 
 ```c#
 public void ProcessDirty(FAttributeModifier modifier)
@@ -340,10 +343,9 @@ private void CalculateDependentAttribute(EAttributeType type)
   }
 }
 ```
+attribute 설정이 끝나면 **ProcessDirty**함수가 실행되고 이곳에서 `dependencyMap`을 순회하여 2차 attribute를 설정하는데 이때 위에 설명된 전략 패턴을 사용하여 간편하게 2차 attribute를 계산할 수 있습니다.
 
-modifier를 통해 모든 attribute의 계산이 끝나면 의존성 map을 순회하여 변경할 attribute가 있는지 확인하고 값을 설정하게 됩니다.
-
-**DFS 통한 순환 참조 예방**  
+#### 05) DFS 통한 순환 참조 예방
 이렇게 Dependency를 이용할때 가장 주의해야할 점은 순환을 방지하는 것일겁니다. 만약 A attribute가 B attribute에 의존하고 있는데 그 반대도 마찬가지이면 ProcessDirty 함수가 영원히 실행되는 문제가 생길 것입니다.
 
 비록 이 프로젝트에서는 모든 2차 attribute가 1차 attribute에만 의존하고 있기 때문에 순환이 생길 일은 없지만 포괄적이고 재사용이 가능한 시스템 구현을 위하여 순환 방지 대책을 구현하였습니다.
