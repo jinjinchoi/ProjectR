@@ -1,8 +1,55 @@
-## 01. 목차
+## 1. 목차
+- 1.[ 목차](#1-목차)
+- 2.[ 개요](#2-개요)
+- 3.[ 프로젝트 요약](#3-프로젝트-요약)
+- 4.[ 핵심 기능 및 구현 내용](#4-핵심-기능-및-구현-내용)
+  - 4.1 [Gameplay Ability System](#41-gameplay-ability-system)
+  - 4.2 [Attribute(능력치)](#42-attribute능력치)
+    - 4.2.1 [Modifier](#421-modifier)
+    - 4.2.2 [modifier의 적용 및 제거](#422-modifier의-적용-및-제거)
+    - 4.2.3 [2차 attribute 계산](#423-2차-attribute-계산)
+    - 4.2.4 [defendancy 설정](#424-defendancy-설정)
+    - 4.2.5 [DFS 통한 순환 참조 예방](#425-dfs-통한-순환-참조-예방)
+  - 4.3[ Ability (스킬)](#43-ability-스킬)
+    - 4.3.1 [Ability 구현](#431-ability-구현)
+    - 4.3.2 [ScriptableObject for ability](#432-scriptableobject-for-ability)
+    - 4.3.3 [Ability Spec](#433-ability-spec)
+    - 4.3.4 [Ability 부여 및 실행](#434-ability-부여-및-실행)
+    - 4.3.5 [Ability 구현 예시](#435-ability-구현-예시)
+    - 4.3.6 [Cooldown 계산](#436-cooldown-계산)
+    - 4.3.7 [대미지 부여](#437-대미지-부여)
+    - 4.3.8 [대미지 적용.](#438-대미지-적용)
+  - 4.4 [캐릭터 강화](#44-캐릭터-강화)
+    - 4.4.1 [Attribute 강화](#441-attribute-강화)
+    - 4.4.2 [Ability 습득](#442-ability-습득)
+  - 4.5 [Event](#45-event)
+    - 4.5.1 [시나리오 이벤트](#451-시나리오-이벤트)
+    - 4.5.2 [노멀 이벤트](#452-노멀-이벤트)
+    - 4.5.3 [배틀 이벤트](#453-배틀-이벤트)
+    - 4.5.4 [이벤트 매니저](#454-이벤트-매니저)
+  - 4.6 [Dialogue System](#46-dialogue-system)
+    - 4.6.1 [노드 생성](#461-노드-생성)
+    - 4.6.2 [노드 연결](#462-노드-연결)
+    - 4.6.3 [노드의 종류](#463-노드의-종류)
+  - 4.7 [Save \& Load](#47-save--load)
+    - 4.7.1 [RuntimeGameState](#471-runtimegamestate)
+    - 4.7.2 [Save](#472-save)
+    - 4.7.3 [Load](#473-load)
+  - 4.8 [AI](#48-ai)
+    - 4.8.1 [Fininte State Machine](#481-fininte-state-machine)
+    - 4.8.2 [AI Controller](#482-ai-controller)
+    - 4.8.3 [Enemy AI](#483-enemy-ai)
+    - 4.8.4 [랜덤 Ability 발동](#484-랜덤-ability-발동)
+  - 4.9 [Object Pooling](#49-object-pooling)
+    - 4.9.1 [Pool Manager](#491-pool-manager)
+    - 4.9.2 [Effect Pool](#492-effect-pool)
+    - 4.9.3 [정석 Object Pooling](#493-정석-object-pooling)
+- 5.[ 문제 해결 및 방법](#5-문제-해결-및-방법)
+- 6.[ 고찰 및 회고](#6-고찰-및-회고)
 
 ---
 
-## 02. 개요
+## 2. 개요
 
 - **프로젝트 소개**  
 유니티 2D게임으로 우마무스메와 유사한 방식으로 캐릭터를 육성하고 적을 물리치는 게임.
@@ -15,7 +62,7 @@
 
 ---
 
-## 03. 프로젝트 요약
+## 3. 프로젝트 요약
   
   - **게임 특징**  
   날짜별로 캐릭터를 육성하고 자동 전투를 통해 진행을 하는 게임으로 언리얼 엔진에 존재하는 프레임 워크인 Gameplay Ability System을 모방하여 Attribute(능력치)와 Ability(스킬)를 구현.
@@ -31,14 +78,25 @@
     - **MVC 패턴**: UI가 직접 모델에 접근하는 것이 아닌 컨트롤러를 이용.
 ---
 
-## 04. 핵심 기능 및 구현 내용
+## 4. 핵심 기능 및 구현 내용
+  - 4.1 [Gameplay Ability System](#41-gameplay-ability-system)
+  - 4.2 [Attribute(능력치)](#42-attribute능력치)
+  - 4.3[ Ability (스킬)](#43-ability-스킬)
+  - 4.4 [캐릭터 강화](#44-캐릭터-강화)
+  - 4.5 [Event](#45-event)
+  - 4.6 [Dialogue System](#46-dialogue-system)
+  - 4.7 [Save \& Load](#47-save--load)
+  - 4.8 [AI](#48-ai)
+  - 4.9 [Object Pooling](#49-object-pooling)
 
-### 01. Gameplay Ability System
+### 4.1 Gameplay Ability System
 **GAS**는 언리얼 엔진에 존재하는 프레임 워크를 모방하여 제작하였습니다. GAS에는 어빌리티를 부여하여 스킬들을 사용할 수 있고 Attribute Set 클래스가 존재하여 이곳에서 능력치를 설정합니다.
 
 캐릭터 클래스는 이 GAS 컴포넌트를 가지고 있어 캐릭터 마다 고유의 스킬과 능력치를 가지게 됩니다.
 
-### 01-1 Attribute(능력치)
+[🔝 Top](#)
+
+### 4.2 Attribute(능력치)
 attribute는 attribute set 클래스에서 설정되며 아래와 같이 이루어져 있습니다.
 
 ```c#
@@ -64,8 +122,9 @@ attribute는 **baseValue**와 **currentValue**로 구분 되는데 base value는
 
 둘을 구분한 이유는 영구적인 능력치 변화와 일시적인 능력치 변화를 구분하기 위해서입니다..
 
+[🔝 Top](#)
 
-#### 1) Modifier
+#### 4.2.1 Modifier
 modifier는 능력치를 설정하기 위해 사용하는 구조체입니다.
 
 ```c#
@@ -97,8 +156,9 @@ public class ActiveModifier
 ```
 각각의 modifier에는 policy가 존재하는데 이 중 **Instant** 정책은 base value를 바꾸고 나머지 정책은 **ActiveModifier**에 저장되어 current value를 계산할 때 사용합니다.
 
+[🔝 Top](#)
 
-#### 02) modifier의 적용 및 제거
+#### 4.2.2 modifier의 적용 및 제거
 능력치는 modifier 구조체를 통하여 바꾸도록 구현하였습니다.
 
 `FAttributeModifier` 구조체를 만들어 ASC에 전해줍니다. ASC에서는 policy를 구분하여 각각에 맞는 함수를 호출합니다.
@@ -185,7 +245,9 @@ private void Recalculate(EAttributeType type)
 ```
 modifier를 적용할 때 마다 이 `Recalculate`함수를 사용하여 current value를 설정합니다.
 
-#### 03) 2차 attribute 계산
+[🔝 Top](#)
+
+#### 4.2.3 2차 attribute 계산
 2차 attribute는 1차 attribute가 변하면 따라서 변하는 attribute를 말합니다.
 
 2차 attribute는 플레이어에게만 유효하며 에너미는 attribute가 변할 일이 없기 때문에 바로 2차 attribute를 modifier로 설정하는 방식으로 attribute를 정해주었습니다.
@@ -266,8 +328,9 @@ private void CalculateDependentAttribute(EAttributeType type)
 ```
 이후 attribute를 재계산 해야할때 map에서 타입에 맞는 계산기를 가져와 값을 계산하게 됩니다.
 
+[🔝 Top](#)
 
-#### 04) defendancy 설정
+#### 4.2.4 defendancy 설정
 2차 attribute가 어떤 1차 attribute에 의존하는지 알아야 1차 attribute가 변할때 그에 맞는 2차 attribute를 설정할 수 있을 것입니다. 그렇기에 계산기 클래스에는 해당 계산기가 의존하고 있는 attribute를 설정하여 이를 알 수 있게 하였습니다.
 
 ```c#
@@ -345,7 +408,9 @@ private void CalculateDependentAttribute(EAttributeType type)
 ```
 attribute 설정이 끝나면 **ProcessDirty**함수가 실행되고 이곳에서 `dependencyMap`을 순회하여 2차 attribute를 설정하는데 이때 위에 설명된 전략 패턴을 사용하여 간편하게 2차 attribute를 계산할 수 있습니다.
 
-#### 05) DFS 통한 순환 참조 예방
+[🔝 Top](#)
+
+#### 4.2.5 DFS 통한 순환 참조 예방
 이렇게 Dependency를 이용할때 가장 주의해야할 점은 순환을 방지하는 것일겁니다. 만약 A attribute가 B attribute에 의존하고 있는데 그 반대도 마찬가지이면 ProcessDirty 함수가 영원히 실행되는 문제가 생길 것입니다.
 
 비록 이 프로젝트에서는 모든 2차 attribute가 1차 attribute에만 의존하고 있기 때문에 순환이 생길 일은 없지만 포괄적이고 재사용이 가능한 시스템 구현을 위하여 순환 방지 대책을 구현하였습니다.
@@ -422,13 +487,19 @@ private bool HasCycleDFS(EAttributeType attribute, Dictionary<EAttributeType, Li
 
 이때 노드의 순환 여부는 실제 빌드된 게임에서는 알아도 별 의미가 없기 때문에 유니티 엔진에서만 실행되도록 하였습니다.
 
-### 01-2 Ability (스킬)
+[🔝 Top](#)
+
+### 4.3 Ability (스킬)
 ability는 Ability System Component에 보관되며 id를 통해 구분하고 실행합니다.
 
-#### 01) Ability 구현
+[🔝 Top](#)
+
+#### 4.3.1 Ability 구현
 AbilityLogicBase 클래스를 상속 받아 어빌리티를 구현합니다. 추상화를 통해 ASC는 각각의 어빌리티의 실제 구현을 알지 못하여도 Abiliy가 실행이 가능해집니다.
 
-#### 02) ScriptableObject for ability
+[🔝 Top](#)
+
+#### 4.3.2 ScriptableObject for ability
 ![파이어볼 SO](GuideImg/fierball%20ability%20SO.png)
 
 각각의 ability는 ScriptableObject에서 구체적인 값이 설정됩니다. 이를 통해 동일한 ability라고 하더라도 전혀 다른 대미지와 효과를 주어 다른 ability처럼 보이게 연출이 가능하며 이를 통해 더욱 쉽고 다양한 ability를 구현할 수 있게 하였습니다.
@@ -472,7 +543,9 @@ public class Ability_NormallAttackSO : DamageAbilityDataSO
 ```
 기본(콤보)공격 SO의 예시로  `maxComboCount`변수를 추가하였고 `CreateInstance`함수를 오버라이드 하여 알맞은 인스턴스가 생성되도록 하였습니다.
 
-#### 03) Ability Spec
+[🔝 Top](#)
+
+#### 4.3.3 Ability Spec
 ASC가 ability를 실행하기 위해서는 SO와 Ability Instance 둘다 필요할 것입니다. Ability Spec 클래스를 만들어 이곳에서 둘 다 보관하도록 하였습니다.
 
 ```c#
@@ -503,7 +576,9 @@ private readonly List<AbilitySpec> abilities = new();
 ```
 ASC는 위와 같은 spec이 담긴 list를 저장하여 ability를 보관합니다.
 
-#### 04) Ability 부여 및 실행
+[🔝 Top](#)
+
+#### 4.3.4 Ability 부여 및 실행
 ```c#
 /// Character Class
 [Header("ASC")]
@@ -545,7 +620,9 @@ public void TryActivateAbilityById(EAbilityId abilityId)
 ```
 이후 id를 통해 ability를 찾아 실행시킵니다. `ActivateAbility`함수에 spec과 asc를 보내는데 이를 통해 각각의 ability는 자신의 정보가 담긴 SO클래스에 접근하여 대미지나 이펙트를 설정하며 owner의 정보를 찾아 위치나 적이 누구인지 등에 대해 알 수 있게 됩니다.
 
-#### 05) Ability 구현 예시
+[🔝 Top](#)
+
+#### 4.3.5 Ability 구현 예시
 스킬을 구현할때 가장 필요한 것은 애니메이션 재생과 이펙트 발생, 대미지 부여일 것입니다.
 
 ```c#
@@ -624,7 +701,9 @@ private readonly Dictionary<EAnimationEventType, List<WaitingAbilityEntry>> wait
 
 여기서 `List<WaitingAbilityEntry>`로 보관하여 한 애니메이션에서 여러 이벤트가 발생해도 대응할 수 있게 구현하고자 하였습니다.
 
-#### 06) Cooldown 계산
+[🔝 Top](#)
+
+#### 4.3.6 Cooldown 계산
 쿨다운은 비교적 간단하게 계산합니다.
 
 ```c#
@@ -647,7 +726,9 @@ protected bool IsCooldownReady(AbilitySpec spec)
 ```
 이후 ablility를 실행할 때 spec에 있는 쿨다운과 실행 후 경과 시점을 비교하여 쿨다운을 계산하게 됩니다.
 
-#### 07) 대미지 부여
+[🔝 Top](#)
+
+#### 4.3.7 대미지 부여
 ```c#
 public struct FDamageInfo
 {
@@ -706,7 +787,9 @@ foreach (var hit in hits)
 ```
 구조체를 만들었으면 인터페이스를 사용하여 구조체를 전송합니다.
 
-#### 08) 대미지 적용.
+[🔝 Top](#)
+
+#### 4.3.8 대미지 적용.
 ```c#
 public virtual void TakeDamage(FDamageInfo damageInfo)
 {
@@ -775,11 +858,15 @@ static public float CalculateIncomingDamage(IAttributeSet victimAS, FDamageInfo 
 ```
 위의 함수는 방어력을 가져와 실제 피해량을 구하는 함수입니다.
 
-### 02. 캐릭터 강화
+[🔝 Top](#)
+
+### 4.4 캐릭터 강화
 ![게임 진행 화면](GuideImg/restarea.png)
 모바일 게임 우마무스메의 육성 시스템을 참조하여 육성 시스템을 구현하였습니다.
 
-#### 01) Attribute 강화
+[🔝 Top](#)
+
+#### 4.4.1 Attribute 강화
 ```c#
 [Serializable]
 public class AttributeGrowthData
@@ -836,7 +923,9 @@ public void UpgaradeAttribute(EAttributeType attribute)
 ```
 플레이어가 UI 버튼을 눌러 업그레이드 요청을 하면 저장되어있는 값을 가져와 스탯을 올려주게 됩니다. 그후 업그레이드 값은 재설정하여 날짜마다 다른 값을 설정하게 됩니다.
 
-#### 02) Ability 습득
+[🔝 Top](#)
+
+#### 4.4.2 Ability 습득
 attribute를 강화하면 랜덤하게 스킬 포인트가 오르게 됩니다. 이를 통해 스킬을 습득할 수 있게 됩니다.
 
 ```c#
@@ -908,10 +997,14 @@ foreach (BaseAbilityDataSO abilityData in unlockableAbilities)
 ```
 그 후 해제 여부를 확인하여 id를 비교한 후 어빌리티를 부여하게 됩니다.
 
-### 03. Event
+[🔝 Top](#)
+
+### 4.5 Event
 날짜가 진행됨에 따라 발생하는 정규이벤트와 랜덤한 확률로 발생하는 일반이벤트를 구현하였습니다.
 
-#### 01) 시나리오 이벤트
+[🔝 Top](#)
+
+#### 4.5.1 시나리오 이벤트
 ```c#
 [System.Serializable]
 public class ScenarioEventInfo
@@ -935,7 +1028,9 @@ public class ScenarioEventSO : ScriptableObject
 
 이벤트는 다이얼로그 또는 배틀로 이루어져있으며 다이얼로그 이벤트는 단순 대화만 배틀 이벤트는 배틀씬으로 이동하여 전투를 치루게 됩니다.
 
-#### 02) 노멀 이벤트
+[🔝 Top](#)
+
+#### 4.5.2 노멀 이벤트
 ```c#
 [System.Serializable]
 public class NormalEventInfo
@@ -954,7 +1049,9 @@ public class NormalEventSO : ScriptableObject
 ```
 노멀 이벤트는 단순히 대화만 나오는 이벤트로 이때 리워드 다이얼로그를 통해 보상을 얻게 됩니다. 자세한 부분은 다이얼로그 파트에서 서술하도록 하겠습니다.
 
-#### 03) 배틀 이벤트
+[🔝 Top](#)
+
+#### 4.5.3 배틀 이벤트
 ```c#
 [System.Serializable]
 public class EnemySpawnInfo
@@ -1004,7 +1101,9 @@ public class BattleInfoSO : ScriptableObject
 
 이곳에서는 id를 통해 배틀 정보를 가져오는데 이 정보에는 몬스터의 종류와 수, 레벨이 설정되어 있습니다.
 
-#### 04) 이벤트 매니저
+[🔝 Top](#)
+
+#### 4.5.4 이벤트 매니저
 이벤트 매니저는 게임매니저로부터 현재 날짜를 받으면 실행 가능한 이벤트를 탐색하고 이를 실행시키는 역할을 하는 클래스입니다.
 
 ```c#
@@ -1033,12 +1132,16 @@ public void ProcessDay()
 ```
 위의 함수는 `Game Manager`클래스에서 이벤트를 실행하는 로직으로 실제 로직의 구현은 event manager가 담당하고 게임매니저는 그저 실행만 요청하는 형태로 구현하여 역할을 분리하였습니다.
 
-### 04. Dialogue System
+[🔝 Top](#)
+
+### 4.6 Dialogue System
 노드 기반의 다이얼로그 시스템을 구현하여 다양한 대화들을 이어지게 하였습니다.
 
 다이얼로그 매니저는 이 노드들을 관리하며 UI 컨트롤러는 다이얼로그 매니저에 접근하여 대화 정보를 가져와 UI에 보여주게 됩니다.
 
-#### 01) 노드 생성
+[🔝 Top](#)
+
+#### 4.6.1 노드 생성
 다이얼로그는 ScriptableObject를 통해 작성되며 이를 바탕으로 노드들이 만들어지게 됩니다.
 
 각각의 노드는 개별 클래스이며 이 안에 다이얼로그 정보를 담고 있습니다.
@@ -1070,7 +1173,9 @@ private void CreateTextNode()
 ```
 노드를 생성하는 로직 중 일부로 SO 클래스로부터 정보를 가져와 노드를 만들게 됩니다.
 
-#### 02) 노드 연결
+[🔝 Top](#)
+
+#### 4.6.2 노드 연결
 각각의 노드는 다음 노드를 뜻하는 `nextNodeId` 변수가 존재합니다.
 
 ```c#
@@ -1095,7 +1200,9 @@ private void HandleNormalDialogue()
 ```
 UI 컨트롤러는 이 변수를 설정하고 다이얼로그를 요청할때마다 id를 확인하여 올바른 노드를 가져옵니다.
 
-#### 03) 노드의 종류
+[🔝 Top](#)
+
+#### 4.6.3 노드의 종류
 노드는 기본적인 대화 노드 보상이 있는 리워드 노드, 선택지 노드로 구성되어있습니다.
 
 ```c#
@@ -1124,10 +1231,14 @@ public class DialogueRewardNode : DialogueNodeBase
 ```
 리워드 노드는 보상 정보가 담겨 있어 이를 캐릭터에게 부여하는 방식으로 구현하였습니다.
 
-### 05. Save & Load
+[🔝 Top](#)
+
+### 4.7 Save & Load
 캐릭터의 능력치와 진행된 일자, 스킬, 한번 본 이벤트, 능력치 강화 수치. 이렇게 5가지 요소를 저장할 수 있도록 구현하였습니다.
 
-#### 01) RuntimeGameState
+[🔝 Top](#)
+
+#### 4.7.1 RuntimeGameState
 **RuntimeGameState**는 현재 게임의 실시간 정보를 담고 있는 클래스입니다. Game Manger에 소속되어 있는데 Game Manager는 `DontDestroyOnLoad` 설정이 되어 있어 Scene을 이동해도 데이터를 보관할 수 있게 하였습니다.
 
 ```c#
@@ -1146,7 +1257,9 @@ public class RuntimeGameState
 
 캐릭터의 실시간 정보가 이렇게 담겨 있기 때문에 해당 정보를 그대로 가져와 저장할 수 있게 됩니다.
 
-#### 02) Save
+[🔝 Top](#)
+
+#### 4.7.2 Save
 ```c#
 // 게임 매니저에서 세이브 매니저에 세이브를 요청하는 함수
 public void SaveGame()
@@ -1167,7 +1280,9 @@ public void SaveGame()
 
 습득한 ability 정보든 한번 본 이벤트 정보든 전부 enum으로 만든 id로 이루어져 있기에 별도의 과정없이 직렬화가 가능해집니다..
 
-#### 03) Load
+[🔝 Top](#)
+
+#### 4.7.3 Load
 Load는 Json 파일로부터 값을 읽어와 복원 작업을 시작합니다.
 
 ```c#
@@ -1191,21 +1306,31 @@ public void LoadGame()
 ```
 `RuntimeGameState`에 캐릭터 정보를 저장하면 캐릭터 클래스는 이곳에서 정보를 가져와 설정하게 됩니다.
 
-### 06. AI
+[🔝 Top](#)
+
+### 4.8 AI
 배틀 이벤트가 발생하면 배틀씬으로 이동하고 전투를 진행합니다. 전투는 플레이어와 에너미 모두 AI 로직을 이용한 자동 전투로 진행합니다.
 
-#### 01) Fininte State Machine
+[🔝 Top](#)
+
+#### 4.8.1 Fininte State Machine
 state를 구현하여 해당 state에 맞는 애니메이션을 재생하고 움직임이나 스킬들을 발동합니다.
 
-#### 02) AI Controller
+[🔝 Top](#)
+
+#### 4.8.2 AI Controller
 FSM이 캐릭터들의 로직을 실행하는 클래스라면 AIC는 어떤 행동을 할지 정하는 클래스입니다.
 
-#### 03) Enemy AI
+[🔝 Top](#)
+
+#### 4.8.3 Enemy AI
 ![enemy 로직 순서도](/GuideImg/Enemy%20AI.drawio.png)
 
 에너미는 AI 로직을 간략화한 모식도입니다. 물론 단순히 위의 로직대로만 움직이는 것이 아닌 벽을 감지한다던가 후퇴동작이나 어떤 공격을 할지 결정하는 로직도 존재하여 좀 더 생동감이 느껴지도록 AI를 구현하였습니다.
 
-#### 04) 랜덤 Ability 발동
+[🔝 Top](#)
+
+#### 4.8.4 랜덤 Ability 발동
 **Fisher–Yates Shuffle Algorithm**  
 랜덤으로 어빌리티를 발동하기 위하여 피셔-예이츠 셔플 알고리즘을 사용하여 랜덤 어빌리티를 발동할 수 있게 하였습니다.
 
@@ -1277,14 +1402,18 @@ private void DecideAttackType()
 ```
 AIC는 일정 시간 간격으로 발동 가능한 어빌리티를 저장하고 State는 이를 확인하여 ability를 발동시킵니다.
 
-### 07. Object Pooling
+[🔝 Top](#)
+
+### 4.9 Object Pooling
 이펙트나 발사체(projectile) 같은 오브젝트들은 자주 반복 사용하기 때문에 풀링을 사용하여 최적화를 하였습니다.
 
 에너미의 경우도 풀링을 할 수 있지만 본 프로젝트는 4명 이상의 에너미를 소환할 계획이 없기 때문에 오히려 풀링을 사용하는 것이 더 비효율적이라 판단하여 적용하지 않았습니다.
 
 오브젝트 풀링은 Unity Engine에서 제공해주는 API를 사용하여 구현하였습니다.
 
-#### 01) Pool Manager
+[🔝 Top](#)
+
+#### 4.9.1 Pool Manager
 ```c#
 public class PoolingManager : MonoBehaviour
 {
@@ -1301,7 +1430,9 @@ public class PoolingManager : MonoBehaviour
 
 오브젝트 풀이 두 종류가 있는데 첫번째는 최초에 만든 pool이고 두번째는 오브젝트별로 pool을 구분하기 위해 좀 더 정석적으로 제작한 풀입니다.
 
-#### 02) Effect Pool
+[🔝 Top](#)
+
+#### 4.9.2 Effect Pool
 최초 오브젝트 풀링 기능을 만들때 이펙트를 위해 pool을 만들었고 이때 이펙트의 경우 애니메이션 재생이기 때문에 오브젝트를 여러개 만들 필요 없이 애니메이션만 바꿔서 재생하면 되지 않을까라는 생각으로 기능을 구현하기 시작하였습니다.
 
 ```c#
@@ -1314,7 +1445,9 @@ public void Play(AnimationClip clip)
 ```
 pool에서 오브젝트를 꺼내와 Play 함수를 실행시키면 애니메이션을 바꿔끼워 재생시켜 다른 이펙트 연출이 가능하게 제작하였습니다.
 
-#### 03) 정석 Object Pooling
+[🔝 Top](#)
+
+#### 4.9.3 정석 Object Pooling
 Effect Pool을 사용하면 프리팹을 추가할 필요없이 애니메이션만 제작하면 간편하게 사용할 수 있다는 장점이 있었습니다. 하지만 이렇게 하니 문제가 프로젝타일같이 오브젝트마다 다른 설정을 해야하는 경우 굉장히 세팅이 힘들어진다는 점이었습니다.
 
 이를 개선하고자 오브젝트별 풀을 따로두도록 구현을 하였습니다.
@@ -1356,14 +1489,16 @@ private void CreateObjectPool()
 ```
 `PoolConfigSO`를 바탕으로 pool을 생성하는 로직입니다.
 
----
-
-## 05. 문제 해결 및 방법
-
+[🔝 Top](#)
 
 ---
 
-## 06. 고찰 및 회고
+## 5. 문제 해결 및 방법
+
+
+---
+
+## 6. 고찰 및 회고
 유니티 프로젝트를 만들면서 언리얼 프로그래밍을 배우며 얻은 지식을 활용하고자 하였고 그렇기에 유사 GAS를 제작하게 되었습니다. 이를 통해 왜 엔진에서 기능들을 그런식으로 구현했는지 알 수 있었고 많은 학습을 할 수 있었습니다.
 
 언리얼 엔진의 GAS를 제작한 프로그래머들은 정말 뛰어난 프로그래머들이고 그 프로그래머들이 로직을 작성할때 어떤 생각과 이유로 작성했는지를 조금이나마 깨달을 수 있었고 이는 저의 프로그래밍 실력을 늘리는데도 정말 많은 도움을 주었습니다.
