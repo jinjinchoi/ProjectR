@@ -8,6 +8,7 @@
     - 4.2.1 [Modifier](#421-modifier)
     - 4.2.2 [modifier의 적용 및 제거](#422-modifier의-적용-및-제거)
     - 4.2.3 [2차 attribute 계산](#423-2차-attribute-계산)
+        - [4.2.3.1 전략 패턴을 통한 attribute 설정](#4231-전략-패턴을-통한-attribute-설정)
     - 4.2.4 [defendancy 설정](#424-defendancy-설정)
     - 4.2.5 [DFS 통한 순환 참조 예방](#425-dfs-통한-순환-참조-예방)
   - 4.3[ Ability (스킬)](#43-ability-스킬)
@@ -252,7 +253,7 @@ modifier를 적용할 때 마다 이 `Recalculate`함수를 사용하여 current
 
 2차 attribute는 플레이어에게만 유효하며 에너미는 attribute가 변할 일이 없기 때문에 바로 2차 attribute를 modifier로 설정하는 방식으로 attribute를 정해주었습니다.
 
-**전략 패턴을 통한 attribute 설정**  
+##### 4.2.3.1 전략 패턴을 통한 attribute 설정
 2차 attribute는 `AttributeCalculator` 클래스에서 계산합니다.
 
 이때 attribute 타입별로 서로 다른 계산 클래스를 사용해야하고 이를 위해 전략패턴을 적용하였습니다.
