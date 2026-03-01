@@ -251,7 +251,7 @@ modifier를 적용할 때 마다 이 `Recalculate`함수를 사용하여 current
 #### 4.2.3 2차 attribute 계산
 2차 attribute는 1차 attribute가 변하면 따라서 변하는 attribute를 말합니다.
 
-2차 attribute는 플레이어에게만 유효하며 에너미는 attribute가 변할 일이 없기 때문에 바로 2차 attribute를 modifier로 설정하는 방식으로 attribute를 정해주었습니다.
+플레이어는 1차 attribute를 설정함으로써 2차 attribute도 설정하며 enemy는 attribute가 변할 일이 없기 때문에 바로 2차 attribute를 modifier로 설정하였습니다.
 
 ##### 4.2.3.1 전략 패턴을 통한 attribute 설정
 2차 attribute는 `AttributeCalculator` 클래스에서 계산합니다.
@@ -570,7 +570,7 @@ public class AbilitySpec
     }
 }
 ```
-이뿐만 아니라 Spec 클래스에서는 마지막으로 ability를 실행한 시점을 보관하여 쿨다운 계산등에도 사용하거나 ability의 레벨을 설정하여 강화하는 등 ability 사용에 필요한 요소들을 보관하게 됩니다.
+Spec 클래스에서는 Abiliy의 인스턴스 객체뿐 아니라 마지막으로 ability를 실행한 시점을 보관하여 쿨다운 계산등에도 사용하거나 ability의 레벨을 설정하여 강화하는 등 ability 사용에 필요한 요소들을 보관하게 됩니다.
 
 ```c#
 private readonly List<AbilitySpec> abilities = new();
@@ -1279,7 +1279,7 @@ public void SaveGame()
 ```
 플레이어가 세이브 요청을 하면 정보들을 가져와 Json 파일로 저장하게 됩니다.
 
-습득한 ability 정보든 한번 본 이벤트 정보든 전부 enum으로 만든 id로 이루어져 있기에 별도의 과정없이 직렬화가 가능해집니다..
+저장하는 데이터는 flaot나 string, enum 같은 직렬화 가능한 값으로만 이루어져 있기에 별도의 과정없이 세이브 작업이 가능합니다.
 
 [🔝 Top](#)
 

@@ -235,7 +235,7 @@ public class AbilitySystemComponent : MonoBehaviour, IAbilitySystemContext
         }
 
         // Fisher–Yates Shuffle Algorithm (무작위 순열 생성 알고리즘)
-        // 배열의 마지막 요소로부터 시작  // 배열의 첫번째 요소에 도착할 때까지 반복
+        // 배열의 마지막 요소부터 시작  // 배열의 첫번째 요소에 도착할 때까지 반복
         for (int i = indices.Count - 1; i > 0; i--)
         {
             // 0부터 현재 인덱스(i) 사이에서 무작위 정수 j를 선택
