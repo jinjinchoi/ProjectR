@@ -15,22 +15,24 @@ public struct FChoiceButtonInfo
     public string nextNodeId;
 }
 
-public class UIController_Dialogue
+public class UIController_Dialogue  : BaseCharacterUIController
 {
     public event Action<FNormalDialogueInfo> TextDialogueRequested;
     public event Action<List<FChoiceButtonInfo>> ChoiceDialogueRequested;
 
     private string nodeId;
-    private IAbilitySystemContext abilitySystemComponent;
 
-    public void Init(IAbilitySystemContext asc)
+    public override void Init(IAbilitySystemContext asc)
     {
+        base.Init(asc);
+
         EventHub.DialogueRequested += OnDialogueRequested;
-        abilitySystemComponent = asc;
     }
 
-    public void Dispose()
+    public override void Dispose()
     {
+        base.Dispose();
+
         EventHub.DialogueRequested -= OnDialogueRequested;
     }
 
@@ -120,7 +122,7 @@ public class UIController_Dialogue
             operation = EModifierOp.Add,
             policy = EModifierPolicy.Instant
         };
-        abilitySystemComponent.ApplyModifier(modifier);
+        abilitySystem.ApplyModifier(modifier);
 
         string attributeName = FunctionLibrary.GetAttributeNameByType(node.attribute);
         string msg = node.reward switch

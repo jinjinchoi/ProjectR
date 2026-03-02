@@ -27,6 +27,13 @@ public class UIController_RestArea : BaseCharacterUIController
         return currentHealth / maxHealth;
     }
 
+    public void UpdateSuccessChance()
+    {
+        float currentHealth = abilitySystem.AttributeSet.GetAttributeValue(EAttributeType.CurrentHealth);
+        float maxHealth = abilitySystem.AttributeSet.GetAttributeValue(EAttributeType.MaxHealth);
+        GameManager.Instance.RuntimeGameState.UpdateSuccessChance(currentHealth / maxHealth);
+    }
+
     public float GetSuccessChance()
     {
         return GameManager.Instance.RuntimeGameState.CurrentGrowthData.SuccessChance * 100f;

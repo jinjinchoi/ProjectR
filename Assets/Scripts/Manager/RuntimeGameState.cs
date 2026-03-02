@@ -57,6 +57,11 @@ public class RuntimeGameState
         currentGrowthData = growthCalculator.Generate(health, maxHealth);
     }
 
+    public void UpdateSuccessChance(float healthPercent)
+    {
+        currentGrowthData.SuccessChance = growthCalculator.CalculateSuccessChance(healthPercent);
+    }
+
     public void LoadGrowthData(AttributeGrowthData growthData)
     {
         currentGrowthData = growthData;

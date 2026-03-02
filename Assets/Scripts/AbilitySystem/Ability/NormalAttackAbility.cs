@@ -69,7 +69,7 @@ public class NormalAttackAbility : AbilityLogicBase
 
     private IEnumerator ComboReset()
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.25f);
         comboCount = 1;
     }
 

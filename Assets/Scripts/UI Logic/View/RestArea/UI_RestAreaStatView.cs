@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -75,13 +76,16 @@ public class UI_RestAreaStatView
     {
         uiController.OnAttributeValueChanged += OnAttributeValueChanged;
         uiController.UpgradeValueChanged += OnUpgradeValueChanged;
+        uiController.OnVitalRatioChanged += OnVitalValueChanged;
         GameManager.Instance.DayChanged += OnDayChanged;
     }
+
 
     public void Dispose()
     {
         uiController.OnAttributeValueChanged -= OnAttributeValueChanged;
         uiController.UpgradeValueChanged -= OnUpgradeValueChanged;
+        uiController.OnVitalRatioChanged -= OnVitalValueChanged;
         GameManager.Instance.DayChanged -= OnDayChanged;
     }
 
@@ -149,6 +153,15 @@ public class UI_RestAreaStatView
         }
     }
 
+    private void OnVitalValueChanged(bool isHealth, float ratio)
+    {
+        if (isHealth)
+        {
+            uiController.UpdateSuccessChance();
+            UpdateCostAndChanceText();
+        }
+    }
+
     private void OnDayChanged(int day)
     {
         dayText.text = day.ToString();
@@ -156,7 +169,6 @@ public class UI_RestAreaStatView
 
     private void OnUpgradeValueChanged()
     {
-        UpdateCostAndChanceText();
         UpdateUpgradeValueText();
     }
 

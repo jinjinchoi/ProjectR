@@ -52,12 +52,12 @@ public class AttributeGrowthCalculator
         };
     }
 
-    public float CalculateRelaxPoint(float maxHealth)
+    private float CalculateRelaxPoint(float maxHealth)
     {
         return Mathf.Round(maxHealth * 0.5f);
     }
 
-    public float CalculateCost(float maxHealth)
+    private float CalculateCost(float maxHealth)
     {
         return Mathf.Round(maxHealth * costCorrection);
     }
