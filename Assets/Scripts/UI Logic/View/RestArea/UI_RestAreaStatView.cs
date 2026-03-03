@@ -96,8 +96,6 @@ public class UI_RestAreaStatView
         float intelli = uiController.GetAttributeValue(EAttributeType.Intelligence);
         float dex = uiController.GetAttributeValue(EAttributeType.Dexterity);
         float vital = uiController.GetAttributeValue(EAttributeType.Vitality);
-        float maxHealth = uiController.GetAttributeValue(EAttributeType.MaxHealth);
-        float currentHealth = uiController.GetAttributeValue(EAttributeType.CurrentHealth);
         float skillPoint = uiController.GetAttributeValue(EAttributeType.SkillPoint);
 
         strText.text = str.ToString();
