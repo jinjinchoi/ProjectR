@@ -62,6 +62,8 @@
 유니티 엔진 6
 - **작업 기간**  
   1월 19일 ~ 2월 23일 (약 1달)
+- **다운로드**  
+  https://github.com/jinjinchoi/ProjectR/releases
 
 ---
 
