@@ -65,7 +65,7 @@
 - **시연 영상**  
   https://youtu.be/ODD-MKS-UR8
 - **기술문서 PDF**
-  
+  https://github.com/jinjinchoi/ProjectR/blob/main/PDF/Unity%20Portfolio-choiJinwoo.pdf
 - **다운로드**  
   https://github.com/jinjinchoi/ProjectR/releases
 
