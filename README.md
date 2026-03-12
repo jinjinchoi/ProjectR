@@ -62,6 +62,10 @@
 유니티 엔진 6
 - **작업 기간**  
   1월 19일 ~ 2월 23일 (약 1달)
+- **시연 영상**  
+  https://youtu.be/ODD-MKS-UR8
+- **기술문서 PDF**
+  
 - **다운로드**  
   https://github.com/jinjinchoi/ProjectR/releases
 
